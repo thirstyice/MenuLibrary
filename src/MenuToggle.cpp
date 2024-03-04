@@ -1,10 +1,16 @@
 #include "MenuToggle.h"
 
-MenuToggle::MenuToggle(String _title, bool* _variable, String _trueLabel, String _falseLabel) {
-	variable = _variable;
+MenuToggle::MenuToggle(
+	String _title,
+	bool* _variable,
+	String _trueLabel,
+	String _falseLabel) 
+	: 
+	variable(_variable),
+	trueLabel(_trueLabel),
+	falseLabel(_falseLabel) 
+{
 	title = _title;
-	trueLabel = _trueLabel;
-	falseLabel = _falseLabel;
 }
 
 bool MenuToggle::handleClick() {
