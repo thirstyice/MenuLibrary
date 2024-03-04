@@ -4,7 +4,7 @@
 #include "MenuOp.h"
 #include "MenuItem.h"
 
-template <uint8_t numberOfItems> class Menu : public MenuOp {
+class Menu : public MenuOp {
 public:
 	bool draw();
 	void setCursor(char cursor);
@@ -12,6 +12,7 @@ public:
 	void setOutput(MenuOutput* outputArray, uint8_t outputCount);
 	template <class... args>
 	Menu(String _title, args...items) : submenu{items...} {
+		numberOfItems = sizeof...(items);
 		title = _title;
 		handleEvent(enter);
 	};
@@ -29,12 +30,12 @@ private:
 	virtual bool handleExit();
 	virtual bool handleScrollNext();
 	virtual bool handleScrollPrevious();
+	uint8_t numberOfItems;
 	MenuOp* submenu[];
 };
 
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::draw() {
+bool Menu::draw() {
 	if (inSubmenu) {
 		if (submenu[focusedLine]->draw()) {
 			// If the submenu draws itself, we've already done our part
@@ -58,8 +59,7 @@ bool Menu<numberOfItems>::draw() {
 	return true;
 }
 
-template <uint8_t numberOfItems>
-void Menu<numberOfItems>::setOutput(MenuOutput* outputArray, uint8_t number) {
+void Menu::setOutput(MenuOutput* outputArray, uint8_t number) {
 	outputs = outputArray;
 	numberOfOutputs = number;
 	for (uint8_t i=0; i<numberOfItems; i++) {
@@ -67,15 +67,13 @@ void Menu<numberOfItems>::setOutput(MenuOutput* outputArray, uint8_t number) {
 	}
 }
 
-template <uint8_t numberOfItems>
-void Menu<numberOfItems>::setCursor(char cursor) {
+void Menu::setCursor(char cursor) {
 	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i].textCursor(cursor);
+		outputs[i].setCursor(cursor);
 	}
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleEvent(Event event) {
+bool Menu::handleEvent(Event event) {
 	if (inSubmenu) {
 		if (submenu[focusedLine]->handleEvent(event) && event == exit) {
 			inSubmenu = false;
@@ -92,8 +90,7 @@ bool Menu<numberOfItems>::handleEvent(Event event) {
 	return passEventToHandlerFunctions(event); 
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleClick() {
+bool Menu::handleClick() {
 	if (submenu[focusedLine]->handleEvent(enter) == true) {
 		inSubmenu = true;
 	} else {
@@ -102,35 +99,30 @@ bool Menu<numberOfItems>::handleClick() {
 	return false;
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleScrollNext() {
+bool Menu::handleScrollNext() {
 	if (focusedLine < (numberOfItems-1)) {
 		setFocusedLine(focusedLine+1);
 	}
 	return false;
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleScrollPrevious() {
+bool Menu::handleScrollPrevious() {
 	if (focusedLine > 0) {
 		setFocusedLine(focusedLine-1);
 	}
 	return false;
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleExit() {
+bool Menu::handleExit() {
 	return true;	
 }
 
-template <uint8_t numberOfItems>
-bool Menu<numberOfItems>::handleEnter() {
+bool Menu::handleEnter() {
 	setFocusedLine(0);
 	return true;
 }
 
-template <uint8_t numberOfItems>
-void Menu<numberOfItems>::setFocusedLine(uint8_t line) {
+void Menu::setFocusedLine(uint8_t line) {
 	for (uint8_t i=0; i<numberOfOutputs; i++) {
 		outputs[i].setFocusedLine(focusedLine);
 	}
@@ -142,8 +134,7 @@ void Menu<numberOfItems>::setFocusedLine(uint8_t line) {
 	submenu[focusedLine]->handleEvent(focus);
 }
 
-template <uint8_t numberOfItems>
-Menu<numberOfItems>::~Menu() {
+Menu::~Menu() {
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		delete submenu[i];
 	}

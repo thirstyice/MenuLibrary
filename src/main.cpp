@@ -40,9 +40,9 @@ bool toggleTest = false;
 uint8_t valueTest = 0;
 
 
-static Menu<4> menu{ "top",
+static Menu menu{ "top",
 	new MenuItem("MenuLibrary tester"),
-	new Menu<2>( "Container",
+	new Menu( "Container",
 		new MenuItem("Hello"),
 		new MenuItem("World")
 	),
