@@ -110,7 +110,7 @@ String MenuValue<numberType>::getTitle() {
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = String(*values[i].variable);
-		if (selected == i) {
+		if (active == true && selected == i) {
 			variableString = String('\17') + variableString + String('\16');
 		}
 		valuesString += variableString;

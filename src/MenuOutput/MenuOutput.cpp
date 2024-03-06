@@ -26,10 +26,10 @@ void MenuOutput::draw() {
 			}
 		}
 		uint8_t lineStart[numLines];
-		uint8_t lastIndex = 0;
+		uint8_t firstIndex = 0;
 		for (uint8_t i=0; i<numLines; i++) {
-			lineStart[i] = lastIndex;
-			lastIndex = currentContents.indexOf('\n',lastIndex+1);
+			lineStart[i] = firstIndex;
+			firstIndex = currentContents.indexOf('\n',firstIndex) +1;
 		}
 		
 		if (numLines<=height || height == 0) {
