@@ -26,7 +26,11 @@ void MenuOutputPCF8574::doOutput(uint8_t startIndex, uint8_t numLines) {
 			line = " " + line;
 		}
 		line.replace('\17', textCursor);
-		line.replace('\16', '\0');
+		int selectionEnd = line.indexOf('\16');
+		while (selectionEnd != -1) {
+			line.remove(selectionEnd);
+			selectionEnd = line.indexOf('\16');
+		}
 		if (line.indexOf('\t') != -1) {
 			lcd->print(line.substring(0,line.indexOf('\t')));
 			lcd->rightToLeft();
