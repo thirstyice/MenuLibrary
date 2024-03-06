@@ -13,11 +13,11 @@ MenuToggle::MenuToggle(
 	title = _title;
 }
 
-bool MenuToggle::handleClick() {
+MenuOp::Event MenuToggle::handleClick() {
 	if (variable != nullptr) {
 		*variable = !*variable;
 	}
-	return false;
+	return noEvent;
 }
 
 String MenuToggle::getTitle() {

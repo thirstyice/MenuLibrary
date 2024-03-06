@@ -1,10 +1,13 @@
 #include "MenuOp.h"
 
-bool MenuOp::passEventToHandlerFunctions(Event event) {
-	bool returnValue = false;
+MenuOp::Event MenuOp::passEventToHandlerFunctions(Event event) {
+	Event returnValue = noEvent;
 	switch (event) {
 	case click:
 		returnValue = handleClick();
+		break;
+	case back:
+		returnValue = handleBack();
 		break;
 	case focus:
 		returnValue = handleFocus();
@@ -25,13 +28,13 @@ bool MenuOp::passEventToHandlerFunctions(Event event) {
 		returnValue = handleScrollPrevious();
 		break;
 	default:
-		return false;
+		return noEvent;
 		break;
 	}
 	handlers[event].handler(this);
 	return returnValue;
 }
-bool MenuOp::handleEvent(Event event) {
+MenuOp::Event MenuOp::handleEvent(Event event) {
 	if (event == focus) {
 		hasFocus = true;
 	}

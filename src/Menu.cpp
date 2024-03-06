@@ -38,13 +38,16 @@ void Menu::setCursor(char cursor) {
 	}
 }
 
-bool Menu::handleEvent(Event event) {
+MenuOp::Event Menu::handleEvent(Event event) {
+	if (event == noEvent || event == lastEvent) {
+		return noEvent;
+	}
+	if (event == exit || event == enter) {
+		return passEventToHandlerFunctions(event);
+	}
 	if (inSubmenu) {
-		if (submenu[focusedLine]->handleEvent(event) && event == exit) {
-			inSubmenu = false;
-			setFocusedLine(focusedLine);
-		}
-		return false;
+		handleEvent(submenu[focusedLine]->handleEvent(event));
+		return noEvent;
 	}
 	if (event == focus) {
 		hasFocus = true;
@@ -55,36 +58,43 @@ bool Menu::handleEvent(Event event) {
 	return passEventToHandlerFunctions(event); 
 }
 
-bool Menu::handleClick() {
-	if (submenu[focusedLine]->handleEvent(enter) == true) {
-		inSubmenu = true;
+MenuOp::Event Menu::handleClick() {
+	if (active) {
+		handleEvent(submenu[focusedLine]->handleEvent(click));
+		return noEvent;
 	} else {
-		submenu[focusedLine]->handleEvent(click);
+		active = true;
+		return enter;
 	}
-	return false;
 }
 
-bool Menu::handleScrollNext() {
+MenuOp::Event Menu::handleBack() {
+	return exit;
+}
+
+MenuOp::Event Menu::handleScrollNext() {
 	if (focusedLine < (numberOfItems-1)) {
 		setFocusedLine(focusedLine+1);
 	}
-	return false;
+	return noEvent;
 }
 
-bool Menu::handleScrollPrevious() {
+MenuOp::Event Menu::handleScrollPrevious() {
 	if (focusedLine > 0) {
 		setFocusedLine(focusedLine-1);
 	}
-	return false;
+	return noEvent;
 }
 
-bool Menu::handleExit() {
-	return true;	
+MenuOp::Event Menu::handleExit() {
+	inSubmenu = false;
+	setFocusedLine(focusedLine);
+	return noEvent;	
 }
 
-bool Menu::handleEnter() {
-	setFocusedLine(0);
-	return true;
+MenuOp::Event Menu::handleEnter() {
+	inSubmenu = true;
+	return noEvent;
 }
 
 void Menu::setFocusedLine(uint8_t line) {

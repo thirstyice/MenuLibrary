@@ -39,13 +39,12 @@ public:
 	String getTitle();
 
 private:
-	bool active = false;
 	uint8_t selected = 0;
 	uint8_t size = 0;
-	virtual bool handleEnter();
-	virtual bool handleExit();
-	virtual bool handleScrollNext();
-	virtual bool handleScrollPrevious();
+	virtual Event handleClick();
+	virtual Event handleBack();
+	virtual Event handleScrollNext();
+	virtual Event handleScrollPrevious();
 	MenuValues* values;
 };
 
@@ -67,42 +66,49 @@ void MenuValue<numberType>::setMax(numberType _max, uint8_t index) {
 }
 
 template<typename numberType>
-bool MenuValue<numberType>::handleEnter() {
-	selected = 0;
-	active = true;
-	return true;
-}
-
-template<typename numberType>
-bool MenuValue<numberType>::handleExit() {
-	selected --;
+MenuOp::Event MenuValue<numberType>::handleBack() {
 	if (selected == 0) {
 		active = false;
-		return true;
+		return exit;
 	}
-	return false;
+	selected --;
+	return noEvent;
 }
 
-// TODO handle click
+template<typename numberType>
+MenuOp::Event MenuValue<numberType>::handleClick() {
+	if (!active) {
+		active=true;
+		selected=0;
+		return enter;
+	} else {
+		selected++;
+	}
+	if (selected >= size) {
+		active = false;
+		return exit;
+	}
+	return noEvent;
+}
 
 template<typename numberType>
-bool MenuValue<numberType>::handleScrollNext() {
+MenuOp::Event MenuValue<numberType>::handleScrollNext() {
 	if (*values[selected].variable + values[selected].inc >= values[selected].max) {
 		*values[selected].variable = values[selected].max;
 	} else {
 		*values[selected].variable += values[selected].inc;
 	}
-	return false;
+	return noEvent;
 }
 
 template<typename numberType>
-bool MenuValue<numberType>::handleScrollPrevious() {
+MenuOp::Event MenuValue<numberType>::handleScrollPrevious() {
 	if (*values[selected].variable - values[selected].inc <= values[selected].min) {
 		*values[selected].variable = values[selected].min;
 	} else {
 		*values[selected].variable -= values[selected].inc;
 	}
-	return false;
+	return noEvent;
 }
 
 template <typename numberType>

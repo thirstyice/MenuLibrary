@@ -24,6 +24,7 @@ uint8_t valueTest = 0;
 
 Menu menu{ "top",
 	new MenuItem("MenuLibrary tester"),
+	&printButton,
 	new Menu( "Container",
 		new MenuItem("Hello"),
 		new MenuItem("World")
@@ -40,7 +41,7 @@ void buttonEventHandler(ace_button::AceButton*, uint8_t eventType, uint8_t) {
 			menu.handleEvent(MenuItem::click);
 			break;
 		case ace_button::AceButton::kEventLongPressed:
-			menu.handleEvent(MenuItem::exit);
+			menu.handleEvent(MenuItem::back);
 			break;
 	}
 }

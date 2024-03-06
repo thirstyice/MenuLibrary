@@ -7,7 +7,7 @@ class Menu : public MenuOp {
 public:
 	bool draw();
 	void setCursor(char cursor);
-	bool handleEvent(Event event); // returns true if entering / exiting a submenu
+	Event handleEvent(Event event); // returns true if entering / exiting a submenu
 	void setOutput(MenuOutput* outputArray, uint8_t outputCount);
 	template <class... args>
 	Menu(String _title, args...items) {
@@ -17,7 +17,7 @@ public:
 		submenu = (MenuOp**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 		title = _title;
-		handleEvent(enter);
+		handleEvent(click);
 	};
 	~Menu();
 
@@ -28,11 +28,12 @@ private:
 	uint8_t focusedLine = 0;
 	MenuOutput* outputs = nullptr;
 	uint8_t numberOfOutputs = 0;
-	virtual bool handleClick();
-	virtual bool handleEnter();
-	virtual bool handleExit();
-	virtual bool handleScrollNext();
-	virtual bool handleScrollPrevious();
+	virtual Event handleClick();
+	virtual Event handleBack();
+	virtual Event handleEnter();
+	virtual Event handleExit();
+	virtual Event handleScrollNext();
+	virtual Event handleScrollPrevious();
 	uint8_t numberOfItems = 0;
 	MenuOp** submenu;
 };

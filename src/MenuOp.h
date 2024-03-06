@@ -9,6 +9,7 @@ public:
 	enum Event : uint8_t {
 		noEvent = 0,
 		click,
+		back,
 		focus,
 		unfocus,
 		enter,
@@ -23,25 +24,25 @@ public:
 	virtual String getTitle();
 	virtual bool draw() {return false;}
 	virtual void setOutput(MenuOutput* outputArray, uint8_t outputCount) {}
-	virtual bool handleEvent(Event event);
+	virtual Event handleEvent(Event event);
 	virtual ~MenuOp() {}
 
 
 protected:
-	bool passEventToHandlerFunctions(Event event);
-	void setParent(MenuOp* _parent) {parent = _parent;}
+	Event passEventToHandlerFunctions(Event event);
 	String title = "-";
 	struct {		
 		void (*handler)(const MenuOp*) = doNothing;
 	} handlers[lastEvent];
 	bool hasFocus = false;
-	MenuOp* parent = nullptr;
+	bool active = false;
 private:
-	virtual bool handleClick() {return false;}
-	virtual bool handleFocus() {return false;}
-	virtual bool handleEnter() {return false;}
-	virtual bool handleUnfocus() {return false;}
-	virtual bool handleExit() {return false;}
-	virtual bool handleScrollNext() {return false;}
-	virtual bool handleScrollPrevious() {return false;}
+	virtual Event handleClick() {return noEvent;}
+	virtual Event handleBack() {return exit;}
+	virtual Event handleFocus() {return noEvent;}
+	virtual Event handleEnter() {return noEvent;}
+	virtual Event handleUnfocus() {return noEvent;}
+	virtual Event handleExit() {return noEvent;}
+	virtual Event handleScrollNext() {return noEvent;}
+	virtual Event handleScrollPrevious() {return noEvent;}
 };
