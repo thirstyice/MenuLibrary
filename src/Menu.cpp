@@ -1,7 +1,5 @@
 #include "Menu.h"
 
-
-
 bool Menu::draw() {
 	if (inSubmenu) {
 		if (submenu[focusedLine]->draw()) {
@@ -105,4 +103,5 @@ Menu::~Menu() {
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		delete submenu[i];
 	}
+	free(submenu);
 }

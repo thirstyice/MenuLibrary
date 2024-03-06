@@ -10,8 +10,12 @@ public:
 	bool handleEvent(Event event); // returns true if entering / exiting a submenu
 	void setOutput(MenuOutput* outputArray, uint8_t outputCount);
 	template <class... args>
-	Menu(String _title, args...items) : submenu{items...} {
+	Menu(String _title, args...items) {
 		numberOfItems = sizeof...(items);
+		MenuOp* itemArray[numberOfItems] = {items...};
+		size_t memsize = numberOfItems * sizeof(MenuOp*);
+		submenu = (MenuOp**)malloc(memsize);
+		memcpy(submenu, itemArray, memsize);
 		title = _title;
 		handleEvent(enter);
 	};
@@ -29,7 +33,7 @@ private:
 	virtual bool handleExit();
 	virtual bool handleScrollNext();
 	virtual bool handleScrollPrevious();
-	uint8_t numberOfItems;
-	MenuOp* submenu[];
+	uint8_t numberOfItems = 0;
+	MenuOp** submenu;
 };
 
