@@ -29,7 +29,7 @@ Menu menu{ "top",
 		new MenuItem("World")
 	),
 	new MenuToggle("Toggle:", &toggleTest),
-	new MenuValue<uint8_t>("Value:", &valueTest, 255)
+	new MenuValue<uint8_t>("Value:", MenuValue<uint8_t>::MenuValues(&valueTest, 255))
 };
 
 MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
