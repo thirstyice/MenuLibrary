@@ -10,6 +10,7 @@ public:
 		numberType max = 1;
 		numberType min = 0;
 		numberType inc = 1;
+		MenuValues() {}
 		MenuValues(
 			numberType* _variable,
 			numberType _max = 1,
@@ -22,8 +23,15 @@ public:
 			inc{_increment}
 			{}
 	};
-	template <class...args>
-	MenuValue(String _title, args...variables) : values{variables...} {title = _title; size = sizeof...(variables);}
+	template <typename... args>
+	MenuValue(String _title, args...variables) {
+		title = _title;
+		size = sizeof...(variables);
+		MenuValues variableArray[size] = {variables...}; 
+		size_t memsize = size * sizeof(MenuValues);
+		values = (MenuValues*)malloc(memsize);
+		memcpy(values, variableArray, memsize);
+	}
 	void setVariable(numberType* _variable, uint8_t index=0) {values[index].variable = _variable;}
 	void setMax(numberType _max, uint8_t index = 0);
 	void setMin(numberType _min, uint8_t index = 0);
@@ -38,7 +46,7 @@ private:
 	virtual bool handleExit();
 	virtual bool handleScrollNext();
 	virtual bool handleScrollPrevious();
-	MenuValues values[];
+	MenuValues* values;
 };
 
 
