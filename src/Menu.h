@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 #include "MenuOp.h"
-#include "MenuItem.h"
 
 class Menu : public MenuOp {
 public:
@@ -23,7 +22,7 @@ private:
 	void setFocusedLine(uint8_t line);
 	bool inSubmenu = false;
 	uint8_t focusedLine = 0;
-	MenuOutput* outputs = {nullptr};
+	MenuOutput* outputs = nullptr;
 	uint8_t numberOfOutputs = 0;
 	virtual bool handleClick();
 	virtual bool handleEnter();

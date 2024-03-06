@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #include <Menu.h>
+#include <MenuItem.h>
 #include <MenuToggle.h>
 #include <MenuValue.h>
 #include <MenuOutput/PCF8574.h>
