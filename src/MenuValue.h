@@ -2,7 +2,7 @@
 
 #include "MenuOp.h"
 
-template <typename numberType>
+template <typename numberType, char separator = ' '>
 class MenuValue : public MenuOp {
 public:
 	struct MenuValues {
@@ -49,24 +49,24 @@ private:
 };
 
 
-template<typename numberType>
-void MenuValue<numberType>::setMin(numberType _min, uint8_t index) {
+template <typename numberType, char separator>
+void MenuValue<numberType, separator>::setMin(numberType _min, uint8_t index) {
 	values[index].min = _min;
 	if (*values[index].variable < _min) {
 		*values[index].variable = _min;
 	}
 }
 
-template<typename numberType>
-void MenuValue<numberType>::setMax(numberType _max, uint8_t index) {
+template <typename numberType, char separator>
+void MenuValue<numberType, separator>::setMax(numberType _max, uint8_t index) {
 	values[index].max = _max;
 	if (*values[index].variable > _max) {
 		*values[index].variable = _max;
 	}
 }
 
-template<typename numberType>
-MenuOp::Event MenuValue<numberType>::handleBack() {
+template <typename numberType, char separator>
+MenuOp::Event MenuValue<numberType, separator>::handleBack() {
 	if (selected == 0) {
 		active = false;
 		return exit;
@@ -75,8 +75,8 @@ MenuOp::Event MenuValue<numberType>::handleBack() {
 	return noEvent;
 }
 
-template<typename numberType>
-MenuOp::Event MenuValue<numberType>::handleClick() {
+template <typename numberType, char separator>
+MenuOp::Event MenuValue<numberType, separator>::handleClick() {
 	if (!active) {
 		active=true;
 		selected=0;
@@ -91,8 +91,8 @@ MenuOp::Event MenuValue<numberType>::handleClick() {
 	return noEvent;
 }
 
-template<typename numberType>
-MenuOp::Event MenuValue<numberType>::handleScrollNext() {
+template <typename numberType, char separator>
+MenuOp::Event MenuValue<numberType, separator>::handleScrollNext() {
 	if (*values[selected].variable + values[selected].inc >= values[selected].max) {
 		*values[selected].variable = values[selected].max;
 	} else {
@@ -101,8 +101,8 @@ MenuOp::Event MenuValue<numberType>::handleScrollNext() {
 	return noEvent;
 }
 
-template<typename numberType>
-MenuOp::Event MenuValue<numberType>::handleScrollPrevious() {
+template <typename numberType, char separator>
+MenuOp::Event MenuValue<numberType, separator>::handleScrollPrevious() {
 	if (*values[selected].variable - values[selected].inc <= values[selected].min) {
 		*values[selected].variable = values[selected].min;
 	} else {
@@ -111,17 +111,18 @@ MenuOp::Event MenuValue<numberType>::handleScrollPrevious() {
 	return noEvent;
 }
 
-template <typename numberType>
-String MenuValue<numberType>::getTitle() {
+template <typename numberType, char separator>
+String MenuValue<numberType, separator>::getTitle() {
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = String(*values[i].variable);
 		if (active == true && selected == i) {
-			variableString = String('\17') + variableString + String('\16');
+			variableString = String(MenuChar[MenuChars::StartOfSelection]) + variableString + String(MenuChar[MenuChars::EndOfSelection]);
 		}
-		valuesString += variableString;
+		valuesString += variableString + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
 	}
-	return (title + "\t" + valuesString);
+	valuesString.remove(valuesString.length()-2);
+	return (title + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
 
 

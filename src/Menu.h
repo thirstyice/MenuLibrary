@@ -5,7 +5,6 @@
 class Menu : public MenuOp {
 public:
 	bool draw();
-	void setCursor(char cursor);
 	Event handleEvent(Event event); // returns true if entering / exiting a submenu
 	void setOutput(MenuOutput* outputArray, uint8_t outputCount);
 	template <class... args>

@@ -21,7 +21,7 @@ MenuOp::Event MenuToggle::handleClick() {
 }
 
 String MenuToggle::getTitle() {
-	return (title + "\t" + (*variable?trueLabel:falseLabel));
+	return (title + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
 }
 
 void MenuToggle::setVariable(bool* _variable) {

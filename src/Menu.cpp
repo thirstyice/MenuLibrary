@@ -14,11 +14,11 @@ bool Menu::draw() {
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		String item = submenu[i]->getTitle();
 		if (i == focusedLine) {
-			if (item.indexOf('\17') == -1) {
-				item = '\17' + item + '\16';
+			if (item.indexOf(MenuChar[MenuChars::StartOfSelection]) == -1) {
+				item = MenuChar[MenuChars::StartOfSelection] + item + MenuChar[MenuChars::EndOfSelection];
 			}
 		}
-		output += item + '\n';;
+		output += item + '\n';
 	}
 	for (uint8_t i=0; i<numberOfOutputs; i++) {
 		outputs[i].setContents(output);
@@ -32,12 +32,6 @@ void Menu::setOutput(MenuOutput* outputArray, uint8_t number) {
 	numberOfOutputs = number;
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		submenu[i]->setOutput(outputs, numberOfOutputs);
-	}
-}
-
-void Menu::setCursor(char cursor) {
-	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i].setCursor(cursor);
 	}
 }
 

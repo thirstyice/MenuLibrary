@@ -1,7 +1,17 @@
 #include "MenuOutput.h"
 
+const char MenuChar[MenuChars::Count] = {
+	'\0' , // Null, do not print
+	'\17', // Start of selection
+	'\16', // End of selection
+	'\32', // Previous character may be replaced by cursor at start of selection
+	'\t' , // Rest of line should align right
+	'\1' , // Rest of line should be emphasized (if possible)	
+	'\10',  // Back arrow
+};
+
 void MenuOutput::setContents(String contents) {
-	if (currentContents == contents) {
+	if (currentContents == contents || contents == "") {
 		return;
 	}
 	currentContents = contents;
