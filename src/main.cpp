@@ -18,6 +18,7 @@ MenuItem printButton("Print variable values");
 
 bool toggleTest = false;
 uint8_t valueTest = 0;
+uint8_t valueTest2 = 100;
 
 
 Menu menu{ "top",
@@ -29,7 +30,10 @@ Menu menu{ "top",
 		new MenuItem("World")
 	),
 	new MenuToggle("Toggle:", &toggleTest),
-	new MenuValue<uint8_t>("Value:", MenuValue<uint8_t>::MenuValues(&valueTest, 255))
+	new MenuValue<uint8_t>("Value:",
+		MenuValue<uint8_t>::MenuValues(&valueTest, 255),
+		MenuValue<uint8_t>::MenuValues(&valueTest2, 255)
+	)
 };
 
 MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
@@ -58,13 +62,12 @@ void printValues(const MenuOp*) {
 
 void setup() {
 	Serial.begin(9600);
-	MenuBack.setTitle("<- Exit"); // Change the text for all standard back items
 	lcd.begin(20,4);
 	lcd.setBacklight(255);
 	lcd.clear();
 	lcd.home();
 	menu.setOutput(&lcdOut,1);
-
+	MenuBack.setTitle("User selected back text");
 	printButton.setHandlerForEvent(printValues, MenuOp::click);
 
 	pinMode(2, INPUT_PULLUP);
