@@ -7,6 +7,11 @@
 #include <AceButton.h>
 #include <RotaryEncoder.h>
 
+int freeRam () {
+	extern int __heap_start, *__brkval; 
+	int v; 
+	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
 
 LiquidCrystal_PCF8574 lcd(0x27);
 
@@ -58,6 +63,8 @@ void printValues(const MenuOp*) {
 	Serial.println(toggleTest);
 	Serial.print("Value is now:");
 	Serial.println(valueTest);
+	Serial.print("Free Ram:");
+	Serial.println(freeRam());
 }
 
 void setup() {
@@ -81,7 +88,6 @@ void setup() {
 
 	attachInterrupt(digitalPinToInterrupt(2), encoderInterrupt, CHANGE);
 	attachInterrupt(digitalPinToInterrupt(3), encoderInterrupt, CHANGE);
-
 }
 
 void loop() {
