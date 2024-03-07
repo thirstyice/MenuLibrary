@@ -7,6 +7,9 @@ bool Menu::draw() {
 			return true;
 		}
 	}
+	if (!active) {
+		active = true;
+	}
 	String output = "";
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		String item = submenu[i]->getTitle();
@@ -59,9 +62,8 @@ MenuOp::Event Menu::handleEvent(Event event) {
 }
 
 MenuOp::Event Menu::handleClick() {
-	if (active) {
-		handleEvent(submenu[focusedLine]->handleEvent(click));
-		return noEvent;
+	if (active == true) {
+		return handleEvent(submenu[focusedLine]->handleEvent(click));
 	} else {
 		active = true;
 		return enter;
@@ -69,6 +71,7 @@ MenuOp::Event Menu::handleClick() {
 }
 
 MenuOp::Event Menu::handleBack() {
+	active = false;
 	return exit;
 }
 
@@ -99,7 +102,7 @@ MenuOp::Event Menu::handleEnter() {
 
 void Menu::setFocusedLine(uint8_t line) {
 	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i].setFocusedLine(focusedLine);
+		outputs[i].setFocusedLine(line);
 	}
 	if (focusedLine == line) {
 		return;

@@ -16,7 +16,6 @@ public:
 		submenu = (MenuOp**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 		title = _title;
-		handleEvent(click);
 	};
 	~Menu();
 
