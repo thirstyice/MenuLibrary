@@ -24,6 +24,7 @@ Menu menu{ "top",
 	new MenuItem("MenuLibrary tester"),
 	&printButton,
 	new Menu( "Container",
+		&MenuBack,
 		new MenuItem("Hello"),
 		new MenuItem("World")
 	),
@@ -57,12 +58,13 @@ void printValues(const MenuOp*) {
 
 void setup() {
 	Serial.begin(9600);
-
-	menu.setOutput(&lcdOut,1);
+	MenuBack.setTitle("<- Exit"); // Change the text for all standard back items
 	lcd.begin(20,4);
 	lcd.setBacklight(255);
 	lcd.clear();
 	lcd.home();
+	menu.setOutput(&lcdOut,1);
+
 	printButton.setHandlerForEvent(printValues, MenuOp::click);
 
 	pinMode(2, INPUT_PULLUP);
