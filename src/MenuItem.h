@@ -1,8 +1,6 @@
 #pragma once
 
-#include <Arduino.h>
-
-#include <MenuOp.h>
+#include "MenuOp.h"
 
 class MenuItem : public MenuOp {
 public:
