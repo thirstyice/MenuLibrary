@@ -46,10 +46,10 @@ MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
 void buttonEventHandler(ace_button::AceButton*, uint8_t eventType, uint8_t) {
 	switch (eventType) {
 		case ace_button::AceButton::kEventClicked:
-			menu.handleEvent(MenuItem::click);
+			menu.handleEvent(MenuEvent::click);
 			break;
 		case ace_button::AceButton::kEventLongPressed:
-			menu.handleEvent(MenuItem::back);
+			menu.handleEvent(MenuEvent::back);
 			break;
 	}
 }
@@ -75,7 +75,7 @@ void setup() {
 	lcd.home();
 	menu.setOutput(&lcdOut,1);
 	MenuBack.setTitle("User selected back text");
-	printButton.setHandlerForEvent(printValues, MenuOp::click);
+	printButton.setHandlerForEvent(printValues, MenuEvent::click);
 
 	pinMode(2, INPUT_PULLUP);
 	pinMode(3, INPUT_PULLUP);
@@ -95,9 +95,9 @@ void loop() {
 	long encPosition = encoder.getPosition() - lastEncPosition;
 	
 	lastEncPosition = encoder.getPosition();
-	MenuItem::Event event = MenuItem::scrollNext;
+	MenuEvent::Event event = MenuEvent::scrollNext;
 	if (encPosition < 0) {
-		event = MenuItem::scrollPrevious;
+		event = MenuEvent::scrollPrevious;
 		encPosition *= -1;
 	}
 	while (encPosition > 0) {

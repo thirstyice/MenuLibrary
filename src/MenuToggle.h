@@ -11,7 +11,7 @@ public:
 	void setFalseLabel(String _falseLabel);
 	String getTitle();
 private:
-	virtual Event handleClick();
+	virtual MenuEvent::Event handleClick();
 	bool* variable = nullptr;
 	String trueLabel = "true";
 	String falseLabel = "false";

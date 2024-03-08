@@ -1,50 +1,50 @@
 #include "MenuOp.h"
 
-MenuOp::Event MenuOp::passEventToHandlerFunctions(Event event) {
-	Event returnValue = noEvent;
+MenuEvent::Event MenuOp::passEventToHandlerFunctions(MenuEvent::Event event) {
+	MenuEvent::Event returnValue = MenuEvent::noEvent;
 	switch (event) {
-	case click:
+	case MenuEvent::click:
 		returnValue = handleClick();
 		break;
-	case back:
+	case MenuEvent::back:
 		returnValue = handleBack();
 		break;
-	case focus:
+	case MenuEvent::focus:
 		returnValue = handleFocus();
 		break;
-	case unfocus:
+	case MenuEvent::unfocus:
 		returnValue = handleUnfocus();
 		break;
-	case enter:
+	case MenuEvent::enter:
 		returnValue = handleEnter();
 		break;
-	case exit:
+	case MenuEvent::exit:
 		returnValue = handleExit();
 		break;
-	case scrollNext:
+	case MenuEvent::scrollNext:
 		returnValue = handleScrollNext();
 		break;
-	case scrollPrevious:
+	case MenuEvent::scrollPrevious:
 		returnValue = handleScrollPrevious();
 		break;
 	default:
-		return noEvent;
+		return MenuEvent::noEvent;
 		break;
 	}
 	handlers[event].handler(this);
 	return returnValue;
 }
-MenuOp::Event MenuOp::handleEvent(Event event) {
-	if (event == focus) {
+MenuEvent::Event MenuOp::handleEvent(MenuEvent::Event event) {
+	if (event == MenuEvent::focus) {
 		hasFocus = true;
 	}
-	if (event == unfocus) {
+	if (event == MenuEvent::unfocus) {
 		hasFocus = false;
 	}
 	return passEventToHandlerFunctions(event); 
 }
 
-void MenuOp::setHandlerForEvent(void (*handler)(const MenuOp*), Event event) {
+void MenuOp::setHandlerForEvent(void (*handler)(const MenuOp*), MenuEvent::Event event) {
 	handlers[event].handler = handler;
 }
 

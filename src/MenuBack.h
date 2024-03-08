@@ -8,7 +8,7 @@ public:
 protected:
 	String getTitle();
 private:
-	Event handleClick() {return back;}
+	MenuEvent::Event handleClick() {return MenuEvent::back;}
 };
 
 extern MenuBackClass MenuBack;

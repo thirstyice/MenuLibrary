@@ -41,10 +41,10 @@ public:
 private:
 	uint8_t selected = 0;
 	uint8_t size = 0;
-	virtual Event handleClick();
-	virtual Event handleBack();
-	virtual Event handleScrollNext();
-	virtual Event handleScrollPrevious();
+	virtual MenuEvent::Event handleClick();
+	virtual MenuEvent::Event handleBack();
+	virtual MenuEvent::Event handleScrollNext();
+	virtual MenuEvent::Event handleScrollPrevious();
 	MenuValues* values;
 };
 
@@ -66,21 +66,21 @@ void MenuValue<numberType, separator>::setMax(numberType _max, uint8_t index) {
 }
 
 template <typename numberType, char separator>
-MenuOp::Event MenuValue<numberType, separator>::handleBack() {
+MenuEvent::Event MenuValue<numberType, separator>::handleBack() {
 	if (selected == 0) {
 		active = false;
-		return exit;
+		return MenuEvent::exit;
 	}
 	selected --;
-	return noEvent;
+	return MenuEvent::noEvent;
 }
 
 template <typename numberType, char separator>
-MenuOp::Event MenuValue<numberType, separator>::handleClick() {
+MenuEvent::Event MenuValue<numberType, separator>::handleClick() {
 	if (!active) {
 		active=true;
 		selected=0;
-		return enter;
+		return MenuEvent::enter;
 	} else {
 		selected++;
 	}
@@ -88,27 +88,27 @@ MenuOp::Event MenuValue<numberType, separator>::handleClick() {
 		active = false;
 		return exit;
 	}
-	return noEvent;
+	return MenuEvent::noEvent;
 }
 
 template <typename numberType, char separator>
-MenuOp::Event MenuValue<numberType, separator>::handleScrollNext() {
+MenuEvent::Event MenuValue<numberType, separator>::handleScrollNext() {
 	if (*values[selected].variable + values[selected].inc >= values[selected].max) {
 		*values[selected].variable = values[selected].max;
 	} else {
 		*values[selected].variable += values[selected].inc;
 	}
-	return noEvent;
+	return MenuEvent::noEvent;
 }
 
 template <typename numberType, char separator>
-MenuOp::Event MenuValue<numberType, separator>::handleScrollPrevious() {
+MenuEvent::Event MenuValue<numberType, separator>::handleScrollPrevious() {
 	if (*values[selected].variable - values[selected].inc <= values[selected].min) {
 		*values[selected].variable = values[selected].min;
 	} else {
 		*values[selected].variable -= values[selected].inc;
 	}
-	return noEvent;
+	return MenuEvent::noEvent;
 }
 
 template <typename numberType, char separator>
