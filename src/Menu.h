@@ -7,6 +7,11 @@ public:
 	bool draw();
 	MenuEvent::Event handleEvent(MenuEvent::Event event); // returns true if entering / exiting a submenu
 	void setOutput(MenuOutput* outputArray, uint8_t outputCount);
+	Menu(String _title, MenuOp** itemArray, uint8_t itemCount) {
+		submenu = itemArray;
+		numberOfItems = itemCount;
+		title = _title;
+	}
 	template <class... args>
 	Menu(String _title, args...items) {
 		numberOfItems = sizeof...(items);
