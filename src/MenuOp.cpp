@@ -48,7 +48,7 @@ void MenuOp::setHandlerForEvent(void (*handler)(const MenuOp*), MenuEvent::Event
 	handlers[event].handler = handler;
 }
 
-String MenuOp::getTitle() {
+String MenuOp::getTitle() const {
 	return title;
 }
 
