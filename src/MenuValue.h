@@ -36,7 +36,7 @@ public:
 	void setMax(numberType _max, uint8_t index = 0);
 	void setMin(numberType _min, uint8_t index = 0);
 	void setIncrement(numberType _inc, uint8_t index = 0) {values[index].inc = _inc;}
-	String getTitle();
+	String getTitle() const;
 
 private:
 	uint8_t selected = 0;
@@ -112,7 +112,7 @@ MenuEvent::Event MenuValue<numberType, separator>::handleScrollPrevious() {
 }
 
 template <typename numberType, char separator>
-String MenuValue<numberType, separator>::getTitle() {
+String MenuValue<numberType, separator>::getTitle() const {
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = String(*values[i].variable);

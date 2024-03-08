@@ -2,6 +2,6 @@
 
 MenuBackClass MenuBack;
 
-String MenuBackClass::getTitle() {
+String MenuBackClass::getTitle() const {
 	return String(MenuChar[MenuChars::BackArrow]) + title;
 }

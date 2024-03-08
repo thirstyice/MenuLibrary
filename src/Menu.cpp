@@ -18,6 +18,7 @@ bool Menu::draw() {
 				item = MenuChar[MenuChars::StartOfSelection] + item + MenuChar[MenuChars::EndOfSelection];
 			}
 		}
+	
 		output += item + '\n';
 	}
 	for (uint8_t i=0; i<numberOfOutputs; i++) {

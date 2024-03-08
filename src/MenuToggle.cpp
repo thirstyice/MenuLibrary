@@ -20,7 +20,7 @@ MenuEvent::Event MenuToggle::handleClick() {
 	return MenuEvent::noEvent;
 }
 
-String MenuToggle::getTitle() {
+String MenuToggle::getTitle() const {
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
 }
 
