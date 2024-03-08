@@ -86,7 +86,7 @@ MenuEvent::Event MenuValue<numberType, separator>::handleClick() {
 	}
 	if (selected >= size) {
 		active = false;
-		return exit;
+		return MenuEvent::exit;
 	}
 	return MenuEvent::noEvent;
 }
