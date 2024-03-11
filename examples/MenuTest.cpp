@@ -74,7 +74,7 @@ void setup() {
 	lcd.clear();
 	lcd.home();
 	menu.setOutput(&lcdOut,1);
-	MenuBack.setTitle("User selected back text");
+	MenuBack.setTitle("User back text");
 	printButton.setHandlerForEvent(printValues, MenuEvent::click);
 
 	pinMode(2, INPUT_PULLUP);
