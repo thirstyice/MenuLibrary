@@ -24,6 +24,7 @@ MenuItem printButton("Print variable values");
 bool toggleTest = false;
 uint8_t valueTest = 0;
 float valueTestFloat = 100;
+uint8_t ipTest[] = {192,168,0,1};
 
 
 Menu menu{ "top",
@@ -38,7 +39,8 @@ Menu menu{ "top",
 	new MenuValue("Value:",
 		new MenuValues<uint8_t>(&valueTest, 255),
 		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
-	)
+	),
+	new MenuIP("IP:", &ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3])
 };
 
 MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
