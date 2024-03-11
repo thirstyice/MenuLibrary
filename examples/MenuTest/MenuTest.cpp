@@ -23,7 +23,7 @@ MenuItem printButton("Print variable values");
 
 bool toggleTest = false;
 uint8_t valueTest = 0;
-float valueTestFloat = 100;
+float valueTestFloat = 1;
 uint8_t ipTest[] = {192,168,0,1};
 
 
