@@ -23,7 +23,7 @@ MenuItem printButton("Print variable values");
 
 bool toggleTest = false;
 uint8_t valueTest = 0;
-uint8_t valueTest2 = 100;
+float valueTestFloat = 100;
 
 
 Menu menu{ "top",
@@ -35,9 +35,9 @@ Menu menu{ "top",
 		new MenuItem("World")
 	),
 	new MenuToggle("Toggle:", &toggleTest),
-	new MenuValue<uint8_t>("Value:",
-		MenuValue<uint8_t>::MenuValues(&valueTest, 255),
-		MenuValue<uint8_t>::MenuValues(&valueTest2, 255)
+	new MenuValue("Value:",
+		new MenuValues<uint8_t>(&valueTest, 255),
+		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
 	)
 };
 
