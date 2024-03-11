@@ -19,7 +19,7 @@ RotaryEncoder encoder(3,2,RotaryEncoder::LatchMode::FOUR3);
 long lastEncPosition = 0;
 ace_button::AceButton button(4);
 
-MenuItem printButton("Print variable values");
+MenuItem printButton("Print values");
 
 bool toggleTest = false;
 uint8_t valueTest = 0;
@@ -63,8 +63,20 @@ void encoderInterrupt() {
 void printValues(const MenuOp*) {
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
-	Serial.print("Value is now:");
-	Serial.println(valueTest);
+
+	Serial.print("Values are now: ");
+	Serial.print(valueTest);
+	Serial.println(valueTestFloat);
+
+	Serial.print("IP is now: ");
+	Serial.print(ipTest[0]);
+	Serial.print('.');
+	Serial.print(ipTest[1]);
+	Serial.print('.');
+	Serial.print(ipTest[2]);
+	Serial.print('.');
+	Serial.println(ipTest[3]);
+
 	Serial.print("Free Ram:");
 	Serial.println(freeRam());
 }
