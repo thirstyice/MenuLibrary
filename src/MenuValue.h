@@ -41,11 +41,16 @@ public:
 
 class MenuValue : public MenuOp {
 public:
+	MenuValue() {};
 	template <typename... args>
+	MenuValue(String _title, args...variables) {init(_title, variables);}
 	~MenuValue();
 	String getTitle() const;
 	void setSeparator(char _separator) {separator = _separator;}
 
+protected:
+	template <typename... args>
+	void init(String _title, args...variables);
 private:
 	char separator = ' ';
 	uint8_t selected = 0;
