@@ -8,10 +8,11 @@ public:
 	virtual String getValueAsString() =0;
 	virtual void increment() =0;
 	virtual void decrement() =0;
+	virtual ~MenuValuesOp() {};
 };
 
 template <typename numberType>
-class MenuValues : MenuValuesOp {
+class MenuValues : public MenuValuesOp {
 private:
 	numberType* variable = nullptr;
 	numberType max = 1;
@@ -30,7 +31,7 @@ public:
 		min{_min},
 		inc{_increment}
 	{}
-	String getValueAsString() {return String(variable*);}
+	String getValueAsString();
 	void increment();
 	void decrement();
 	void setVariable(numberType* _variable) {variable = _variable;}
@@ -43,7 +44,7 @@ class MenuValue : public MenuOp {
 public:
 	MenuValue() {};
 	template <typename... args>
-	MenuValue(String _title, args...variables) {init(_title, variables);}
+	MenuValue(String _title, args...variables) {init(_title, variables...);}
 	~MenuValue();
 	String getTitle() const;
 	void setSeparator(char _separator) {separator = _separator;}
@@ -62,6 +63,20 @@ private:
 	MenuValuesOp** values;
 };
 
+template <typename... args>
+void MenuValue::init(String _title, args...variables) {
+	title = _title;
+	size = sizeof...(variables);
+	MenuValuesOp* variableArray[size] = {variables...}; 
+	size_t memsize = size * sizeof(MenuValuesOp*);
+	values = (MenuValuesOp**)malloc(memsize);
+	memcpy(values, variableArray, memsize);
+}
+
+template <typename numberType>
+String MenuValues<numberType>::getValueAsString() {
+	return String(*variable);
+}
 
 template <typename numberType>
 void MenuValues<numberType>::setMin(numberType _min) {

@@ -1,14 +1,5 @@
 #include "MenuValue.h"
 
-template <typename... args>
-void MenuValue::init(String _title, args...variables) {
-	title = _title;
-	size = sizeof...(variables);
-	MenuValuesOp* variableArray[size] = {variables...}; 
-	size_t memsize = size * sizeof(MenuValuesOp*);
-	values = (MenuValuesOp**)malloc(memsize);
-	memcpy(values, variableArray, memsize);
-}
 
 MenuEvent::Event MenuValue::handleBack() {
 	if (selected == 0) {
