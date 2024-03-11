@@ -1,25 +1,25 @@
 {
 	"$schema" : "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
-  "name": "MenuLibrary",
-  "version": "0.1.0",
-  "description": "",
-  "keywords": "menu, arduino, cpp",
-  "repository":
-  {
-    "type": "git",
-    "url": "https://github.com/thirstyice/MenuLibrary"
-  },
-  "authors":
-  [
-    {
-      "name": "Tauran",
-      "email": "tauranwood@gmail.com",
+	"name": "MenuLibrary",
+	"version": "0.1.0",
+	"description": "",
+	"keywords": "menu, arduino, cpp",
+	"repository":
+	{
+		"type": "git",
+		"url": "https://github.com/thirstyice/MenuLibrary"
+	},
+	"authors":
+	[
+		{
+			"name": "Tauran",
+			"email": "tauranwood@gmail.com",
 			"maintainer": true
-    }
-  ],
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-  },
-  "frameworks": "arduino",
-  "platforms": "*"
+		}
+	],
+	"license": "GPL-3.0-or-later",
+	"dependencies": {
+	},
+	"frameworks": "arduino",
+	"platforms": "*"
 }
