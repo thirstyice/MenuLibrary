@@ -42,14 +42,7 @@ public:
 class MenuValue : public MenuOp {
 public:
 	template <typename... args>
-	MenuValue(String _title, args...variables) {
-		title = _title;
-		size = sizeof...(variables);
-		MenuValuesOp* variableArray[size] = {variables...}; 
-		size_t memsize = size * sizeof(MenuValuesOp*);
-		values = (MenuValuesOp**)malloc(memsize);
-		memcpy(values, variableArray, memsize);
-	}
+	~MenuValue();
 	String getTitle() const;
 	void setSeparator(char _separator) {separator = _separator;}
 

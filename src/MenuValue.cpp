@@ -46,3 +46,10 @@ String MenuValue::getTitle() const {
 	valuesString.remove(valuesString.length()-2);
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
+
+MenuValue::~MenuValue() {
+	for (uint8_t i=0; i<size; i++) {
+		delete values[i];
+	}
+	free(values);
+}
