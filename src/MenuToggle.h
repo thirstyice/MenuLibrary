@@ -2,7 +2,7 @@
 
 #include "MenuOp.h"
 
-class MenuToggle : public MenuOp {
+class MenuToggle final : public MenuOp {
 public:
 	MenuToggle() {};
 	MenuToggle(String _title, bool* _variable, String _trueLabel = "true", String _falseLabel = "false");
@@ -11,7 +11,7 @@ public:
 	void setFalseLabel(String _falseLabel);
 	String getTitle() const;
 private:
-	virtual MenuEvent::Event handleClick();
+	MenuEvent::Event handleClick();
 	bool* variable = nullptr;
 	String trueLabel = "true";
 	String falseLabel = "false";

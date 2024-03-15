@@ -56,10 +56,10 @@ private:
 	char separator = ' ';
 	uint8_t selected = 0;
 	uint8_t size = 0;
-	virtual MenuEvent::Event handleClick();
-	virtual MenuEvent::Event handleBack();
-	virtual MenuEvent::Event handleScrollNext();
-	virtual MenuEvent::Event handleScrollPrevious();
+	MenuEvent::Event handleClick();
+	MenuEvent::Event handleBack();
+	MenuEvent::Event handleScrollNext();
+	MenuEvent::Event handleScrollPrevious();
 	MenuValuesOp** values;
 };
 

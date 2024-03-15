@@ -2,7 +2,7 @@
 
 #include "MenuOp.h"
 
-class MenuBackClass : public MenuOp {
+class MenuBackClass final : public MenuOp {
 public:
 	MenuBackClass(String _title = "Back") {title = _title;}
 protected:

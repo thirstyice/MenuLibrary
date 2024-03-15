@@ -2,7 +2,7 @@
 
 #include "MenuOp.h"
 
-class MenuItem : public MenuOp {
+class MenuItem final : public MenuOp {
 public:
 	MenuItem() {}
 	MenuItem(String _title) {title = _title;}

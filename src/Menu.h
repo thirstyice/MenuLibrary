@@ -2,7 +2,7 @@
 
 #include "MenuOp.h"
 
-class Menu : public MenuOp {
+class Menu final : public MenuOp {
 public:
 	bool draw();
 	MenuEvent::Event handleEvent(MenuEvent::Event event); // returns true if entering / exiting a submenu
@@ -30,12 +30,12 @@ private:
 	uint8_t focusedLine = 0;
 	MenuOutput* outputs = nullptr;
 	uint8_t numberOfOutputs = 0;
-	virtual MenuEvent::Event handleClick();
-	virtual MenuEvent::Event handleBack();
-	virtual MenuEvent::Event handleEnter();
-	virtual MenuEvent::Event handleExit();
-	virtual MenuEvent::Event handleScrollNext();
-	virtual MenuEvent::Event handleScrollPrevious();
+	MenuEvent::Event handleClick();
+	MenuEvent::Event handleBack();
+	MenuEvent::Event handleEnter();
+	MenuEvent::Event handleExit();
+	MenuEvent::Event handleScrollNext();
+	MenuEvent::Event handleScrollPrevious();
 	uint8_t numberOfItems = 0;
 	MenuOp** submenu;
 };
