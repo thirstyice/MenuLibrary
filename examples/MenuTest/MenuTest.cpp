@@ -25,6 +25,7 @@ bool toggleTest = false;
 uint8_t valueTest = 0;
 float valueTestFloat = 1;
 uint8_t ipTest[] = {192,168,0,1};
+String stringTest = "Hello World!";
 
 
 Menu menu{ "top",
@@ -40,7 +41,8 @@ Menu menu{ "top",
 		new MenuValues<uint8_t>(&valueTest, 255),
 		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
 	),
-	new MenuIP("IP:", &ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3])
+	new MenuIP("IP:", &ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3]),
+	new MenuString("String:", &stringTest)
 };
 
 MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
@@ -66,6 +68,7 @@ void printValues(const MenuOp*) {
 
 	Serial.print("Values are now: ");
 	Serial.print(valueTest);
+	Serial.print(", ");
 	Serial.println(valueTestFloat);
 
 	Serial.print("IP is now: ");
@@ -76,6 +79,9 @@ void printValues(const MenuOp*) {
 	Serial.print(ipTest[2]);
 	Serial.print('.');
 	Serial.println(ipTest[3]);
+
+	Serial.print("String is now: ");
+	Serial.println(stringTest);
 
 	Serial.print("Free Ram:");
 	Serial.println(freeRam());

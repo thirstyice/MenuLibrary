@@ -3,6 +3,7 @@
 #include "MenuOp.h"
 
 class MenuString final : public MenuOp {
+public:
 	MenuString(String _title, String* _string);
 	void setString(String* _string);
 	String getTitle() const;
