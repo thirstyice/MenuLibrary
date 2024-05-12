@@ -22,7 +22,7 @@ public:
 	void setTitle(String _title);
 	virtual String getTitle() const;
 	virtual bool draw() {return false;}
-	virtual void setOutput(MenuOutput* outputArray, uint8_t outputCount) {}
+	virtual void setOutput(MenuOutput** outputArray, uint8_t outputCount) {}
 	virtual MenuEvent::Event handleEvent(MenuEvent::Event event);
 	virtual ~MenuOp() {}
 

@@ -10,8 +10,14 @@ bool Menu::draw() {
 	if (!active) {
 		active = true;
 	}
+	uint8_t startLine = 0;
+	uint8_t numberOfLines = numberOfItems;
+	if (numberOfOutputs == 1) {
+		startLine = outputs[0]->getFirstLineIndex(numberOfItems, focusedLine);
+		numberOfLines = outputs[0]->getHeight();
+	}
 	String output = "";
-	for (uint8_t i=0; i<numberOfItems; i++) {
+	for (uint8_t i=startLine; i<numberOfLines; i++) {
 		String item = submenu[i]->getTitle();
 		if (i == focusedLine) {
 			if (item.indexOf(MenuChar[MenuChars::StartOfSelection]) == -1) {
@@ -21,14 +27,15 @@ bool Menu::draw() {
 	
 		output += item + '\n';
 	}
+	MenuOutput::setContents(&output);
+	MenuOutput::setFocusedLine(focusedLine - startLine);
 	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i].setContents(output);
-		outputs[i].draw();
+		outputs[i]->draw();
 	}
 	return true;
 }
 
-void Menu::setOutput(MenuOutput* outputArray, uint8_t number) {
+void Menu::setOutput(MenuOutput** outputArray, uint8_t number) {
 	outputs = outputArray;
 	numberOfOutputs = number;
 	for (uint8_t i=0; i<numberOfItems; i++) {
@@ -96,9 +103,6 @@ MenuEvent::Event Menu::handleEnter() {
 }
 
 void Menu::setFocusedLine(uint8_t line) {
-	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i].setFocusedLine(line);
-	}
 	if (focusedLine == line) {
 		return;
 	}
@@ -108,8 +112,5 @@ void Menu::setFocusedLine(uint8_t line) {
 }
 
 Menu::~Menu() {
-	for (uint8_t i=0; i<numberOfItems; i++) {
-		delete submenu[i];
-	}
 	free(submenu);
 }

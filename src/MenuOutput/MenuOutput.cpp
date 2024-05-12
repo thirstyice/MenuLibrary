@@ -10,11 +10,11 @@ const char MenuChar[MenuChars::Count] = {
 	'\10',  // Back arrow
 };
 
-void MenuOutput::setContents(String contents) {
-	if (currentContents == contents || contents == "") {
+void MenuOutput::setContents(String* contents) {
+	if (currentContents == *contents || *contents == "") {
 		return;
 	}
-	currentContents = contents;
+	currentContents = *contents;
 	contentsDidChange = true;
 }
 
@@ -41,19 +41,21 @@ void MenuOutput::draw() {
 			lineStart[i] = firstIndex;
 			firstIndex = currentContents.indexOf('\n',firstIndex) +1;
 		}
-		
 		if (numLines<=height || height == 0) {
 			doOutput(0, numLines);
-			return;
-		}
-		
-		uint8_t middle = height>>1;
-		if (focusedLine < middle) {
-			doOutput(lineStart[0], height);
-		} else if (focusedLine > (numLines - middle)) {
-			doOutput(lineStart[numLines-height], height);
 		} else {
-			doOutput(lineStart[focusedLine-middle], height);
+			doOutput(lineStart[getFirstLineIndex(numLines, focusedLine)], height);
 		}
 	}
+}
+
+uint8_t MenuOutput::getFirstLineIndex(uint8_t totalLines, uint8_t focus) {
+	uint8_t middle = height>>1;
+	uint8_t firstLine = focus-middle;
+	if (focus < middle) {
+		firstLine = 0;
+	} else if (focusedLine > (totalLines-middle)) {
+		firstLine = totalLines - height;
+	}
+	return firstLine;
 }

@@ -47,7 +47,9 @@ Menu menu{ "top",
 };
 
 
-MenuOutputOlimex16x2 lcdOut(&lcd);
+MenuOutput* outputs[] = {
+	new MenuOutputOlimex16x2(&lcd)
+};
 
 
 void printValues(const MenuOp*) {
@@ -80,7 +82,7 @@ void setup() {
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
-	menu.setOutput(&lcdOut,1);
+	menu.setOutput(outputs,1);
 	MenuBack.setTitle("User back text");
 	printButton.setHandlerForEvent(printValues, MenuEvent::click);
 }
