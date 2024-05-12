@@ -12,9 +12,9 @@ void MenuString::setString(String* _string) {
 String MenuString::getTitle() const {
 	String outputString = "";
 	outputString += string->substring(0, index-1);
-	outputString += '\17';
+	outputString += MenuChar[MenuChars::StartOfSelection];
 	outputString += string->charAt(index);
-	outputString += '\16';
+	outputString += MenuChar[MenuChars::EndOfSelection];
 	outputString += string->substring(index+1);
 	return (active?title + '\t':"") + outputString;
 }
@@ -44,8 +44,8 @@ MenuEvent::Event MenuString::handleBack() {
 			return MenuEvent::exit;
 		}
 		index--;
-		return MenuEvent::noEvent;
 	}
+	return MenuEvent::noEvent;
 }
 
 MenuEvent::Event MenuString::handleScrollNext() {
@@ -54,6 +54,7 @@ MenuEvent::Event MenuString::handleScrollNext() {
 		newChar = 32;
 	}
 	string->setCharAt(index, newChar);
+	return MenuEvent::noEvent;
 }
 
 MenuEvent::Event MenuString::handleScrollPrevious() {
@@ -62,4 +63,5 @@ MenuEvent::Event MenuString::handleScrollPrevious() {
 		newChar = 126;
 	}
 	string->setCharAt(index, newChar);
+	return MenuEvent::noEvent;
 }
