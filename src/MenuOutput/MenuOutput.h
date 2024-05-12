@@ -32,7 +32,3 @@ public:
 	const uint8_t getHeight() {return height;}
 	static void setFocusedLine(uint8_t line);
 };
-
-String MenuOutput::currentContents = "Loading...";
-uint8_t MenuOutput::focusedLine = 0;
-bool MenuOutput::contentsDidChange = true;
