@@ -2,10 +2,7 @@
 
 #include <MenuLibrary.h>
 
-#include <MenuOutput/PCF8574.h>
-
-#include <AceButton.h>
-#include <RotaryEncoder.h>
+#include <MenuOutput/Olimex16x2.h>
 
 int freeRam () {
 	extern int __heap_start, *__brkval; 
@@ -13,11 +10,15 @@ int freeRam () {
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-LiquidCrystal_PCF8574 lcd(0x27);
+Olimex16x2 lcd;
 
-RotaryEncoder encoder(3,2,RotaryEncoder::LatchMode::FOUR3);
-long lastEncPosition = 0;
-ace_button::AceButton button(4);
+bool buttonState[4];
+MenuEvent::Event buttonMapping[4] = {
+	MenuEvent::back,
+	MenuEvent::scrollPrevious,
+	MenuEvent::scrollNext,
+	MenuEvent::click
+};
 
 MenuItem printButton("Print values");
 
@@ -45,22 +46,9 @@ Menu menu{ "top",
 	new MenuString("String:", &stringTest)
 };
 
-MenuOutputPCF8574 lcdOut(&lcd, 20, 4);
 
-void buttonEventHandler(ace_button::AceButton*, uint8_t eventType, uint8_t) {
-	switch (eventType) {
-		case ace_button::AceButton::kEventClicked:
-			menu.handleEvent(MenuEvent::click);
-			break;
-		case ace_button::AceButton::kEventLongPressed:
-			menu.handleEvent(MenuEvent::back);
-			break;
-	}
-}
+MenuOutputOlimex16x2 lcdOut(&lcd);
 
-void encoderInterrupt() {
-	encoder.tick();
-}
 
 void printValues(const MenuOp*) {
 	Serial.print(F("Toggle is now: "));
@@ -89,41 +77,31 @@ void printValues(const MenuOp*) {
 
 void setup() {
 	Serial.begin(9600);
-	lcd.begin(20,4);
+	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
-	lcd.home();
 	menu.setOutput(&lcdOut,1);
 	MenuBack.setTitle("User back text");
 	printButton.setHandlerForEvent(printValues, MenuEvent::click);
+}
 
-	pinMode(2, INPUT_PULLUP);
-	pinMode(3, INPUT_PULLUP);
-	pinMode(4, INPUT_PULLUP);
-
-	ace_button::ButtonConfig* buttonConfig = button.getButtonConfig();
-	buttonConfig->setEventHandler(buttonEventHandler);
-	buttonConfig->setFeature(ace_button::ButtonConfig::kFeatureClick);
-	buttonConfig->setFeature(ace_button::ButtonConfig::kFeatureLongPress);
-
-	attachInterrupt(digitalPinToInterrupt(2), encoderInterrupt, CHANGE);
-	attachInterrupt(digitalPinToInterrupt(3), encoderInterrupt, CHANGE);
+void doButtons() {
+	uint8_t buttons = lcd.readAllButtons();
+	for (uint8_t i=0; i<4; i++) {
+		uint8_t currentButton = (buttons>>i)&1;
+		if (currentButton==1) { // 1 == not pressed
+			buttonState[i] = false;
+			return;
+		} else {
+			if (buttonState[i] == false) {
+				buttonState[i] = true;
+				menu.handleEvent(buttonMapping[i]);
+			}
+		}
+	}
 }
 
 void loop() {
-	encoder.tick();
-	long encPosition = encoder.getPosition() - lastEncPosition;
-	
-	lastEncPosition = encoder.getPosition();
-	MenuEvent::Event event = MenuEvent::scrollNext;
-	if (encPosition < 0) {
-		event = MenuEvent::scrollPrevious;
-		encPosition *= -1;
-	}
-	while (encPosition > 0) {
-		menu.handleEvent(event);
-		encPosition --;
-	}
-	button.check();
+	doButtons();
 	menu.draw();
 }
