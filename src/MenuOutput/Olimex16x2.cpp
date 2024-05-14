@@ -2,7 +2,6 @@
 
 
 void MenuOutputOlimex16x2::doOutput(uint8_t startIndex, uint8_t numLines) {
-	Serial.println("Do output");
 	lcd->clear();
 	uint8_t startOfLine = startIndex;
 	for (uint8_t i=0; i<numLines; i++) {

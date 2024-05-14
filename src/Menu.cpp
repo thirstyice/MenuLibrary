@@ -41,6 +41,9 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number) {
 	for (uint8_t i=0; i<numberOfItems; i++) {
 		submenu[i]->setOutput(outputs, numberOfOutputs);
 	}
+	for (uint8_t i=0; i<numberOfOutputs; i++) {
+		outputs[i]->draw();
+	}
 }
 
 MenuEvent::Event Menu::handleEvent(MenuEvent::Event event) {

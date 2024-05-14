@@ -10,7 +10,7 @@ const char MenuChar[MenuChars::Count] = {
 	'\10',  // Back arrow
 };
 
-String MenuOutput::currentContents = "Loading...";
+String MenuOutput::currentContents = "Loading...\n";
 uint8_t MenuOutput::focusedLine = 0;
 bool MenuOutput::contentsDidChange = true;
 
