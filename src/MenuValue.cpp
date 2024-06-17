@@ -2,6 +2,7 @@
 
 
 MenuEvent::Event MenuValue::handleBack() {
+	hasChanged = true;
 	if (selected == 0) {
 		active = false;
 		return MenuEvent::exit;
@@ -11,6 +12,7 @@ MenuEvent::Event MenuValue::handleBack() {
 }
 
 MenuEvent::Event MenuValue::handleClick() {
+	hasChanged = true;
 	if (!active) {
 		active=true;
 		selected=0;
@@ -35,7 +37,8 @@ MenuEvent::Event MenuValue::handleScrollPrevious() {
 	return MenuEvent::noEvent;
 }
 
-String MenuValue::getTitle() const {
+String MenuValue::getTitle() {
+	hasChanged = false;
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = values[i]->getValueAsString();
@@ -46,6 +49,20 @@ String MenuValue::getTitle() const {
 	}
 	valuesString.remove(valuesString.length()-2);
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
+}
+
+void MenuValue::setSeparator(char _separator) {
+	separator = _separator;
+	hasChanged = true;
+}
+
+bool MenuValue::needsRedraw() {
+	for (uint8_t i=0; i<size; i++) {
+		if (values[i]->valueHasChanged() == true) {
+			hasChanged = true;
+		}
+	}
+	return hasChanged;
 }
 
 MenuValue::~MenuValue() {

@@ -20,7 +20,9 @@ MenuEvent::Event MenuToggle::handleClick() {
 	return MenuEvent::noEvent;
 }
 
-String MenuToggle::getTitle() const {
+String MenuToggle::getTitle() {
+	hasChanged = false;
+	lastValue = *variable;
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
 }
 
@@ -30,8 +32,14 @@ void MenuToggle::setVariable(bool* _variable) {
 
 void MenuToggle::setTrueLabel(String _trueLabel) {
 	trueLabel = _trueLabel;
+	if (*variable == true) {
+		hasChanged = true;
+	}
 }
 
 void MenuToggle::setFalseLabel(String _falseLabel) {
 	falseLabel = _falseLabel;
+	if (*variable == false) {
+		hasChanged = true;
+	}
 }

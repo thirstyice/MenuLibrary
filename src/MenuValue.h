@@ -8,6 +8,7 @@ public:
 	virtual String getValueAsString() =0;
 	virtual void increment() =0;
 	virtual void decrement() =0;
+	virtual bool valueHasChanged() =0;
 	virtual ~MenuValuesOp() {};
 };
 
@@ -15,6 +16,7 @@ template <typename numberType>
 class MenuValues : public MenuValuesOp {
 private:
 	numberType* variable = nullptr;
+	numberType lastValue;
 	numberType max = 1;
 	numberType min = 0;
 	numberType inc = 1;
@@ -34,6 +36,7 @@ public:
 	String getValueAsString();
 	void increment();
 	void decrement();
+	bool valueHasChanged();
 	void setVariable(numberType* _variable) {variable = _variable;}
 	void setMax(numberType _max);
 	void setMin(numberType _min);
@@ -46,8 +49,9 @@ public:
 	template <typename... args>
 	MenuValue(String _title, args...variables) {init(_title, variables...);}
 	~MenuValue();
-	String getTitle() const;
-	void setSeparator(char _separator) {separator = _separator;}
+	String getTitle();
+	bool needsRedraw();
+	void setSeparator(char _separator);
 
 protected:
 	template <typename... args>
@@ -110,6 +114,13 @@ void MenuValues<numberType>::decrement() {
 	} else {
 		*variable -= inc;
 	}
+}
+
+template <typename numberType>
+bool MenuValues<numberType>::valueHasChanged() {
+	bool changed = (*variable == lastValue);
+	lastValue = *variable;
+	return changed;
 }
 
 

@@ -48,10 +48,12 @@ void MenuOp::setHandlerForEvent(void (*handler)(const MenuOp*), MenuEvent::Event
 	handlers[event].handler = handler;
 }
 
-String MenuOp::getTitle() const {
+String MenuOp::getTitle() {
+	hasChanged = false;
 	return title;
 }
 
 void MenuOp::setTitle(String _title) {
 	title = _title;
+	hasChanged = true;
 }

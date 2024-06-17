@@ -9,7 +9,8 @@ void MenuString::setString(String* _string) {
 	string = _string;
 }
 
-String MenuString::getTitle() const {
+String MenuString::getTitle() {
+	hasChanged = false;
 	String outputString = "";
 	if (active) {
 		outputString += string->substring(0, index);
@@ -23,8 +24,16 @@ String MenuString::getTitle() const {
 	return outputString;
 }
 
+bool MenuString::needsRedraw() {
+	if (*string != lastValue) {
+		lastValue = *string;
+		hasChanged = true;
+	}
+	return hasChanged;
+}
 
 MenuEvent::Event MenuString::handleClick() {
+	hasChanged = true;
 	if (active) {
 		index++;
 		if (index>string->length()) {
@@ -41,6 +50,7 @@ MenuEvent::Event MenuString::handleClick() {
 }
 
 MenuEvent::Event MenuString::handleBack() {
+	hasChanged = true;
 	if (active) {
 		if (index==0) {
 			active = false;

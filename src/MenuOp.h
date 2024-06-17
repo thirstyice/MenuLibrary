@@ -20,7 +20,8 @@ public:
 	static void doNothing(const MenuOp*) {return;}
 	void setHandlerForEvent(void (*handler)(const MenuOp*), MenuEvent::Event event);
 	void setTitle(String _title);
-	virtual String getTitle() const;
+	virtual bool needsRedraw() const {return hasChanged;}
+	virtual String getTitle();
 	virtual bool draw() {return false;}
 	virtual void setOutput(MenuOutput** outputArray, uint8_t outputCount) {}
 	virtual MenuEvent::Event handleEvent(MenuEvent::Event event);
@@ -35,6 +36,7 @@ protected:
 	} handlers[MenuEvent::lastEvent];
 	bool hasFocus = false;
 	bool active = false;
+	bool hasChanged = true;
 private:
 	virtual MenuEvent::Event handleClick() {return MenuEvent::noEvent;}
 	virtual MenuEvent::Event handleBack() {return MenuEvent::exit;}
