@@ -16,7 +16,6 @@ bool Menu::draw() {
 		startLine = outputs[0]->getFirstLineIndex(numberOfItems, focusedLine);
 		endLine = startLine + outputs[0]->getHeight();
 	}
-	Serial.println(endLine);
 	String output = "";
 	for (uint8_t i=startLine; i<endLine; i++) {
 		String item = submenu[i]->getTitle();
