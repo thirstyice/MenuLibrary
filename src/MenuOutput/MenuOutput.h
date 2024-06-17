@@ -19,16 +19,13 @@ extern const char MenuChar[MenuChars::Count];
 
 class MenuOutput {
 protected:
-	static uint8_t focusedLine;
-	static String currentContents;
-	static bool contentsDidChange;
-	virtual void doOutput(uint8_t startIndex, uint8_t numLines) =0;
 	uint8_t width = 0;
 	uint8_t height = 0;
+	uint8_t focusedLine;
 public:
-	static void setContents(String* contents);
-	void draw();
+	virtual void drawLine(uint8_t lineNumber, String contents) =0;
+	virtual void setFocusedLine(uint8_t lineNumber) =0;
+	uint8_t startLine;
 	uint8_t getFirstLineIndex(uint8_t totalLines, uint8_t focus);
 	const uint8_t getHeight() {return height;}
-	static void setFocusedLine(uint8_t line);
 };

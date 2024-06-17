@@ -6,7 +6,7 @@ class Menu final : public MenuOp {
 public:
 	bool draw();
 	MenuEvent::Event handleEvent(MenuEvent::Event event); // returns true if entering / exiting a submenu
-	void setOutput(MenuOutput** outputArray, uint8_t outputCount);
+	void setOutput(MenuOutput** outputArray, uint8_t outputCount, bool isTopLevel = true);
 	Menu(String _title, MenuOp** itemArray, uint8_t itemCount) {
 		submenu = itemArray;
 		numberOfItems = itemCount;
@@ -23,7 +23,6 @@ public:
 	};
 	~Menu();
 
-	
 private:
 	void setFocusedLine(uint8_t line);
 	bool inSubmenu = false;

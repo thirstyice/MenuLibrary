@@ -10,39 +10,31 @@ bool Menu::draw() {
 	if (!active) {
 		active = true;
 	}
-	uint8_t startLine = 0;
-	uint8_t endLine = numberOfItems;
-	if (numberOfOutputs == 1) {
-		startLine = outputs[0]->getFirstLineIndex(numberOfItems, focusedLine);
-		endLine = startLine + outputs[0]->getHeight();
-	}
-	String output = "";
-	for (uint8_t i=startLine; i<endLine; i++) {
-		String item = submenu[i]->getTitle();
-		if (i == focusedLine) {
-			if (item.indexOf(MenuChar[MenuChars::StartOfSelection]) == -1) {
-				item = MenuChar[MenuChars::StartOfSelection] + item + MenuChar[MenuChars::EndOfSelection];
+	for (uint8_t output=0; output<numberOfOutputs; output++) {
+		uint8_t startLine = outputs[output]->getFirstLineIndex(numberOfItems, focusedLine);
+		uint8_t numLines = outputs[output]->getHeight();
+		bool didScroll = startLine != outputs[output]->startLine;
+		outputs[output]->startLine = startLine;
+		for (uint8_t line=0; line<numLines; line++) {
+			if (submenu[line+startLine]->needsRedraw() || didScroll) {
+				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
 			}
 		}
-	
-		output += item + '\n';
-	}
-	MenuOutput::setContents(&output);
-	MenuOutput::setFocusedLine(focusedLine - startLine);
-	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i]->draw();
+		outputs[output]->setFocusedLine(focusedLine - startLine);
 	}
 	return true;
 }
 
-void Menu::setOutput(MenuOutput** outputArray, uint8_t number) {
+void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) {
 	outputs = outputArray;
 	numberOfOutputs = number;
-	for (uint8_t i=0; i<numberOfItems; i++) {
-		submenu[i]->setOutput(outputs, numberOfOutputs);
+	if (isTopLevel) {
+		for (uint8_t i=0; i<numberOfOutputs; i++) {
+			outputs[i]->drawLine(0, "Loading...");
+		}
 	}
-	for (uint8_t i=0; i<numberOfOutputs; i++) {
-		outputs[i]->draw();
+	for (uint8_t i=0; i<numberOfItems; i++) {
+		submenu[i]->setOutput(outputs, numberOfOutputs, false);
 	}
 }
 
