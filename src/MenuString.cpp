@@ -11,12 +11,16 @@ void MenuString::setString(String* _string) {
 
 String MenuString::getTitle() const {
 	String outputString = "";
-	outputString += string->substring(0, index-1);
-	outputString += MenuChar[MenuChars::StartOfSelection];
-	outputString += string->charAt(index);
-	outputString += MenuChar[MenuChars::EndOfSelection];
-	outputString += string->substring(index+1);
-	return active?outputString:title + '\t' + *string;
+	if (active) {
+		outputString += string->substring(0, index);
+		outputString += MenuChar[MenuChars::StartOfSelection];
+		outputString += string->charAt(index);
+		outputString += MenuChar[MenuChars::EndOfSelection];
+		outputString += string->substring(index+1);
+	} else {
+		outputString = title + '\t' + *string;
+	}
+	return outputString;
 }
 
 
