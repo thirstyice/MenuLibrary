@@ -93,7 +93,7 @@ void doButtons() {
 		uint8_t currentButton = (buttons>>i)&1;
 		if (currentButton==1) { // 1 == not pressed
 			buttonState[i] = false;
-			return;
+			continue;
 		} else {
 			if (buttonState[i] == false) {
 				buttonState[i] = true;
