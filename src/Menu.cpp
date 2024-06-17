@@ -11,13 +11,14 @@ bool Menu::draw() {
 		active = true;
 	}
 	uint8_t startLine = 0;
-	uint8_t numberOfLines = numberOfItems;
+	uint8_t endLine = numberOfItems;
 	if (numberOfOutputs == 1) {
 		startLine = outputs[0]->getFirstLineIndex(numberOfItems, focusedLine);
-		numberOfLines = outputs[0]->getHeight();
+		endLine = startLine + outputs[0]->getHeight();
 	}
+	Serial.println(endLine);
 	String output = "";
-	for (uint8_t i=startLine; i<numberOfLines; i++) {
+	for (uint8_t i=startLine; i<endLine; i++) {
 		String item = submenu[i]->getTitle();
 		if (i == focusedLine) {
 			if (item.indexOf(MenuChar[MenuChars::StartOfSelection]) == -1) {
