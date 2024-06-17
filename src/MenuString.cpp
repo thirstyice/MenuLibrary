@@ -16,7 +16,7 @@ String MenuString::getTitle() const {
 	outputString += string->charAt(index);
 	outputString += MenuChar[MenuChars::EndOfSelection];
 	outputString += string->substring(index+1);
-	return (active?title + '\t':"") + outputString;
+	return active?outputString:title + '\t' + *string;
 }
 
 
