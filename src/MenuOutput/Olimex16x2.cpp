@@ -19,23 +19,23 @@ void MenuOutputOlimex16x2::doOutput(uint8_t startIndex, uint8_t numLines) {
 			}
 			characterIndex = line.indexOf(MenuChar[MenuChars::StartOfSelection]);
 		}
+		uint8_t alignRightFrom = line.indexOf(MenuChar[MenuChars::AlignRightFollowing]);
+		line.replace(MenuChars::AlignRightFollowing, ' ');
 		for (uint8_t character=0; character<MenuChars::Count; character++) {
-			if (character == MenuChars::AlignRightFollowing) {
-				break;
-			}
 			characterIndex = line.indexOf(MenuChar[character]);
 			while (characterIndex != -1) {
 				if (characterIndex == (int)line.length()) {
+					// That's the null at the end of the string, don't delete that!
 					break;
 				}
 				line.remove(characterIndex, 1);
 				characterIndex = line.indexOf(MenuChar[character]);
 			}
 		}
-		if (line.indexOf(MenuChar[MenuChars::AlignRightFollowing]) != -1) {
-			lcd->drawLine(i, line.substring(0,line.indexOf(MenuChar[MenuChars::AlignRightFollowing])));
+		if (width > line.length() && alignRightFrom != -1) {
+			lcd->drawLine(i, line.substring(0, alignRightFrom));
 			uint8_t position = width;
-			for (uint8_t j=(line.length()-1); j>line.lastIndexOf(MenuChar[MenuChars::AlignRightFollowing]); j--) {
+			for (uint8_t j=(line.length()-1); j>=alignRightFrom; j--) {
 				position--;
 				lcd->drawChar(line[j], i, position);
 			}
