@@ -1,12 +1,20 @@
 #include "MenuString.h"
 
-MenuString::MenuString(String _title, String* _string) {
+MenuString::MenuString(String _title, String* _string, uint8_t _maxLength) {
 	title = _title;
+	setMaxLength(_maxLength);
 	setString(_string);
 }
 
 void MenuString::setString(String* _string) {
 	string = _string;
+}
+
+void MenuString::setMaxLength(uint8_t _maxLength) {
+	maxLength = _maxLength;
+	if (string->length()>maxLength) {
+		string->remove(maxLength);
+	}
 }
 
 String MenuString::getTitle() {
@@ -36,7 +44,7 @@ MenuEvent::Event MenuString::handleClick() {
 	hasChanged = true;
 	if (active) {
 		index++;
-		if (index>string->length()) {
+		if (index>string->length() || index>maxLength) {
 			active = false;
 			index = 0;
 			return MenuEvent::exit;
