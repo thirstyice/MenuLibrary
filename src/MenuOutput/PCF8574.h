@@ -51,7 +51,7 @@ void MenuOutputPCF8574::drawLine(uint8_t lineIndex, String line) {
 		}
 		lcd->rightToLeft();
 		lcd->setCursor(width-1, lineIndex);
-		for (uint8_t j=(line.length()-1); j>alignRightFrom; j--) {
+		for (uint8_t j=(line.length()-1); j>=alignRightFrom; j--) {
 			lcd->print(line[j]);
 		}
 		lcd->leftToRight();
