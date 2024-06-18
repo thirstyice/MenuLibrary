@@ -7,7 +7,8 @@ const char MenuChar[MenuChars::Count] = {
 	'\32', // Previous character may be replaced by cursor at start of selection
 	'\t' , // Rest of line should align right
 	'\1' , // Rest of line should be emphasized (if possible)	
-	'\10',  // Back arrow
+	'\10', // Back arrow
+	'\14', // Submenu indicator arrow
 };
 
 uint8_t MenuOutput::getFirstLineIndex(uint8_t totalLines, uint8_t focus) {

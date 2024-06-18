@@ -21,6 +21,7 @@ public:
 		memcpy(submenu, itemArray, memsize);
 		title = _title;
 	};
+	String getTitle();
 	~Menu();
 
 private:

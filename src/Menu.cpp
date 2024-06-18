@@ -38,6 +38,11 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 	}
 }
 
+String Menu::getTitle() {
+	hasChanged = false;
+	return title + MenuChar[MenuChars::SubmenuArrow];
+}
+
 MenuEvent::Event Menu::handleEvent(MenuEvent::Event event) {
 	if (event == MenuEvent::noEvent || event == MenuEvent::lastEvent) {
 		return MenuEvent::noEvent;

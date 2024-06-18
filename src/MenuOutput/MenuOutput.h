@@ -12,6 +12,7 @@ public:
 		AlignRightFollowing,
 		EmphasizeFollowing,
 		BackArrow,
+		SubmenuArrow,
 		Count
 	};
 };
