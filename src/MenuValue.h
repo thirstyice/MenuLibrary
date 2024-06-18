@@ -118,7 +118,7 @@ void MenuValues<numberType>::decrement() {
 
 template <typename numberType>
 bool MenuValues<numberType>::valueHasChanged() {
-	bool changed = (*variable == lastValue);
+	bool changed = (*variable != lastValue);
 	lastValue = *variable;
 	return changed;
 }
