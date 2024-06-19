@@ -16,12 +16,13 @@ bool Menu::draw() {
 		bool didScroll = startLine != outputs[output]->startLine;
 		outputs[output]->startLine = startLine;
 		for (uint8_t line=0; line<numLines; line++) {
-			if (submenu[line+startLine]->needsRedraw() || didScroll) {
+			if (submenu[line+startLine]->needsRedraw() || didScroll || forceNextDraw) {
 				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
 			}
 		}
 		outputs[output]->setFocusedLine(focusedLine - startLine);
 	}
+	forceNextDraw = false;
 	return true;
 }
 
@@ -68,6 +69,7 @@ MenuEvent::Event Menu::handleClick() {
 		return handleEvent(submenu[focusedLine]->handleEvent(MenuEvent::click));
 	} else {
 		active = true;
+		forceNextDraw = true;
 		return MenuEvent::enter;
 	}
 }
@@ -94,6 +96,7 @@ MenuEvent::Event Menu::handleScrollPrevious() {
 MenuEvent::Event Menu::handleExit() {
 	inSubmenu = false;
 	setFocusedLine(focusedLine);
+	forceNextDraw = true;
 	return MenuEvent::noEvent;	
 }
 

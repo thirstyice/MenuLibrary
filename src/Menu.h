@@ -26,6 +26,7 @@ public:
 
 private:
 	void setFocusedLine(uint8_t line);
+	bool forceNextDraw = true;
 	bool inSubmenu = false;
 	uint8_t focusedLine = 0;
 	MenuOutput** outputs = nullptr;
