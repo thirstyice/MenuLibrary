@@ -1,9 +1,9 @@
 #include "MenuString.h"
 
 MenuString::MenuString(String _title, String* _string, uint8_t _maxLength) {
-	title = _title;
-	setMaxLength(_maxLength);
+	title = _title;	
 	setString(_string);
+	setMaxLength(_maxLength);
 }
 
 void MenuString::setString(String* _string) {
