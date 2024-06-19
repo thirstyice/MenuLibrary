@@ -9,8 +9,9 @@ void MenuOutputGenericTextBased::drawLine(uint8_t line, String contents) {
 	while (characterIndex != -1) {
 		if (characterIndex!=0 && contents.charAt(characterIndex-1)==MenuChar[MenuChars::ReplaceableWithCursor]) {
 			contents.remove(characterIndex-2,2);
+			characterIndex -= 2;
 		}
-		characterIndex = contents.indexOf(MenuChar[MenuChars::StartOfSelection]);
+		characterIndex = contents.indexOf(MenuChar[MenuChars::StartOfSelection], characterIndex+1);
 	}
 	uint8_t alignRightFrom = contents.indexOf(MenuChar[MenuChars::AlignRightFollowing]);
 	contents.replace(MenuChar[MenuChars::AlignRightFollowing], MenuChar[MenuChars::NoPrint]);
