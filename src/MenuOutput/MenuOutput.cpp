@@ -1,7 +1,7 @@
 #include "MenuOutput.h"
 
 const char MenuChar[MenuChars::Count] = {
-	'\0' , // Null, do not print
+	127 , // Do not print
 	'\17', // Start of selection
 	'\16', // End of selection
 	'\32', // Previous character may be replaced by cursor at start of selection

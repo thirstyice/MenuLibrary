@@ -5,7 +5,7 @@
 struct MenuChars{
 public:
 	enum : uint8_t {
-		Null,
+		NoPrint,
 		StartOfSelection,
 		EndOfSelection,
 		ReplaceableWithCursor,
