@@ -13,6 +13,10 @@ MenuToggle::MenuToggle(
 	title = _title;
 }
 
+bool MenuToggle::needsRedraw() {
+	return (*variable != lastValue) || hasChanged;
+}
+
 MenuEvent::Event MenuToggle::handleClick() {
 	if (variable != nullptr) {
 		*variable = !*variable;

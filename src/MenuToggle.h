@@ -6,6 +6,7 @@ class MenuToggle final : public MenuOp {
 public:
 	MenuToggle() {};
 	MenuToggle(String _title, bool* _variable, String _trueLabel = "true", String _falseLabel = "false");
+	bool needsRedraw();
 	void setVariable(bool* _variable);
 	void setTrueLabel(String _trueLabel);
 	void setFalseLabel(String _falseLabel);
