@@ -71,6 +71,9 @@ MenuEvent::Event MenuString::handleBack() {
 }
 
 MenuEvent::Event MenuString::handleScrollNext() {
+	if (index==string->length()) {
+		*string = *string + ' ';
+	}
 	char newChar = string->charAt(index) + 1;
 	if (newChar>126) {
 		newChar = 32;
@@ -80,6 +83,9 @@ MenuEvent::Event MenuString::handleScrollNext() {
 }
 
 MenuEvent::Event MenuString::handleScrollPrevious() {
+	if (index==string->length()) {
+		*string = *string + ' ';
+	}
 	char newChar = string->charAt(index) - 1;
 	if (newChar<32) {
 		newChar = 126;
