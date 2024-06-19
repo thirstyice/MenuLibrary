@@ -16,16 +16,16 @@ void MenuOutputGenericTextBased::drawLine(uint8_t line, String contents) {
 	contents.replace(MenuChar[MenuChars::AlignRightFollowing], MenuChar[MenuChars::NoPrint]);
 	contents[alignRightFrom] = MenuChar[MenuChars::AlignRightFollowing];
 	for (uint8_t character=0; character<MenuChars::Count; character++) {
-		contents.replace(MenuChar[character], controlChars[character]);
+		contents.replace(MenuChar[character], getControlChar(character));
 	}
 	for (uint8_t i=0; i<contents.length(); i++) {
 		for (uint8_t character=0; character<MenuChars::Count; character++) {
 			if (contents.charAt(i) == MenuChar[character]) {
-				contents[i] = controlChars[i];
+				contents[i] = getControlChar(character);
 				break;
 			}
 		}
-		if (contents.charAt(i) == controlChars[MenuChars::NoPrint]) {
+		if (contents.charAt(i) == getControlChar(MenuChars::NoPrint)) {
 			contents.remove(i,1);
 		}
 	}

@@ -12,7 +12,6 @@ public:
 	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor;}
 	void outputLine(uint8_t line, String* contents);
 	void setFocusedLine(uint8_t line);
-
 private:
 	char controlChars[MenuChars::Count] = {
 		1,
@@ -24,6 +23,7 @@ private:
 		127,
 		3
 	};
+	char getControlChar(uint8_t character) {if (character<=MenuChars::Count){return controlChars[character];}return -1;}
 	LiquidCrystal_PCF8574* lcd;
 };
 
@@ -34,6 +34,7 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, String* line) {
 		line->remove(line->length()-1);
 	}
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);
+	line->remove(alignRightFrom, 1);
 	lcd->setCursor(0, lineIndex);
 	lcd->print((lineIndex==focusedLine)?controlChars[MenuChars::StartOfSelection]:' ');
 	if (width > (line->length()+isSubmenu) && alignRightFrom != -1) {
@@ -47,10 +48,11 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, String* line) {
 			line += (char)126;
 		}
 		for (uint8_t j=(line->length()-1); j>=alignRightFrom; j--) {
-			lcd->print(line[j]);
+			lcd->print(line->charAt(j));
 		}
 		lcd->leftToRight();
 	} else {
+
 		lcd->print(line->substring(0,width-1));
 		for (uint8_t i=line->length(); i<width; i++) {
 			lcd->print(' ');
