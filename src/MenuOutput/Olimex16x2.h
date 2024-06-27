@@ -26,7 +26,7 @@ private:
 };
 
 void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
-	bool isSubmenu = line->endsWith(&controlChars[MenuChars::SubmenuArrow]);
+	bool isSubmenu = line->endsWith(String(controlChars[MenuChars::SubmenuArrow]));
 	if (isSubmenu) {
 		line->remove(line->length()-1);
 	}
