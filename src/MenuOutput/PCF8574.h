@@ -54,7 +54,7 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, String* line) {
 	} else {
 
 		lcd->print(line->substring(0,width-1));
-		for (uint8_t i=line->length(); i<width; i++) {
+		for (uint8_t i=line->length(); i<width-1; i++) {
 			lcd->print(' ');
 		}
 		if (isSubmenu) {
