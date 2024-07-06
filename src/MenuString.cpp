@@ -47,6 +47,7 @@ MenuEvent::Event MenuString::handleClick() {
 		if (index>string->length() || index>maxLength) {
 			active = false;
 			index = 0;
+			passEventToHandlerFunctions(MenuEvent::exit);
 			return MenuEvent::exit;
 		}
 		return MenuEvent::noEvent;
@@ -63,6 +64,7 @@ MenuEvent::Event MenuString::handleBack() {
 		if (index==0) {
 			active = false;
 			string->trim();
+			passEventToHandlerFunctions(MenuEvent::exit);
 			return MenuEvent::exit;
 		}
 		index--;
