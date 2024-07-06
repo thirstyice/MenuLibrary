@@ -34,9 +34,6 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 			outputs[i]->drawLine(0, "Loading...");
 		}
 	}
-	for (uint8_t i=0; i<numberOfItems; i++) {
-		submenu[i]->setOutput(outputs, numberOfOutputs, false);
-	}
 }
 
 String Menu::getTitle() {
@@ -101,6 +98,7 @@ MenuEvent::Event Menu::handleExit() {
 }
 
 MenuEvent::Event Menu::handleEnter() {
+	submenu[focusedLine]->setOutput(outputs, numberOfOutputs, false);
 	inSubmenu = true;
 	return MenuEvent::noEvent;
 }
@@ -116,6 +114,6 @@ void Menu::setFocusedLine(uint8_t line) {
 
 Menu::~Menu() {
 	if (submenuShouldFree) {
-	free(submenu);
+		free(submenu);
 	}
 }
