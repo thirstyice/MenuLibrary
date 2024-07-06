@@ -16,9 +16,9 @@ public:
 		title = _title;
 	}
 	template <class... args>
-	Menu(String _title, args...items) {
-		numberOfItems = sizeof...(items);
-		MenuOp* itemArray[numberOfItems] = {items...};
+	Menu(String _title, MenuOp* arg1, args...items) {
+		numberOfItems = sizeof...(items) + 1;
+		MenuOp* itemArray[numberOfItems] = {arg1, items...};
 		size_t memsize = numberOfItems * sizeof(MenuOp*);
 		submenu = (MenuOp**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
