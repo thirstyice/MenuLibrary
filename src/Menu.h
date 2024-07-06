@@ -22,6 +22,7 @@ public:
 		size_t memsize = numberOfItems * sizeof(MenuOp*);
 		submenu = (MenuOp**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
+		submenuShouldFree = true;
 		title = _title;
 	};
 	String getTitle();
@@ -29,6 +30,7 @@ public:
 
 private:
 	void setFocusedLine(uint8_t line);
+	bool submenuShouldFree = false;
 	bool forceNextDraw = true;
 	bool inSubmenu = false;
 	uint8_t focusedLine = 0;

@@ -115,5 +115,7 @@ void Menu::setFocusedLine(uint8_t line) {
 }
 
 Menu::~Menu() {
+	if (submenuShouldFree) {
 	free(submenu);
+	}
 }
