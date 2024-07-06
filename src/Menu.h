@@ -22,15 +22,18 @@ public:
 		size_t memsize = numberOfItems * sizeof(MenuOp*);
 		submenu = (MenuOp**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
-		submenuShouldFree = true;
+		needsFree = true;
 		title = _title;
 	};
 	String getTitle();
 	~Menu();
 
+protected:
+	Menu(Menu& c);
+
 private:
 	void setFocusedLine(uint8_t line);
-	bool submenuShouldFree = false;
+	bool needsFree = false;
 	bool forceNextDraw = true;
 	bool inSubmenu = false;
 	uint8_t focusedLine = 0;

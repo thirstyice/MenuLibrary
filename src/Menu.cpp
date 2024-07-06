@@ -112,8 +112,23 @@ void Menu::setFocusedLine(uint8_t line) {
 	submenu[focusedLine]->handleEvent(MenuEvent::focus);
 }
 
+Menu::Menu(Menu& c) :
+	submenu(c.submenu),
+	numberOfItems(c.numberOfItems),
+	needsFree(c.needsFree),
+	outputs(c.outputs),
+	numberOfOutputs(c.numberOfOutputs)
+{
+	title = c.title;
+	if (needsFree) {
+		size_t memsize = numberOfItems * sizeof(MenuOp*);
+		submenu = (MenuOp**)malloc(memsize);
+		memcpy(submenu, c.submenu, memsize);
+	}
+}
+
 Menu::~Menu() {
-	if (submenuShouldFree) {
+	if (needsFree) {
 		free(submenu);
 	}
 }
