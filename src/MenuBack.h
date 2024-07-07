@@ -1,14 +1,13 @@
 #pragma once
 
-#include "MenuOp.h"
+#include "MenuItem.h"
 
-class MenuBackClass final : public MenuOp {
-public:
-	MenuBackClass(String _title = "Back") {title = _title;}
+class MenuBack : public MenuItem {
 protected:
-	String getTitle() const;
+	String getTitle() override;
 private:
-	MenuEvent::Event handleClick() {return MenuEvent::back;}
+	String title = "Back";
+	MenuReaction engage() override {return MenuReaction::closeDown;}
 };
 
-extern MenuBackClass MenuBack;
+extern MenuBack MenuBackDefault;
