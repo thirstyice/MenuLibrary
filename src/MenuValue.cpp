@@ -1,48 +1,48 @@
 #include "MenuValue.h"
 
 
-MenuEvent::Event MenuValue::handleBack() {
-	hasChanged = true;
+MenuReaction MenuValue::disengage() {
+	hasChanges = true;
 	if (selected == 0) {
-		active = false;
-		return MenuEvent::exit;
+		isOpen = false;
+		return MenuReaction::closeDown;
 	}
 	selected --;
-	return MenuEvent::noEvent;
+	return MenuReaction::noReaction;
 }
 
-MenuEvent::Event MenuValue::handleClick() {
-	hasChanged = true;
-	if (!active) {
-		active=true;
+MenuReaction MenuValue::engage() {
+	hasChanges = true;
+	if (!isOpen) {
+		isOpen=true;
 		selected=0;
-		return MenuEvent::enter;
+		return MenuReaction::openUp;
 	} else {
 		selected++;
 	}
 	if (selected >= size) {
-		active = false;
-		return MenuEvent::exit;
+		isOpen = false;
+		return MenuReaction::closeDown;
 	}
-	return MenuEvent::noEvent;
+	return MenuReaction::noReaction;
 }
 
-MenuEvent::Event MenuValue::handleScrollNext() {
+MenuReaction MenuValue::increase() {
 	values[selected]->increment();
-	return MenuEvent::noEvent;
+	return MenuReaction::changeValue;
 }
 
-MenuEvent::Event MenuValue::handleScrollPrevious() {
+MenuReaction MenuValue::decrease() {
 	values[selected]->decrement();
-	return MenuEvent::noEvent;
+	return MenuReaction::changeValue;
 }
 
 String MenuValue::getTitle() {
-	hasChanged = false;
+	hasChanges = false;
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = values[i]->getValueAsString();
-		if (active == true && selected == i) {
+		if (isOpen == true && selected == i) {
 			variableString = String(MenuChar[MenuChars::StartOfSelection]) + variableString + String(MenuChar[MenuChars::EndOfSelection]);
 		}
 		valuesString += variableString + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
@@ -51,18 +51,19 @@ String MenuValue::getTitle() {
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
 
-void MenuValue::setSeparator(char _separator) {
+MenuValue* MenuValue::setSeparator(char _separator) {
 	separator = _separator;
-	hasChanged = true;
+	hasChanges = true;
+	return this;
 }
 
 bool MenuValue::needsRedraw() {
 	for (uint8_t i=0; i<size; i++) {
 		if (values[i]->valueHasChanged() == true) {
-			hasChanged = true;
+			hasChanges = true;
 		}
 	}
-	return hasChanged;
+	return hasChanges;
 }
 
 MenuValue::~MenuValue() {
