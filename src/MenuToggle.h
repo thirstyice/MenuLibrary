@@ -1,18 +1,16 @@
 #pragma once
 
-#include "MenuOp.h"
+#include "MenuBase.h"
 
-class MenuToggle final : public MenuOp {
+class MenuToggle : public MenuBase {
 public:
-	MenuToggle() {};
-	MenuToggle(String _title, bool* _variable, String _trueLabel = "true", String _falseLabel = "false");
-	bool needsRedraw();
-	void setVariable(bool* _variable);
-	void setTrueLabel(String _trueLabel);
-	void setFalseLabel(String _falseLabel);
-	String getTitle();
+	bool needsRedraw() override;
+	MenuToggle* setVar(bool* _variable);
+	MenuToggle* setTrue(String label);
+	MenuToggle* setFalse(String label);
+	String getTitle() override;
 private:
-	MenuEvent::Event handleClick();
+	MenuReaction engage() override;
 	bool* variable = nullptr;
 	bool lastValue;
 	String trueLabel = "true";
