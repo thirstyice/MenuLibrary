@@ -10,7 +10,7 @@ enum struct MenuAction : MenuEvent {
 	disengage,
 	increase,
 	decrease,
-	getFocus,
+	gainFocus,
 	loseFocus,
 	lastAction
 };
@@ -39,24 +39,23 @@ public:
 	MenuItem* setTitle(String _title);
 	virtual String getTitle();
 	virtual bool doDraw() {return false;}
-	virtual MenuItem* setOutput(MenuOutput** outputArray, uint8_t outputCount) {}
 	virtual MenuReaction doAction(MenuAction action);
 	virtual ~MenuItem() {}
 
+	virtual void setOutput(MenuOutput** outputArray, uint8_t outputCount, bool isTopLevel) {};
+	virtual bool needsRedraw() {return hasChanges;}
+
 private:
 	static const uint8_t numEvents = (uint8_t)MenuReaction::lastReaction;
-	MenuReaction distributeAction(MenuAction action);
-	virtual MenuItem* setOutput(MenuOutput** outputArray, uint8_t outputCount, bool isTopLevel) {};
 	virtual MenuReaction engage() {return MenuReaction::noReaction;}
 	virtual MenuReaction disengage() {return MenuReaction::closeDown;}
 	virtual MenuReaction increase() {return MenuReaction::noReaction;}
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
-	virtual void handleReaction(MenuReaction) {}
 
 protected:
-	virtual bool needsRedraw() {return hasChanges;}
+	MenuReaction distributeAction(MenuAction action);
 	String title = "-";
 	MenuResponder responders[numEvents];
 	//bool hasFocus = false;
