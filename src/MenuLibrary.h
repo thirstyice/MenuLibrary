@@ -1,3 +1,10 @@
 #pragma once
 
-#include <MenuIncludes.h>
+#include "MenuOp.h"
+#include "Menu.h"
+#include "MenuItem.h"
+#include "MenuToggle.h"
+#include "MenuValue.h"
+#include "MenuBack.h"
+#include "MenuIP.h"
+#include "MenuString.h"
