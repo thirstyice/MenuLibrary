@@ -1,0 +1,59 @@
+#pragma once
+
+#include "MenuOutput/MenuOutput.h"
+
+typedef uint8_t MenuEvent;
+
+enum struct MenuAction : MenuEvent {
+	noAction = 0,
+	engage,
+	disengage,
+	increase,
+	decrease,
+	getFocus,
+	loseFocus,
+	lastAction
+};
+enum struct MenuReaction : MenuEvent {
+	noReaction = (MenuEvent)MenuAction::lastAction + 1,
+	openUp,
+	closeDown,
+	changeValue,
+	lastReaction
+};
+
+struct MenuResponder {
+	static void doNothing(const MenuBase*) {return;}
+	void (*responder)(const MenuBase*) = doNothing;
+};
+
+class MenuBase {
+public:
+	MenuBase* setResponder(void (*responder)(const MenuBase*), MenuEvent event);
+	MenuBase* setTitle(String _title);
+	virtual String getTitle();
+	virtual bool doDraw() {return false;}
+	virtual MenuBase* setOutput(MenuOutput** outputArray, uint8_t outputCount) {}
+	virtual MenuReaction doAction(MenuAction action);
+	virtual ~MenuBase() {}
+
+private:
+	static const uint8_t numEvents = (uint8_t)MenuReaction::lastReaction;
+	MenuReaction distributeAction(MenuAction action);
+	virtual MenuBase* setOutput(MenuOutput** outputArray, uint8_t outputCount, bool isTopLevel) {};
+	virtual MenuReaction engage() {return MenuReaction::noReaction;}
+	virtual MenuReaction disengage() {return MenuReaction::closeDown;}
+	virtual MenuReaction increase() {return MenuReaction::noReaction;}
+	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
+	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
+	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
+	virtual void handleReaction(MenuReaction) {}
+
+protected:
+	virtual bool needsRedraw() {return hasChanges;}
+	String title = "-";
+	MenuResponder responders[numEvents];
+	//bool hasFocus = false;
+	bool isOpen = false;
+	bool hasChanges = true;
+};
