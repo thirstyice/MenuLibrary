@@ -1,6 +1,6 @@
-#include "MenuBase.h"
+#include "MenuItem.h"
 
-MenuReaction MenuBase::distributeAction(MenuAction action) {
+MenuReaction MenuItem::distributeAction(MenuAction action) {
 	MenuReaction returnValue = MenuReaction::noReaction;
 	switch (action) {
 	case MenuAction::engage:
@@ -27,21 +27,21 @@ MenuReaction MenuBase::distributeAction(MenuAction action) {
 	}
 	return returnValue;
 }
-MenuReaction MenuBase::doAction(MenuAction action) {
+MenuReaction MenuItem::doAction(MenuAction action) {
 	return distributeAction(action); 
 }
 
-MenuBase* MenuBase::setResponder(void (*responder)(const MenuBase*), MenuEvent event) {
+MenuItem* MenuItem::setResponder(void (*responder)(const MenuItem*), MenuEvent event) {
 	responders[event].responder = responder;
 	return this;
 }
 
-String MenuBase::getTitle() {
+String MenuItem::getTitle() {
 	hasChanges = false;
 	return title;
 }
 
-MenuBase* MenuBase::setTitle(String _title) {
+MenuItem* MenuItem::setTitle(String _title) {
 	title = _title;
 	hasChanges = true;
 }

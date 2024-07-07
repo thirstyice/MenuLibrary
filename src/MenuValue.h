@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MenuBase.h"
+#include "MenuItem.h"
 
 
 class MenuValuesOp {
@@ -43,7 +43,7 @@ public:
 	MenuValues* setIncrement(numberType _inc) {inc = _inc; return this;}
 };
 
-class MenuValue : public MenuBase {
+class MenuValue : public MenuItem {
 public:
 	MenuValue() {};
 	template <typename... args>

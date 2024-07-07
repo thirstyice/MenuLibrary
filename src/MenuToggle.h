@@ -1,8 +1,8 @@
 #pragma once
 
-#include "MenuBase.h"
+#include "MenuItem.h"
 
-class MenuToggle : public MenuBase {
+class MenuToggle : public MenuItem {
 public:
 	bool needsRedraw() override;
 	MenuToggle* setVar(bool* _variable);
