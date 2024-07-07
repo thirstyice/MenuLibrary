@@ -1,16 +1,10 @@
 #include "MenuString.h"
 
-MenuString::MenuString(String _title, String* _string, uint8_t _maxLength) {
-	title = _title;	
-	setString(_string);
-	setMaxLength(_maxLength);
-}
-
-void MenuString::setString(String* _string) {
+MenuString* MenuString::setString(String* _string) {
 	string = _string;
 }
 
-void MenuString::setMaxLength(uint8_t _maxLength) {
+MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
 	maxLength = _maxLength;
 	if (string->length()>maxLength) {
 		string->remove(maxLength);
@@ -18,16 +12,16 @@ void MenuString::setMaxLength(uint8_t _maxLength) {
 }
 
 String MenuString::getTitle() {
-	hasChanged = false;
+	hasChanges = false;
 	String outputString = "";
-	if (active) {
+	if (isOpen) {
 		outputString += string->substring(0, index);
 		outputString += MenuChar[MenuChars::StartOfSelection];
 		outputString += string->charAt(index);
 		outputString += MenuChar[MenuChars::EndOfSelection];
 		outputString += string->substring(index+1);
 	} else {
-		outputString = title + '\t' + *string;
+		outputString = title + MenuChar[MenuChars::AlignRightFollowing] + *string;
 	}
 	return outputString;
 }
@@ -35,44 +29,42 @@ String MenuString::getTitle() {
 bool MenuString::needsRedraw() {
 	if (*string != lastValue) {
 		lastValue = *string;
-		hasChanged = true;
+		hasChanges = true;
 	}
-	return hasChanged;
+	return hasChanges;
 }
 
-MenuEvent::Event MenuString::handleClick() {
-	hasChanged = true;
-	if (active) {
+MenuReaction MenuString::engage() {
+	hasChanges = true;
+	if (isOpen) {
 		index++;
 		if (index>string->length() || index>maxLength) {
-			active = false;
+			isOpen = false;
 			index = 0;
-			passEventToHandlerFunctions(MenuEvent::exit);
-			return MenuEvent::exit;
+			return MenuReaction::closeDown;
 		}
-		return MenuEvent::noEvent;
+		return MenuReaction::noReaction;
 	} else {
 		index = 0;
-		active = true;
-		return MenuEvent::enter;
+		isOpen = true;
+		return MenuReaction::openUp;
 	}
 }
 
-MenuEvent::Event MenuString::handleBack() {
-	hasChanged = true;
-	if (active) {
+MenuReaction MenuString::disengage() {
+	hasChanges = true;
+	if (isOpen) {
 		if (index==0) {
-			active = false;
+			isOpen = false;
 			string->trim();
-			passEventToHandlerFunctions(MenuEvent::exit);
-			return MenuEvent::exit;
+			return MenuReaction::closeDown;
 		}
 		index--;
 	}
-	return MenuEvent::noEvent;
+	return MenuReaction::noReaction;
 }
 
-MenuEvent::Event MenuString::handleScrollNext() {
+MenuReaction MenuString::increase() {
 	if (index==string->length()) {
 		*string = *string + ' ';
 	}
@@ -81,10 +73,10 @@ MenuEvent::Event MenuString::handleScrollNext() {
 		newChar = 32;
 	}
 	string->setCharAt(index, newChar);
-	return MenuEvent::noEvent;
+	return MenuReaction::changeValue;
 }
 
-MenuEvent::Event MenuString::handleScrollPrevious() {
+MenuReaction MenuString::decrease() {
 	if (index==string->length()) {
 		*string = *string + ' ';
 	}
@@ -93,5 +85,5 @@ MenuEvent::Event MenuString::handleScrollPrevious() {
 		newChar = 126;
 	}
 	string->setCharAt(index, newChar);
-	return MenuEvent::noEvent;
+	return MenuReaction::changeValue;
 }
