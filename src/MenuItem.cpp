@@ -1,31 +1,33 @@
 #include "MenuItem.h"
 
 MenuReaction MenuItem::distributeAction(MenuAction action) {
-	MenuReaction returnValue = MenuReaction::noReaction;
+	MenuReaction reaction = MenuReaction::noReaction;
 	switch (action) {
 	case MenuAction::engage:
-		returnValue = engage();
+		reaction = engage();
 		break;
 	case MenuAction::disengage:
-		returnValue = disengage();
+		reaction = disengage();
 		break;
 	case MenuAction::increase:
-		returnValue = increase();
+		reaction = increase();
 		break;
 	case MenuAction::decrease:
-		returnValue = decrease();
+		reaction = decrease();
 		break;
 	case MenuAction::getFocus:
-		returnValue = getFocus();
+		reaction = getFocus();
 		break;
 	case MenuAction::loseFocus:
-		returnValue = loseFocus();
+		reaction = loseFocus();
 		break;
 	default:
 		return MenuReaction::noReaction;
 		break;
 	}
-	return returnValue;
+	responders[(MenuEvent)action].responder(this);
+	responders[(MenuEvent)reaction].responder(this);
+	return reaction;
 }
 MenuReaction MenuItem::doAction(MenuAction action) {
 	return distributeAction(action); 

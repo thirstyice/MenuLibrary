@@ -22,6 +22,12 @@ enum struct MenuReaction : MenuEvent {
 	lastReaction
 };
 
+/**
+ * @brief Defines handlers for MenuEvents
+ * Handlers are called after the item deals with the Event internally
+ * Action handlers are called first, by the item being acted upon
+ * Reactions are called second, by the object that is reacting
+ */
 struct MenuResponder {
 	static void doNothing(const MenuItem*) {return;}
 	void (*responder)(const MenuItem*) = doNothing;
