@@ -16,7 +16,7 @@ public:
 		memcpy(submenu, itemArray, memsize);
 	};
 	template <class... args>
-	Menu(MenuItem* arg1, args...items) : Menu("-", arg1, items) {}
+	Menu(MenuItem* arg1, args...items) : Menu("-", arg1, items...) {}
 	Menu(MenuItem** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;

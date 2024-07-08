@@ -3,6 +3,8 @@
 #include "MenuItem.h"
 
 class MenuBack : public MenuItem {
+public:
+	MenuBack() : MenuItem("Back") {}
 protected:
 	String getTitle() override;
 private:
