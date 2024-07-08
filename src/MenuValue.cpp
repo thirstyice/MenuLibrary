@@ -48,7 +48,7 @@ String MenuValue::getTitle() {
 		valuesString += variableString + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
 	}
 	valuesString.remove(valuesString.length()-2);
-	return (title + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
+	return ((isOpen?"":title) + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
 
 MenuValue* MenuValue::setSeparator(char _separator) {
