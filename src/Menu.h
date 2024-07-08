@@ -6,15 +6,18 @@ class Menu final : public MenuItem {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	Menu(MenuItem** itemArray, uint8_t itemCount) : numItems(itemCount), submenu(itemArray) {}
+	Menu(String _title, MenuItem** itemArray, uint8_t itemCount) : MenuItem(_title), numItems(itemCount), submenu(itemArray) {}
 	template <class... args>
-	Menu(MenuItem* arg1, args...items) : needsFree(true) {
+	Menu(String _title, MenuItem* arg1, args...items) : MenuItem(_title), needsFree(true) {
 		numItems = sizeof...(items) + 1;
 		MenuItem* itemArray[numItems] = {arg1, items...};
 		size_t memsize = numItems * sizeof(MenuItem*);
 		submenu = (MenuItem**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 	};
+	template <class... args>
+	Menu(MenuItem* arg1, args...items) : Menu("-", arg1, items) {}
+	Menu(MenuItem** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;
 	~Menu();

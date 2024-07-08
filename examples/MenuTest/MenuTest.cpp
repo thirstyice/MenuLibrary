@@ -23,7 +23,8 @@ MenuAction buttonMapping[4] = {
 bool toggleTest = false;
 uint8_t valueTest = 0;
 float valueTestFloat = 1;
-uint8_t ipTest[] = {192,168,0,1};
+uint8_t ipTest1[] = {192,168,0,1};
+uint32_t ipTest2 = 0x12345678;
 String stringTest = "Hello World!";
 
 void changeBackText(const MenuItem*) {
@@ -39,14 +40,17 @@ void printValues(const MenuItem*) {
 	Serial.print(", ");
 	Serial.println(valueTestFloat);
 
-	Serial.print("IP is now: ");
-	Serial.print(ipTest[0]);
+	Serial.print("IP 1 is now: ");
+	Serial.print(ipTest1[0]);
 	Serial.print('.');
-	Serial.print(ipTest[1]);
+	Serial.print(ipTest1[1]);
 	Serial.print('.');
-	Serial.print(ipTest[2]);
+	Serial.print(ipTest1[2]);
 	Serial.print('.');
-	Serial.println(ipTest[3]);
+	Serial.println(ipTest1[3]);
+
+	Serial.print("IP 2 is now: ");
+	Serial.println(ipTest2);
 
 	Serial.print("String is now: ");
 	Serial.println(stringTest);
@@ -57,21 +61,22 @@ void printValues(const MenuItem*) {
 
 
 Menu menu{
-	(new MenuItem)->setTitle("MenuLibrary Test"),
-	(new MenuItem)->setResponder(printValues, MenuAction::engage)->setTitle("Print values"),
-	(new Menu(
+	new MenuItem("MenuLibrary Test"),
+	(new MenuItem("Print values"))->setResponder(printValues, MenuAction::engage),
+	new Menu("Submenu",
 		&MenuBackDefault,
-		(new MenuItem)->setTitle("Change Back Text")->setResponder(changeBackText, MenuAction::engage),
-		(new MenuItem)->setTitle("Hello"),
-		(new MenuItem)->setTitle("World")
-	))->setTitle("Submenu"),
-	(new MenuToggle)->setVar(&toggleTest)->setTitle("Toggle:"),
-	(new MenuValue(
+		(new MenuItem("Change Back Text"))->setResponder(changeBackText, MenuAction::engage),
+		new MenuItem("Hello"),
+		new MenuItem("World")
+	),
+	new MenuToggle("Toggle:", &toggleTest),
+	new MenuValue("Value",
 		new MenuValues<uint8_t>(&valueTest, 255),
 		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
-	))->setTitle("Value:"),
-	(new MenuIP(&ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3]))->setTitle("IP:"),
-	(new MenuString)->setString(&stringTest)->setTitle("String:")
+	),
+	new MenuIP("IP (8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
+	new MenuIP("IP (32):", &ipTest2),
+	new MenuString("String:", &stringTest)
 };
 
 

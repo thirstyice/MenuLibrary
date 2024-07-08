@@ -46,7 +46,7 @@ public:
 class MenuValue : public MenuItem {
 public:
 	template <typename... args>
-	MenuValue(args...variables);
+	MenuValue(String _title, args...variables);
 	~MenuValue();
 	String getTitle();
 	bool needsRedraw();
@@ -64,9 +64,9 @@ private:
 };
 
 template <typename... args>
-MenuValue::MenuValue(args...variables) {
+MenuValue::MenuValue(String _title, args...variables) : MenuItem(_title) {
 	size = sizeof...(variables);
-	MenuValuesOp* variableArray[size] = {variables...}; 
+	MenuValuesOp* variableArray[size] = {variables...};
 	size_t memsize = size * sizeof(MenuValuesOp*);
 	values = (MenuValuesOp**)malloc(memsize);
 	memcpy(values, variableArray, memsize);
@@ -117,7 +117,3 @@ bool MenuValues<numberType>::valueHasChanged() {
 	lastValue = *variable;
 	return changed;
 }
-
-
-
-

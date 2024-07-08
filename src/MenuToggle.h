@@ -4,6 +4,7 @@
 
 class MenuToggle : public MenuItem {
 public:
+	MenuToggle(String _title, bool* var) : MenuItem(_title), variable(var) {}
 	bool needsRedraw() override;
 	MenuToggle* setVar(bool* _variable);
 	MenuToggle* setTrue(String label);

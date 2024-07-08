@@ -24,6 +24,7 @@ enum struct MenuReaction : MenuEvent {
 
 class MenuItem {
 public:
+	MenuItem(String _title) : title(_title) {};
 	MenuItem* setResponder(void (*responder)(const MenuItem*), MenuAction action);
 	MenuItem* setResponder(void (*responder)(const MenuItem*), MenuReaction reaction);
 	MenuItem* setTitle(String _title);
