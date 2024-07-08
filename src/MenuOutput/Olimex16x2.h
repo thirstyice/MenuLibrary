@@ -5,9 +5,9 @@
 
 class MenuOutputOlimex16x2 : public MenuOutputGenericTextBased {
 public:
-	MenuOutputOlimex16x2(Olimex16x2* _lcd) : 
+	MenuOutputOlimex16x2(Olimex16x2* _lcd) :
 		lcd(_lcd) {width = 16; height = 2;}
-	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor};
+	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor;};
 	void outputLine(uint8_t line, String* contents);
 	void setFocusedLine(uint8_t line);
 private:
@@ -30,10 +30,10 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
 	if (isSubmenu) {
 		line->remove(line->length()-1);
 	}
-	*line = ((lineIndex==focusedLine)?controlChars[MenuChars::StartOfSelection]:" ") + *line;
+	*line = ((lineIndex==focusedLine)?String(controlChars[MenuChars::StartOfSelection]):" ") + *line;
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);
 	line->remove(alignRightFrom, 1);
-	if (width > (line.length()+isSubmenu) && alignRightFrom != -1) {
+	if (width > (line->length()+isSubmenu) && alignRightFrom != -1) {
 		lcd->drawLine(lineIndex, line->substring(0, alignRightFrom-1));
 		uint8_t position = width;
 		if (isSubmenu) {
@@ -44,7 +44,7 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
 			lcd->drawChar(line->charAt(j), lineIndex, position);
 		}
 	} else {
-		lcd->drawLine(lineIndex, line);
+		lcd->drawLine(lineIndex, *line);
 		if (isSubmenu) {
 			lcd->drawChar((char)126, lineIndex, width-1);
 		}
@@ -56,6 +56,6 @@ void MenuOutputOlimex16x2::setFocusedLine(uint8_t line) {
 		return;
 	}
 	lcd->drawChar(' ', focusedLine, 0);
-	lcd->drawChar(textCursor, line, 0);
+	lcd->drawChar(controlChars[MenuChars::StartOfSelection], line, 0);
 	focusedLine = line;
 }
