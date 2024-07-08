@@ -45,7 +45,6 @@ public:
 
 class MenuValue : public MenuItem {
 public:
-	MenuValue() {};
 	template <typename... args>
 	MenuValue(args...variables);
 	~MenuValue();
