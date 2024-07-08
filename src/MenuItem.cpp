@@ -30,7 +30,7 @@ MenuReaction MenuItem::distributeAction(MenuAction action) {
 	return reaction;
 }
 MenuReaction MenuItem::doAction(MenuAction action) {
-	return distributeAction(action); 
+	return distributeAction(action);
 }
 
 MenuItem* MenuItem::setResponder(void (*responder)(const MenuItem*), MenuAction event) {

@@ -38,4 +38,3 @@ private:
 	uint8_t numItems = 0;
 	MenuItem** submenu = nullptr;
 };
-
