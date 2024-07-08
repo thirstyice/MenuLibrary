@@ -56,26 +56,6 @@ MenuReaction Menu::doAction(MenuAction action) {
 	return distributeAction(action);
 }
 
-// MenuReaction Menu::handleEvent(MenuEvent::Event event) {
-// 	if (event == MenuEvent::noEvent || event == MenuEvent::lastEvent) {
-// 		return MenuEvent::noEvent;
-// 	}
-// 	if (event == MenuEvent::exit || event == MenuEvent::enter) {
-// 		return passEventToHandlerFunctions(event);
-// 	}
-// 	if (inSubmenu) {
-// 		handleEvent(submenu[focusedLine]->handleEvent(event));
-// 		return MenuEvent::noEvent;
-// 	}
-// 	if (event == MenuEvent::focus) {
-// 		hasFocus = true;
-// 	}
-// 	if (event == MenuEvent::unfocus) {
-// 		hasFocus = false;
-// 	}
-// 	return passEventToHandlerFunctions(event); 
-// }
-
 MenuReaction Menu::engage() {
 	if (isOpen == true) {
 		MenuReaction reaction = submenu[focusedLine]->doAction(MenuAction::engage);
@@ -83,6 +63,7 @@ MenuReaction Menu::engage() {
 			case MenuReaction::openUp:
 				submenu[focusedLine]->setOutput(outputs, numOutputs, false);
 				submenuIsOpen = true;
+				return MenuReaction::noReaction;
 			break;
 			case MenuReaction::closeDown:
 				return doAction(MenuAction::disengage);
@@ -127,11 +108,11 @@ void Menu::setFocusedLine(uint8_t line) {
 }
 
 Menu::Menu(Menu& c) :
-	submenu(c.submenu),
-	numItems(c.numItems),
 	needsFree(c.needsFree),
 	outputs(c.outputs),
-	numOutputs(c.numOutputs)
+	numOutputs(c.numOutputs),
+	numItems(c.numItems),
+	submenu(c.submenu)
 {
 	title = c.title;
 	if (needsFree) {

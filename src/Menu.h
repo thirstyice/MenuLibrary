@@ -6,12 +6,12 @@ class Menu final : public MenuItem {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	Menu(MenuItem** itemArray, uint8_t itemCount) : submenu(itemArray), numItems(itemCount) {}
+	Menu(MenuItem** itemArray, uint8_t itemCount) : numItems(itemCount), submenu(itemArray) {}
 	template <class... args>
 	Menu(MenuItem* arg1, args...items) : needsFree(true) {
-		numberOfItems = sizeof...(items) + 1;
-		MenuItem* itemArray[numberOfItems] = {arg1, items...};
-		size_t memsize = numberOfItems * sizeof(MenuItem*);
+		numItems = sizeof...(items) + 1;
+		MenuItem* itemArray[numItems] = {arg1, items...};
+		size_t memsize = numItems * sizeof(MenuItem*);
 		submenu = (MenuItem**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 	};

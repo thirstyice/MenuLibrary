@@ -2,6 +2,7 @@
 
 MenuString* MenuString::setString(String* _string) {
 	string = _string;
+	return this;
 }
 
 MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
@@ -9,6 +10,7 @@ MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
 	if (string->length()>maxLength) {
 		string->remove(maxLength);
 	}
+	return this;
 }
 
 String MenuString::getTitle() {

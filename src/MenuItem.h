@@ -22,20 +22,10 @@ enum struct MenuReaction : MenuEvent {
 	lastReaction
 };
 
-/**
- * @brief Defines handlers for MenuEvents
- * Handlers are called after the item deals with the Event internally
- * Action handlers are called first, by the item being acted upon
- * Reactions are called second, by the object that is reacting
- */
-struct MenuResponder {
-	static void doNothing(const MenuItem*) {return;}
-	void (*responder)(const MenuItem*) = doNothing;
-};
-
 class MenuItem {
 public:
-	MenuItem* setResponder(void (*responder)(const MenuItem*), MenuEvent event);
+	MenuItem* setResponder(void (*responder)(const MenuItem*), MenuAction action);
+	MenuItem* setResponder(void (*responder)(const MenuItem*), MenuReaction reaction);
 	MenuItem* setTitle(String _title);
 	virtual String getTitle();
 	virtual bool doDraw() {return false;}
@@ -53,6 +43,17 @@ private:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
+
+	/**
+	** @brief Defines handlers for MenuEvents
+	** Handlers are called after the item deals with the Event internally
+	** Action handlers are called first, by the item being acted upon
+	** Reactions are called second, by the object that is reacting
+	**/
+	struct MenuResponder {
+		static void doNothing(const MenuItem*) {return;}
+		void (*responder)(const MenuItem*) = doNothing;
+	};
 
 protected:
 	MenuReaction distributeAction(MenuAction action);

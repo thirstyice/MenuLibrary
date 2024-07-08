@@ -13,14 +13,12 @@ int freeRam () {
 Olimex16x2 lcd;
 
 bool buttonState[4];
-MenuEvent::Event buttonMapping[4] = {
-	MenuEvent::back,
-	MenuEvent::scrollPrevious,
-	MenuEvent::scrollNext,
-	MenuEvent::click
+MenuAction buttonMapping[4] = {
+	MenuAction::disengage,
+	MenuAction::decrease,
+	MenuAction::increase,
+	MenuAction::engage
 };
-
-MenuItem printButton("Print values");
 
 bool toggleTest = false;
 uint8_t valueTest = 0;
@@ -28,31 +26,11 @@ float valueTestFloat = 1;
 uint8_t ipTest[] = {192,168,0,1};
 String stringTest = "Hello World!";
 
+void changeBackText(const MenuItem*) {
+	MenuBackDefault.setTitle("Back (changed)");
+}
 
-Menu menu{ "top",
-	new MenuItem("MenuLibrary tester"),
-	&printButton,
-	new Menu( "Container",
-		&MenuBack,
-		new MenuItem("Hello"),
-		new MenuItem("World")
-	),
-	new MenuToggle("Toggle:", &toggleTest),
-	new MenuValue("Value:",
-		new MenuValues<uint8_t>(&valueTest, 255),
-		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
-	),
-	new MenuIP("IP:", &ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3]),
-	new MenuString("String:", &stringTest)
-};
-
-
-MenuOutput* outputs[] = {
-	new MenuOutputOlimex16x2(&lcd)
-};
-
-
-void printValues(const MenuOp*) {
+void printValues(const MenuItem*) {
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
 
@@ -77,14 +55,36 @@ void printValues(const MenuOp*) {
 	Serial.println(freeRam());
 }
 
+
+Menu menu{
+	(new MenuItem)->setTitle("MenuLibrary Test"),
+	(new MenuItem)->setResponder(printValues, MenuAction::engage)->setTitle("Print values"),
+	(new Menu(
+		&MenuBackDefault,
+		(new MenuItem)->setTitle("Change Back Text")->setResponder(changeBackText, MenuAction::engage),
+		(new MenuItem)->setTitle("Hello"),
+		(new MenuItem)->setTitle("World")
+	))->setTitle("Submenu"),
+	(new MenuToggle)->setVar(&toggleTest)->setTitle("Toggle:"),
+	(new MenuValue(
+		new MenuValues<uint8_t>(&valueTest, 255),
+		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
+	))->setTitle("Value:"),
+	(new MenuIP(&ipTest[0], &ipTest[1], &ipTest[2], &ipTest[3]))->setTitle("IP:"),
+	(new MenuString)->setString(&stringTest)->setTitle("String:")
+};
+
+
+MenuOutput* outputs[] = {
+	new MenuOutputOlimex16x2(&lcd)
+};
+
 void setup() {
 	Serial.begin(9600);
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
 	menu.setOutput(outputs,1);
-	MenuBack.setTitle("User back text");
-	printButton.setHandlerForEvent(printValues, MenuEvent::click);
 }
 
 void doButtons() {
@@ -97,7 +97,7 @@ void doButtons() {
 		} else {
 			if (buttonState[i] == false) {
 				buttonState[i] = true;
-				menu.handleEvent(buttonMapping[i]);
+				menu.doAction(buttonMapping[i]);
 			}
 		}
 	}
@@ -105,5 +105,5 @@ void doButtons() {
 
 void loop() {
 	doButtons();
-	menu.draw();
+	menu.doDraw();
 }
