@@ -27,11 +27,13 @@ uint8_t ipTest1[] = {192,168,0,1};
 uint32_t ipTest2 = 0x12345678;
 String stringTest = "Hello World!";
 
-void changeBackText(const MenuItem*) {
+void changeBackText(MenuItem*) {
 	MenuBackDefault.setTitle("Back (changed)");
 }
 
-void printValues(const MenuItem*) {
+void printValues(MenuItem* caller) {
+	Serial.print("Called by: ");
+	Serial.println(caller->getTitle());
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
 
@@ -67,7 +69,8 @@ Menu menu{
 		&MenuBackDefault,
 		(new MenuItem("Change Back Text"))->setResponder(changeBackText, MenuAction::engage),
 		new MenuItem("Hello"),
-		new MenuItem("World")
+		new MenuItem("World"),
+		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
 	),
 	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
 	new MenuValue("Value",

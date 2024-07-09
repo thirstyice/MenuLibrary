@@ -8,7 +8,6 @@ public:
 protected:
 	String getTitle() override;
 private:
-	String title = "Back";
 	MenuReaction engage() override {return MenuReaction::closeDown;}
 };
 

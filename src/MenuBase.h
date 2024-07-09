@@ -52,8 +52,8 @@ template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
 	MenuBase(String _title) : MenuCore(_title) {};
-	MenuDerived* setResponder(void (*responder)(const MenuDerived*), MenuAction action);
-	MenuDerived* setResponder(void (*responder)(const MenuDerived*), MenuReaction reaction);
+	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
+	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
 	MenuDerived* setTitle(String _title);
 	virtual MenuReaction doAction(MenuAction action) override;
 
@@ -67,8 +67,8 @@ private:
 	** Reactions are called second, by the object that is reacting
 	**/
 	struct MenuResponder {
-		static void doNothing(const MenuDerived*) {return;}
-		void (*responder)(const MenuDerived*) = doNothing;
+		static void doNothing(MenuDerived*) {return;}
+		void (*responder)(MenuDerived*) = doNothing;
 	};
 	MenuResponder responders[numEvents];
 };
@@ -78,12 +78,12 @@ MenuReaction MenuBase<MenuDerived>::doAction(MenuAction action) {
 	return distributeAction(action);
 }
 template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(const MenuDerived*), MenuAction event) {
+MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuAction event) {
 	responders[(MenuEvent)event].responder = responder;
 	return (MenuDerived*)this;
 }
 template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(const MenuDerived*), MenuReaction event) {
+MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuReaction event) {
 	responders[(MenuEvent)event].responder = responder;
 	return (MenuDerived*)this;
 }
@@ -120,7 +120,7 @@ MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction action) {
 		return MenuReaction::noReaction;
 		break;
 	}
-	responders[(MenuEvent)action].responder(this);
-	responders[(MenuEvent)reaction].responder(this);
+	responders[(MenuEvent)action].responder((MenuDerived*)this);
+	responders[(MenuEvent)reaction].responder((MenuDerived*)this);
 	return reaction;
 }
