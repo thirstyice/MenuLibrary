@@ -1,21 +1,21 @@
 #pragma once
 
-#include "MenuOp.h"
+#include "MenuItem.h"
 
-class MenuString final: public MenuOp {
+class MenuString: public MenuItem {
 public:
-	MenuString(String _title, String* _string, uint8_t _maxLength = 255);
-	void setString(String* _string);
-	void setMaxLength(uint8_t _maxLength);
-	String getTitle();
-	bool needsRedraw();
+	MenuString(String _title, String* str) : MenuItem(_title), string(str) {}
+	MenuString* setString(String* str);
+	MenuString* setMaxLength(uint8_t len);
+	String getTitle() override;
+	bool needsRedraw() override;
 private:
 	String* string = nullptr;
 	uint8_t maxLength;
 	String lastValue;
 	uint8_t index = 0;
-	MenuEvent::Event handleClick();
-	MenuEvent::Event handleBack();
-	MenuEvent::Event handleScrollNext();
-	MenuEvent::Event handleScrollPrevious();
+	MenuReaction engage() override;
+	MenuReaction disengage() override;
+	MenuReaction increase() override;
+	MenuReaction decrease() override;
 };

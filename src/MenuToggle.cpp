@@ -1,49 +1,39 @@
 #include "MenuToggle.h"
 
-MenuToggle::MenuToggle(
-	String _title,
-	bool* _variable,
-	String _trueLabel,
-	String _falseLabel) 
-	: 
-	variable(_variable),
-	trueLabel(_trueLabel),
-	falseLabel(_falseLabel) 
-{
-	title = _title;
-}
-
 bool MenuToggle::needsRedraw() {
-	return (*variable != lastValue) || hasChanged;
+	return (*variable != lastValue) || hasChanges;
 }
 
-MenuEvent::Event MenuToggle::handleClick() {
+MenuReaction MenuToggle::engage() {
 	if (variable != nullptr) {
 		*variable = !*variable;
 	}
-	return MenuEvent::noEvent;
+	return MenuReaction::noReaction;
 }
 
 String MenuToggle::getTitle() {
-	hasChanged = false;
+	hasChanges = false;
 	lastValue = *variable;
 	return (title + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
 }
 
-void MenuToggle::setVariable(bool* _variable) {
-	variable = _variable;
+MenuToggle* MenuToggle::setVar(bool* var) {
+	variable = var;
+	return this;
 }
 
-void MenuToggle::setTrueLabel(String _trueLabel) {
-	trueLabel = _trueLabel;
+MenuToggle* MenuToggle::setTrue(String label) {
+	trueLabel = label;
 	if (*variable == true) {
-		hasChanged = true;
+		hasChanges = true;
 	}
+	return this;
 }
 
-void MenuToggle::setFalseLabel(String _falseLabel) {
-	falseLabel = _falseLabel;
+MenuToggle* MenuToggle::setFalse(String label) {
+	falseLabel = label;
 	if (*variable == false) {
-		hasChanged = true;
+		hasChanges = true;
 	}
+	return this;
 }

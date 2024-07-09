@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MenuOp.h"
+#include "MenuItem.h"
 
 
 class MenuValuesOp {
@@ -37,41 +37,36 @@ public:
 	void increment();
 	void decrement();
 	bool valueHasChanged();
-	void setVariable(numberType* _variable) {variable = _variable;}
-	void setMax(numberType _max);
-	void setMin(numberType _min);
-	void setIncrement(numberType _inc) {inc = _inc;}
+	MenuValues* setVariable(numberType* _variable) {variable = _variable; return this;}
+	MenuValues* setMax(numberType _max);
+	MenuValues* setMin(numberType _min);
+	MenuValues* setIncrement(numberType _inc) {inc = _inc; return this;}
 };
 
-class MenuValue : public MenuOp {
+class MenuValue : public MenuItem {
 public:
-	MenuValue() {};
 	template <typename... args>
-	MenuValue(String _title, args...variables) {init(_title, variables...);}
+	MenuValue(String _title, args...variables);
 	~MenuValue();
 	String getTitle();
 	bool needsRedraw();
-	void setSeparator(char _separator);
+	MenuValue* setSeparator(char _separator);
 
-protected:
-	template <typename... args>
-	void init(String _title, args...variables);
 private:
 	char separator = ' ';
 	uint8_t selected = 0;
 	uint8_t size = 0;
-	MenuEvent::Event handleClick();
-	MenuEvent::Event handleBack();
-	MenuEvent::Event handleScrollNext();
-	MenuEvent::Event handleScrollPrevious();
+	MenuReaction engage();
+	MenuReaction disengage();
+	MenuReaction increase();
+	MenuReaction decrease();
 	MenuValuesOp** values;
 };
 
 template <typename... args>
-void MenuValue::init(String _title, args...variables) {
-	title = _title;
+MenuValue::MenuValue(String _title, args...variables) : MenuItem(_title) {
 	size = sizeof...(variables);
-	MenuValuesOp* variableArray[size] = {variables...}; 
+	MenuValuesOp* variableArray[size] = {variables...};
 	size_t memsize = size * sizeof(MenuValuesOp*);
 	values = (MenuValuesOp**)malloc(memsize);
 	memcpy(values, variableArray, memsize);
@@ -83,7 +78,7 @@ String MenuValues<numberType>::getValueAsString() {
 }
 
 template <typename numberType>
-void MenuValues<numberType>::setMin(numberType _min) {
+MenuValues<numberType>* MenuValues<numberType>::setMin(numberType _min) {
 	min = _min;
 	if (*variable < _min) {
 		*variable = _min;
@@ -91,7 +86,7 @@ void MenuValues<numberType>::setMin(numberType _min) {
 }
 
 template <typename numberType>
-void MenuValues<numberType>::setMax(numberType _max) {
+MenuValues<numberType>* MenuValues<numberType>::setMax(numberType _max) {
 	max = _max;
 	if (*variable > _max) {
 		*variable = _max;
@@ -122,7 +117,3 @@ bool MenuValues<numberType>::valueHasChanged() {
 	lastValue = *variable;
 	return changed;
 }
-
-
-
-

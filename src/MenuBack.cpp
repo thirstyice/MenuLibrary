@@ -1,7 +1,7 @@
 #include "MenuBack.h"
 
-MenuBackClass MenuBack;
+MenuBack MenuBackDefault;
 
-String MenuBackClass::getTitle() const {
+String MenuBack::getTitle() {
 	return String(MenuChar[MenuChars::BackArrow]) + title;
 }
