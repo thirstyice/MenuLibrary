@@ -18,6 +18,7 @@ public:
 	template <class... args>
 	Menu(MenuCore* arg1, args...items) : Menu("-", arg1, items...) {}
 	Menu(MenuCore** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
+	Menu() : Menu((MenuCore**)nullptr, 0) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;
 	~Menu();
