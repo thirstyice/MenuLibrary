@@ -69,13 +69,13 @@ Menu menu{
 		new MenuItem("Hello"),
 		new MenuItem("World")
 	),
-	new MenuToggle("Toggle:", &toggleTest),
+	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
 	new MenuValue("Value",
 		new MenuValues<uint8_t>(&valueTest, 255),
 		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
 	),
-	new MenuIP("IP (8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
-	new MenuIP("IP (32):", &ipTest2),
+	new MenuIP("IP(8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
+	new MenuIP("IP(32):", &ipTest2),
 	new MenuString("String:", &stringTest)
 };
 

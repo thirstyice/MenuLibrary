@@ -2,7 +2,6 @@
 
 #include "MenuItem.h"
 #include "Menu.h"
-#include "MenuItem.h"
 #include "MenuToggle.h"
 #include "MenuValue.h"
 #include "MenuBack.h"

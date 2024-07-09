@@ -108,7 +108,7 @@ void Menu::setFocusedLine(uint8_t line) {
 }
 
 Menu::Menu(Menu& c) :
-	MenuItem(c.title),
+	MenuBase(c.title),
 	needsFree(c.needsFree),
 	outputs(c.outputs),
 	numOutputs(c.numOutputs),
@@ -116,8 +116,8 @@ Menu::Menu(Menu& c) :
 	submenu(c.submenu)
 {
 	if (needsFree) {
-		size_t memsize = numItems * sizeof(MenuItem*);
-		submenu = (MenuItem**)malloc(memsize);
+		size_t memsize = numItems * sizeof(MenuCore*);
+		submenu = (MenuCore**)malloc(memsize);
 		memcpy(submenu, c.submenu, memsize);
 	}
 }

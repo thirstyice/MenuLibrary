@@ -1,10 +1,10 @@
 #pragma once
 
-#include "MenuItem.h"
+#include "MenuBase.h"
 
-class MenuString: public MenuItem {
+class MenuString: public MenuBase<MenuString> {
 public:
-	MenuString(String _title, String* str) : MenuItem(_title), string(str) {}
+	MenuString(String _title, String* str) : MenuBase(_title), string(str) {}
 	MenuString* setString(String* str);
 	MenuString* setMaxLength(uint8_t len);
 	String getTitle() override;

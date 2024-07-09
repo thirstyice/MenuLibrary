@@ -1,23 +1,23 @@
 #pragma once
 
-#include "MenuItem.h"
+#include "MenuBase.h"
 
-class Menu final : public MenuItem {
+class Menu final : public MenuBase<Menu> {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	Menu(String _title, MenuItem** itemArray, uint8_t itemCount) : MenuItem(_title), numItems(itemCount), submenu(itemArray) {}
+	Menu(String _title, MenuCore** itemArray, uint8_t itemCount) : MenuBase(_title), numItems(itemCount), submenu(itemArray) {}
 	template <class... args>
-	Menu(String _title, MenuItem* arg1, args...items) : MenuItem(_title), needsFree(true) {
+	Menu(String _title, MenuCore* arg1, args...items) : MenuBase(_title), needsFree(true) {
 		numItems = sizeof...(items) + 1;
-		MenuItem* itemArray[numItems] = {arg1, items...};
-		size_t memsize = numItems * sizeof(MenuItem*);
-		submenu = (MenuItem**)malloc(memsize);
+		MenuCore* itemArray[numItems] = {arg1, items...};
+		size_t memsize = numItems * sizeof(MenuCore*);
+		submenu = (MenuCore**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 	};
 	template <class... args>
-	Menu(MenuItem* arg1, args...items) : Menu("-", arg1, items...) {}
-	Menu(MenuItem** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
+	Menu(MenuCore* arg1, args...items) : Menu("-", arg1, items...) {}
+	Menu(MenuCore** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;
 	~Menu();
@@ -39,5 +39,5 @@ private:
 	MenuReaction increase() override;
 	MenuReaction decrease() override;
 	uint8_t numItems = 0;
-	MenuItem** submenu = nullptr;
+	MenuCore** submenu = nullptr;
 };

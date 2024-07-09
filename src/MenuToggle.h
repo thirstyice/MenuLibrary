@@ -1,10 +1,11 @@
 #pragma once
 
-#include "MenuItem.h"
+#include "MenuBase.h"
 
-class MenuToggle : public MenuItem {
+class MenuToggle : public MenuBase<MenuToggle> {
 public:
-	MenuToggle(String _title, bool* var) : MenuItem(_title), variable(var) {}
+	MenuToggle(String _title) : MenuBase(_title) {}
+	MenuToggle(String _title, bool* var) : MenuBase(_title), variable(var) {}
 	bool needsRedraw() override;
 	MenuToggle* setVar(bool* _variable);
 	MenuToggle* setTrue(String label);
