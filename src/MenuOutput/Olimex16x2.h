@@ -34,7 +34,7 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);
 	line->remove(alignRightFrom, 1);
 	if (width > (line->length()+isSubmenu) && alignRightFrom != -1) {
-		lcd->drawLine(lineIndex, line->substring(0, alignRightFrom-1));
+		lcd->drawLine(lineIndex, line->substring(0, alignRightFrom));
 		uint8_t position = width;
 		if (isSubmenu) {
 			line += (char)126;
