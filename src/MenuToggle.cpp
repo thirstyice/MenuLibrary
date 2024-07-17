@@ -7,6 +7,7 @@ bool MenuToggle::needsRedraw() {
 MenuReaction MenuToggle::engage() {
 	if (variable != nullptr) {
 		*variable = !*variable;
+		return MenuReaction::changeValue;
 	}
 	return MenuReaction::noReaction;
 }

@@ -4,8 +4,9 @@
 
 class MenuToggle : public MenuBase<MenuToggle> {
 public:
-	MenuToggle(String _title) : MenuBase(_title) {}
-	MenuToggle(String _title, bool* var) : MenuBase(_title), variable(var) {}
+	MenuToggle(String _title, bool* var = nullptr, String trueStr="True", String falseStr="False") :
+		MenuBase(_title), variable(var), trueLabel(trueStr), falseLabel(falseStr)
+	{}
 	bool needsRedraw() override;
 	MenuToggle* setVar(bool* _variable);
 	MenuToggle* setTrue(String label);

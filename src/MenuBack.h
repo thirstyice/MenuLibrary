@@ -4,7 +4,8 @@
 
 class MenuBack : public MenuItem {
 public:
-	MenuBack() : MenuItem("Back") {}
+	MenuBack(String _title) : MenuItem(_title) {}
+	MenuBack() : MenuBack("Back") {}
 protected:
 	String getTitle() override;
 private:
