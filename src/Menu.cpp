@@ -15,10 +15,14 @@ bool Menu::doDraw() {
 		uint8_t numLines = outputs[output]->getHeight();
 		bool didScroll = startLine != outputs[output]->startLine;
 		outputs[output]->startLine = startLine;
-		for (uint8_t line=0; line<numLines; line++) {
+		uint8_t drawLines = (numItems < numLines)?numItems:numLines;
+		for (uint8_t line=0; line<drawLines; line++) {
 			if (submenu[line+startLine]->needsRedraw() || didScroll || forceNextDraw) {
 				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
 			}
+		}
+		for (uint8_t line=drawLines; line<numLines; line ++) {
+			outputs[output]->drawLine(line, "");
 		}
 		outputs[output]->setFocusedLine(focusedLine - startLine);
 	}

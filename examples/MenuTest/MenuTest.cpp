@@ -72,6 +72,9 @@ Menu menu{
 		new MenuItem("World"),
 		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
 	),
+	new Menu("Small submenu",
+		&MenuBackDefault
+	),
 	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
 	new MenuValue("Value",
 		new MenuValues<uint8_t>(&valueTest, 255),
