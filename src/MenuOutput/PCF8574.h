@@ -7,7 +7,7 @@
 
 class MenuOutputPCF8574 : public MenuOutputGenericTextBased  {
 public:
-	MenuOutputPCF8574(LiquidCrystal_PCF8574* _lcd, uint8_t _width, uint8_t _height) : 
+	MenuOutputPCF8574(LiquidCrystal_PCF8574* _lcd, uint8_t _width, uint8_t _height) :
 		lcd(_lcd) {width = _width; height = _height;}
 	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor;}
 	void outputLine(uint8_t line, String* contents);
