@@ -40,7 +40,8 @@ MenuReaction MenuString::engage() {
 	hasChanges = true;
 	if (isOpen) {
 		index++;
-		if (index>string->length() || index>maxLength) {
+		if (index>string->length() || (maxLength?index>maxLength:false)) {
+			string->trim();
 			isOpen = false;
 			index = 0;
 			return MenuReaction::closeDown;

@@ -11,7 +11,7 @@ public:
 	bool needsRedraw() override;
 private:
 	String* string = nullptr;
-	uint8_t maxLength;
+	uint8_t maxLength=0;
 	String lastValue;
 	uint8_t index = 0;
 	MenuReaction engage() override;
