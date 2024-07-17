@@ -21,8 +21,10 @@ bool Menu::doDraw() {
 				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
 			}
 		}
-		for (uint8_t line=drawLines; line<numLines; line ++) {
-			outputs[output]->drawLine(line, "");
+		if (didScroll || forceNextDraw) {
+			for (uint8_t line=drawLines; line<numLines; line ++) {
+				outputs[output]->drawLine(line, "");
+			}
 		}
 		outputs[output]->setFocusedLine(focusedLine - startLine);
 	}
