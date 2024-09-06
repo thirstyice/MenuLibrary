@@ -39,7 +39,7 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, String* line) {
 	lcd->print((lineIndex==focusedLine)?controlChars[MenuChars::StartOfSelection]:' ');
 	if (width > (line->length()+isSubmenu) && alignRightFrom != -1) {
 		if (alignRightFrom > 0) {
-			lcd->print(line->substring(0, alignRightFrom-1));
+			lcd->print(line->substring(0, alignRightFrom));
 		}
 		for (uint8_t i=line->length(); i<width; i++) {
 			lcd->print(' ');
