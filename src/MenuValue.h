@@ -47,6 +47,7 @@ class MenuValue : public MenuBase<MenuValue> {
 public:
 	template <typename... args>
 	MenuValue(String _title, args...variables);
+	MenuValue(const MenuValue &);
 	~MenuValue();
 	String getTitle();
 	bool needsRedraw();

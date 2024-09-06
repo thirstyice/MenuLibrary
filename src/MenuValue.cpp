@@ -66,6 +66,14 @@ bool MenuValue::needsRedraw() {
 	return hasChanges;
 }
 
+MenuValue::MenuValue(const MenuValue &og) : MenuBase(og.title) {
+	separator = og.separator;
+	size = og.size;
+	size_t memsize = size * sizeof(MenuValuesOp*);
+	values = (MenuValuesOp**)malloc(memsize);
+	memcpy(values, og.values, memsize);
+}
+
 MenuValue::~MenuValue() {
 	for (uint8_t i=0; i<size; i++) {
 		delete values[i];
