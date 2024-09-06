@@ -91,7 +91,7 @@ MenuOutput* outputs[] = {
 };
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
