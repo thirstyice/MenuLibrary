@@ -19,7 +19,8 @@ private:
 		2,
 		1,
 		127,
-		3
+		3,
+		4
 	};
 	char getControlChar(uint8_t character) {if (character<=MenuChars::Count){return controlChars[character];}return -1;}
 	Olimex16x2* lcd;

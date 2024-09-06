@@ -13,6 +13,7 @@ public:
 		EmphasizeFollowing,
 		BackArrow,
 		SubmenuArrow,
+		Break,
 		Count
 	};
 };
