@@ -26,6 +26,7 @@ void MenuOutputGenericTextBased::drawLine(uint8_t line, String contents) {
 		}
 		if (contents.charAt(i) == getControlChar(MenuChars::NoPrint)) {
 			contents.remove(i,1);
+			i--;
 		}
 	}
 	trimForOutput(&contents);
