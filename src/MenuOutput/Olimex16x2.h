@@ -27,9 +27,9 @@ private:
 };
 
 void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
-	bool isSubmenu = line->endsWith(String(controlChars[MenuChars::SubmenuArrow]));
+	bool isSubmenu = line->startsWith(String(controlChars[MenuChars::SubmenuArrow]));
 	if (isSubmenu) {
-		line->remove(line->length()-1);
+		line->remove(0,1);
 	}
 	*line = ((lineIndex==focusedLine)?String(controlChars[MenuChars::StartOfSelection]):" ") + *line;
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);

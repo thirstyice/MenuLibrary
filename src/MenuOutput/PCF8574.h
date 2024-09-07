@@ -30,9 +30,9 @@ private:
 
 
 void MenuOutputPCF8574::outputLine(uint8_t lineIndex, String* line) {
-	bool isSubmenu = line->endsWith(String(controlChars[MenuChars::SubmenuArrow]));
+	bool isSubmenu = line->startsWith(String(controlChars[MenuChars::SubmenuArrow]));
 	if (isSubmenu) {
-		line->remove(line->length()-1);
+		line->remove(0,1);
 	}
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);
 	line->remove(alignRightFrom, 1);
