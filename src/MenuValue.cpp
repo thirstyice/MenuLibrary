@@ -45,10 +45,9 @@ String MenuValue::getTitle() {
 		if (isOpen == true && selected == i) {
 			variableString = String(MenuChar[MenuChars::StartOfSelection]) + variableString + String(MenuChar[MenuChars::EndOfSelection]);
 		}
-		valuesString += MenuChar[MenuChars::Break] + variableString + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
+		valuesString += variableString + MenuChar[MenuChars::Break] + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
 	}
-	valuesString.remove(0,1); // The redundant first break
-	valuesString.remove(valuesString.length()-2); // The trailing separator
+	valuesString.remove(valuesString.length()-3); // The trailing separator
 	return (title + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
 
