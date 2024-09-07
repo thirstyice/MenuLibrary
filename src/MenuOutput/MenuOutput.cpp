@@ -9,6 +9,7 @@ const char MenuChar[MenuChars::Count] = {
 	'\1' , // Rest of line should be emphasized (if possible)
 	'\10', // Back arrow
 	'\14', // Submenu indicator arrow
+	'\n' , // Break location
 };
 
 uint8_t MenuOutput::getFirstLineIndex(uint8_t totalLines, uint8_t focus) {

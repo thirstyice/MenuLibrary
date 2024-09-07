@@ -15,7 +15,7 @@ MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
 
 String MenuString::getTitle() {
 	hasChanges = false;
-	String outputString = "";
+	String outputString = title + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing];
 	if (isOpen) {
 		outputString += string->substring(0, index);
 		outputString += MenuChar[MenuChars::StartOfSelection];
@@ -23,7 +23,7 @@ String MenuString::getTitle() {
 		outputString += MenuChar[MenuChars::EndOfSelection];
 		outputString += string->substring(index+1);
 	} else {
-		outputString = title + MenuChar[MenuChars::AlignRightFollowing] + *string;
+		outputString += *string;
 	}
 	return outputString;
 }
