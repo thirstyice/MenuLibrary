@@ -26,6 +26,7 @@ float valueTestFloat = 1;
 uint8_t ipTest1[] = {192,168,0,1};
 uint32_t ipTest2 = 0x12345678;
 String stringTest = "Hello World!";
+String shortStr = "Short!";
 
 void changeBackText(MenuItem*) {
 	MenuBackDefault.setTitle("Back (changed)");
@@ -57,6 +58,9 @@ void printValues(MenuItem* caller) {
 	Serial.print("String is now: ");
 	Serial.println(stringTest);
 
+	Serial.print("Str is now: ");
+	Serial.println(shortStr);
+
 	Serial.print("Free Ram:");
 	Serial.println(freeRam());
 }
@@ -72,7 +76,7 @@ Menu menu{
 		new MenuItem("World"),
 		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
 	),
-	new Menu("Small submenu",
+	new Menu("Small submenu, big title",
 		&MenuBackDefault
 	),
 	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
@@ -82,7 +86,8 @@ Menu menu{
 	),
 	new MenuIP("IP(8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
 	new MenuIP("IP(32):", &ipTest2),
-	new MenuString("String:", &stringTest)
+	new MenuString("String:", &stringTest),
+	new MenuString("Str:", &shortStr)
 };
 
 
