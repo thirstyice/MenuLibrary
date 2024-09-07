@@ -13,12 +13,10 @@ void MenuOutputGenericTextBased::drawLine(uint8_t line, String contents) {
 		}
 		characterIndex = contents.indexOf(MenuChar[MenuChars::StartOfSelection], characterIndex+1);
 	}
+
 	uint8_t alignRightFrom = contents.indexOf(MenuChar[MenuChars::AlignRightFollowing]);
 	contents.replace(MenuChar[MenuChars::AlignRightFollowing], MenuChar[MenuChars::NoPrint]);
 	contents[alignRightFrom] = MenuChar[MenuChars::AlignRightFollowing];
-	for (uint8_t character=0; character<MenuChars::Count; character++) {
-		contents.replace(MenuChar[character], getControlChar(character));
-	}
 	for (uint8_t i=0; i<contents.length(); i++) {
 		for (uint8_t character=0; character<MenuChars::Count; character++) {
 			if (contents.charAt(i) == MenuChar[character]) {
