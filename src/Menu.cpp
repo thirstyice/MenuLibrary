@@ -15,18 +15,32 @@ bool Menu::doDraw() {
 		uint8_t numLines = outputs[output]->getHeight();
 		bool didScroll = startLine != outputs[output]->startLine;
 		outputs[output]->startLine = startLine;
-		uint8_t drawLines = (numItems < numLines)?numItems:numLines;
-		for (uint8_t line=0; line<drawLines; line++) {
-			if (submenu[line+startLine]->needsRedraw() || didScroll || forceNextDraw) {
-				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
+		uint8_t line = 0;
+		for (uint8_t item=startLine; line<numLines; line++) {
+		// while (item<numItems) {
+			// uint8_t hiddenType = submenu.getHidden();
+			// if (hiddenType == NotHidden) {
+				// break;
+			// }
+			// if (hiddenType == NewlyHidden) {
+				// didScroll = true;
+			// }
+		// 	item++;
+		// }
+			if (item >= numItems) {
+				break;
+			}
+			if (submenu[item]->needsRedraw() || didScroll || forceNextDraw) {
+				outputs[output]->drawLine(line, submenu[item]->getTitle());
+			}
+			if (item==focusedLine) {
+				outputs[output]->setFocusedLine(line);
 			}
 		}
-		if (didScroll || forceNextDraw) {
-			for (uint8_t line=drawLines; line<numLines; line ++) {
-				outputs[output]->drawLine(line, "");
-			}
+		while (line<numLines) {
+			outputs[output]->drawLine(line, "");
+			line++;
 		}
-		outputs[output]->setFocusedLine(focusedLine - startLine);
 	}
 	forceNextDraw = false;
 	return true;
