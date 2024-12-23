@@ -28,10 +28,6 @@ uint32_t ipTest2 = 0x12345678;
 String stringTest = "Hello World!";
 String shortStr = "Short!";
 
-void changeBackText(MenuItem*) {
-	MenuBackDefault.setTitle("Back (changed)");
-}
-
 void printValues(MenuItem* caller) {
 	Serial.print("Called by: ");
 	Serial.println(caller->getTitle());
@@ -71,7 +67,7 @@ Menu menu{
 	(new MenuItem("Print values"))->setResponder(printValues, MenuAction::engage),
 	new Menu("Submenu",
 		&MenuBackDefault,
-		(new MenuItem("Change Back Text"))->setResponder(changeBackText, MenuAction::engage),
+		(new MenuItem("Change Back Text"))->setResponder([](MenuItem*){MenuBackDefault.setTitle("Back (changed)");}, MenuAction::engage),
 		new MenuItem("Hello"),
 		new MenuItem("World"),
 		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
