@@ -33,7 +33,8 @@ public:
 	virtual ~MenuCore() {}
 	virtual void setOutput(MenuOutput** outputArray, uint8_t outputCount, bool isTopLevel) {};
 	virtual bool needsRedraw() {return hasChanges;}
-
+	MenuCore* getNext() {return next;}
+	MenuCore* getPrevious() {return previous;}
 protected:
 
 	static const uint8_t numEvents = (uint8_t)MenuReaction::lastReaction;
@@ -43,9 +44,13 @@ protected:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
+	void setPrevious(MenuCore* element) {previous=element;}
+	void setNext(MenuCore* element) {next=element;}
 	String title = "-";
 	bool isOpen = false;
 	bool hasChanges = true;
+	MenuCore* previous = nullptr;
+	MenuCore* next = nullptr;
 };
 
 template <class MenuDerived>
@@ -55,6 +60,9 @@ public:
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
 	MenuDerived* setTitle(String _title);
+	MenuDerived* insertAfter(MenuCore* element);
+	MenuDerived* insertBefore(MenuCore* element);
+	MenuDerived* removeFromMenu();
 	virtual MenuReaction doAction(MenuAction action) override;
 
 protected:
@@ -91,6 +99,24 @@ template <class MenuDerived>
 MenuDerived* MenuBase<MenuDerived>::setTitle(String _title) {
 	title = _title;
 	hasChanges = true;
+	return (MenuDerived*)this;
+}
+template <class MenuDerived>
+MenuDerived* MenuBase<MenuDerived>::insertAfter(MenuCore* element) {
+	element->getNext()->setPrevious((MenuCore*)this);
+	element->setNext((MenuCore*)this);
+	return (MenuDerived*)this;
+}
+template <class MenuDerived>
+MenuDerived* MenuBase<MenuDerived>::insertBefore(MenuCore* element) {
+	element->getPrevious()->setNext((MenuCore*)this);
+	element->setPrevious((MenuCore*)this);
+	return (MenuDerived*)this;
+}
+template <class MenuDerived>
+MenuDerived* MenuBase<MenuDerived>::removeFromMenu() {
+	next->setPrevious(previous);
+	previous->setNext(next);
 	return (MenuDerived*)this;
 }
 
