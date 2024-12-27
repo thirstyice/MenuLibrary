@@ -1,8 +1,11 @@
 #include "Menu.h"
 
 bool Menu::doDraw() {
+	if (!focusedItem) {
+		return false;
+	}
 	if (submenuIsOpen) {
-		if (submenu[focusedLine]->doDraw()) {
+		if (focusedItem->doDraw()) {
 			// If the submenu draws itself, we've already done our part
 			return true;
 		}
@@ -11,22 +14,57 @@ bool Menu::doDraw() {
 		isOpen = true;
 	}
 	for (uint8_t output=0; output<numOutputs; output++) {
-		uint8_t startLine = outputs[output]->getFirstLineIndex(numItems, focusedLine);
 		uint8_t numLines = outputs[output]->getHeight();
-		bool didScroll = startLine != outputs[output]->startLine;
-		outputs[output]->startLine = startLine;
-		uint8_t drawLines = (numItems < numLines)?numItems:numLines;
-		for (uint8_t line=0; line<drawLines; line++) {
-			if (submenu[line+startLine]->needsRedraw() || didScroll || forceNextDraw) {
-				outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
+		MenuCore* nextHead = focusedItem->getNext();
+		MenuCore* prevHead = focusedItem->getPrevious();
+		uint8_t numItems = 1;
+		uint8_t focusPosition = numLines / 2;
+		bool forward = true;
+		while (numItems<numLines) {
+			if (forward) {
+				if (nextHead) {
+					nextHead = nextHead->getNext();
+					focusPosition--;
+					numItems++;
+				}
+			} else {
+				if (prevHead) {
+					prevHead = prevHead->getPrevious();
+					focusPosition++;
+					numItems++;
+				}
+			}
+			if (!(prevHead || nextHead)) {
+				break;
 			}
 		}
-		if (didScroll || forceNextDraw) {
-			for (uint8_t line=drawLines; line<numLines; line ++) {
+		for (uint8_t line = 0; line<numLines; line++) {
+			if (prevHead) {
+				if (prevHead->needsRedraw() || forceNextDraw) {
+					outputs[output]->drawLine(line, prevHead->getTitle());
+					prevHead = prevHead->getNext();
+				}
+			} else {
 				outputs[output]->drawLine(line, "");
 			}
 		}
-		outputs[output]->setFocusedLine(focusedLine - startLine);
+
+
+
+		// bool didScroll = startLine != outputs[output]->startLine;
+		// outputs[output]->startLine = startLine;
+		// uint8_t drawLines = (numItems < numLines)?numItems:numLines;
+		// for (uint8_t line=0; line<drawLines; line++) {
+		// 	if (submenu[line+startLine]->needsRedraw() || didScroll || forceNextDraw) {
+		// 		outputs[output]->drawLine(line, submenu[line+startLine]->getTitle());
+		// 	}
+		// }
+		// if (didScroll || forceNextDraw) {
+		// 	for (uint8_t line=drawLines; line<numLines; line ++) {
+		// 		outputs[output]->drawLine(line, "");
+		// 	}
+		// }
+		// outputs[output]->setFocusedLine(focusedLine - startLine);
 	}
 	forceNextDraw = false;
 	return true;
@@ -53,7 +91,7 @@ String Menu::getTitle() {
 }
 MenuReaction Menu::doAction(MenuAction action) {
 	if (submenuIsOpen) {
-		if (submenu[focusedLine]->doAction(action) == MenuReaction::closeDown) {
+		if (focusedItem->doAction(action) == MenuReaction::closeDown) {
 			submenuIsOpen = false;
 			forceNextDraw = true;
 		}
@@ -64,10 +102,10 @@ MenuReaction Menu::doAction(MenuAction action) {
 
 MenuReaction Menu::engage() {
 	if (isOpen == true) {
-		MenuReaction reaction = submenu[focusedLine]->doAction(MenuAction::engage);
+		MenuReaction reaction = focusedItem->doAction(MenuAction::engage);
 		switch (reaction) {
 			case MenuReaction::openUp:
-				submenu[focusedLine]->setOutput(outputs, numOutputs, false);
+				focusedItem->setOutput(outputs, numOutputs, false);
 				submenuIsOpen = true;
 				return MenuReaction::noReaction;
 			break;
@@ -91,45 +129,28 @@ MenuReaction Menu::disengage() {
 }
 
 MenuReaction Menu::increase() {
-	if (focusedLine < (numItems-1)) {
-		setFocusedLine(focusedLine+1);
+	if (focusedItem->getNext()) {
+		focusedItem->doAction(MenuAction::loseFocus);
+		focusedItem = focusedItem->getNext();
+		focusedItem->doAction(MenuAction::gainFocus);
 	}
 	return MenuReaction::noReaction;
 }
 
 MenuReaction Menu::decrease() {
-	if (focusedLine > 0) {
-		setFocusedLine(focusedLine-1);
+	if (focusedItem->getPrevious()) {
+		focusedItem->doAction(MenuAction::loseFocus);
+		focusedItem = focusedItem->getPrevious();
+		focusedItem->doAction(MenuAction::gainFocus);
 	}
 	return MenuReaction::noReaction;
 }
 
-void Menu::setFocusedLine(uint8_t line) {
-	if (focusedLine == line) {
+void Menu::setFocusedItem(MenuCore* item) {
+	if (item == focusedItem) {
 		return;
 	}
-	submenu[focusedLine]->doAction(MenuAction::loseFocus);
-	focusedLine = line;
-	submenu[focusedLine]->doAction(MenuAction::gainFocus);
-}
-
-Menu::Menu(Menu& c) :
-	MenuBase(c.title),
-	needsFree(c.needsFree),
-	outputs(c.outputs),
-	numOutputs(c.numOutputs),
-	numItems(c.numItems),
-	submenu(c.submenu)
-{
-	if (needsFree) {
-		size_t memsize = numItems * sizeof(MenuCore*);
-		submenu = (MenuCore**)malloc(memsize);
-		memcpy(submenu, c.submenu, memsize);
-	}
-}
-
-Menu::~Menu() {
-	if (needsFree) {
-		free(submenu);
-	}
+	focusedItem->doAction(MenuAction::loseFocus);
+	focusedItem = item;
+	focusedItem->doAction(MenuAction::gainFocus);
 }
