@@ -4,5 +4,5 @@
 
 class MenuItem : public MenuBase<MenuItem> {
 public:
-	MenuItem(String _title) : MenuBase(_title) {}
+	using MenuBase<MenuItem>::MenuBase;
 };

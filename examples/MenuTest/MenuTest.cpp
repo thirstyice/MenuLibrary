@@ -77,7 +77,7 @@ Menu submenu("Submenu");
 	MenuItem submenuPrint("Print from submenu");
 Menu menuSmall("Small submenu, big title");
 	MenuBack menuSmallBack;
-MenuToggle menuOverridden("overridden");
+MenuToggle menuOverridden("overridden", &toggleTest);
 MenuValues<uint8_t> menuValueTest(&valueTest, 255);
 MenuValues<float> menuValueTestFloat(&valueTestFloat, 1,0,0.1);
 MenuValue menuValue("Value", &menuValueTest, &menuValueTestFloat);
@@ -93,7 +93,7 @@ void menuInit() {
 	submenu.setFocusedItem(&submenuBack);
 	submenuBackText.setResponder(changeBackText, MenuAction::engage);
 	submenuPrint.setResponder(printValues, MenuAction::engage);
-	menuOverridden.setTitle("Toggle")->setVar(&toggleTest);
+	menuOverridden.setTitle("Toggle");
 };
 
 

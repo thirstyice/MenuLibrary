@@ -56,7 +56,7 @@ protected:
 template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
-	MenuBase(String _title) : MenuCore(_title) {};
+	using MenuCore::MenuCore;
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
 	MenuDerived* setTitle(String _title);

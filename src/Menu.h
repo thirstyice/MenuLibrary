@@ -6,7 +6,7 @@ class Menu final : public MenuBase<Menu> {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	Menu(String _title) : MenuBase(_title) {}
+	using MenuBase<Menu>::MenuBase;
 	Menu(String _title, MenuCore* _focusedItem) : MenuBase(_title), focusedItem(_focusedItem) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;
