@@ -28,10 +28,6 @@ uint32_t ipTest2 = 0x12345678;
 String stringTest = "Hello World!";
 String shortStr = "Short!";
 
-void changeBackText(MenuItem*) {
-	MenuBackDefault.setTitle("Back (changed)");
-}
-
 void printValues(MenuItem* caller) {
 	Serial.print("Called by: ");
 	Serial.println(caller->getTitle());
@@ -68,25 +64,28 @@ void printValues(MenuItem* caller) {
 // Define all items;
 Menu menu("top");
 MenuItem menuTitle("MenuLibrary Test");
-MenuItem menuPrint("Print values");
-Menu submenu("Submenu");
+MenuItem menuPrint("Print values", &menuTitle);
+Menu submenu("Submenu", &menuPrint);
 	MenuBack submenuBack;
-	MenuItem submenuBackText("Change Back Text");
-	MenuItem submenuHello("Hello");
-	MenuItem submenuWorld("World");
-	MenuItem submenuPrint("Print from submenu");
-Menu menuSmall("Small submenu, big title");
+	MenuItem submenuBackText("Change Back Text", &submenuBack);
+	MenuItem submenuHello("Hello", &submenuBackText);
+	MenuItem submenuWorld("World", &submenuWorld);
+	MenuItem submenuPrint("Print from submenu", &submenuWorld);
+Menu menuSmall("Small submenu, big title", &submenu);
 	MenuBack menuSmallBack;
-MenuToggle menuOverridden("overridden", &toggleTest);
+MenuToggle menuOverridden("overridden", &toggleTest, &menuSmall);
 MenuValues<uint8_t> menuValueTest(&valueTest, 255);
 MenuValues<float> menuValueTestFloat(&valueTestFloat, 1,0,0.1);
-MenuValue menuValue("Value", &menuValueTest, &menuValueTestFloat);
-MenuIP menuIp8x4("IP(8x4)", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]);
-MenuIP menuIp32("IP(32)", &ipTest2);
-MenuString menuString("String:", &stringTest);
-MenuString menuStr("Str:", &shortStr);
+MenuValue menuValue("Value", &menuOverridden, &menuValueTest, &menuValueTestFloat);
+MenuIP menuIp8x4("IP(8x4)", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3], &menuValue);
+MenuIP menuIp32("IP(32)", &ipTest2, &menuIp8x4);
+MenuString menuString("String:", &stringTest, &menuIp32);
+MenuString menuStr("Str:", &shortStr, &menuString);
 
 // Add additional functionality
+void changeBackText(MenuItem*) {
+	submenuBack.setTitle("Back (changed)");
+}
 void menuInit() {
 	menu.setFocusedItem(&menuTitle);
 	menuPrint.setResponder(printValues, MenuAction::engage);
@@ -103,6 +102,7 @@ MenuOutput* outputs[] = {
 
 void setup() {
 	Serial.begin(115200);
+	Serial.println("Begin");
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();

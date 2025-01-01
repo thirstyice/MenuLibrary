@@ -8,6 +8,7 @@ public:
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
 	using MenuBase<Menu>::MenuBase;
 	Menu(String _title, MenuCore* _focusedItem) : MenuBase(_title), focusedItem(_focusedItem) {}
+	Menu(String _title, MenuCore* _focusedItem, MenuCore* after) : MenuBase(_title, after), focusedItem(_focusedItem) {}
 	MenuReaction doAction(MenuAction) override;
 	String getTitle() override;
 	void setFocusedItem(MenuCore* item);

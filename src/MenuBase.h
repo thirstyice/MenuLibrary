@@ -35,6 +35,8 @@ public:
 	virtual bool needsRedraw() {return hasChanges;}
 	MenuCore* getNext() {return next;}
 	MenuCore* getPrevious() {return previous;}
+	void setPrevious(MenuCore* element) {previous=element;}
+	void setNext(MenuCore* element) {next=element;}
 protected:
 
 	static const uint8_t numEvents = (uint8_t)MenuReaction::lastReaction;
@@ -44,8 +46,6 @@ protected:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
-	void setPrevious(MenuCore* element) {previous=element;}
-	void setNext(MenuCore* element) {next=element;}
 	String title = "-";
 	bool isOpen = false;
 	bool hasChanges = true;
@@ -57,6 +57,7 @@ template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
 	using MenuCore::MenuCore;
+	MenuBase(String title, MenuCore* after) : MenuCore(title) {if (after) {insertAfter(after);}}
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
 	MenuDerived* setTitle(String _title);
@@ -103,6 +104,8 @@ MenuDerived* MenuBase<MenuDerived>::setTitle(String _title) {
 }
 template <class MenuDerived>
 MenuDerived* MenuBase<MenuDerived>::insertAfter(MenuCore* element) {
+	setPrevious(element);
+	setNext(element->getNext());
 	element->getNext()->setPrevious((MenuCore*)this);
 	element->setNext((MenuCore*)this);
 	return (MenuDerived*)this;
