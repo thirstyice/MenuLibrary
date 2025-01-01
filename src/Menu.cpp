@@ -157,8 +157,12 @@ void Menu::setFocusedItem(MenuCore* item) {
 	if (item == focusedItem) {
 		return;
 	}
-	focusedItem->doAction(MenuAction::loseFocus);
+	if (focusedItem) {
+		focusedItem->doAction(MenuAction::loseFocus);
+	}
 	focusedItem = item;
-	focusedItem->doAction(MenuAction::gainFocus);
+	if (focusedItem) {
+		focusedItem->doAction(MenuAction::gainFocus);
+	}
 	forceNextDraw = true;
 }
