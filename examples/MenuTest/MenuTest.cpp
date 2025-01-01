@@ -65,29 +65,34 @@ void printValues(MenuItem* caller) {
 	Serial.println(freeRam());
 }
 
+// Define all items;
+Menu menu;
+MenuItem menuTitle("MenuLibrary Test");
+MenuItem menuPrint("Print values");
+Menu submenu("Submenu");
+	MenuBack submenuBack;
+	MenuItem submenuBackText("Change Back Text");
+	MenuItem submenuHello("Hello");
+	MenuItem submenuWorld("World");
+	MenuItem submenuPrint("Print from submenu");
+Menu menuSmall("Small submenu, big title");
+	MenuBack menuSmallBack;
+MenuToggle menuOverridden("overridden");
+MenuValues<uint8_t> menuValueTest(&valueTest, 255);
+MenuValues<float> menuValueTestFloat(&valueTestFloat, 1,0,0.1);
+MenuValue menuValue("Value", &menuValueTest, &menuValueTestFloat);
+MenuIP menuIp8x4("IP(8x4)", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]);
+MenuIP menuIp32("IP(32)", &ipTest2);
+MenuString menuString("String:", &stringTest);
+MenuString menuStr("Str:", &shortStr);
 
-Menu menu{
-	new MenuItem("MenuLibrary Test"),
-	(new MenuItem("Print values"))->setResponder(printValues, MenuAction::engage),
-	new Menu("Submenu",
-		&MenuBackDefault,
-		(new MenuItem("Change Back Text"))->setResponder(changeBackText, MenuAction::engage),
-		new MenuItem("Hello"),
-		new MenuItem("World"),
-		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
-	),
-	new Menu("Small submenu, big title",
-		&MenuBackDefault
-	),
-	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
-	new MenuValue("Value",
-		new MenuValues<uint8_t>(&valueTest, 255),
-		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
-	),
-	new MenuIP("IP(8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
-	new MenuIP("IP(32):", &ipTest2),
-	new MenuString("String:", &stringTest),
-	new MenuString("Str:", &shortStr)
+// Add additional functionality
+void menuInit() {
+	menuPrint.setResponder(printValues, MenuAction::engage);
+	submenu.setFocusedItem(&submenuBack);
+	submenuBackText.setResponder(changeBackText, MenuAction::engage);
+	submenuPrint.setResponder(printValues, MenuAction::engage);
+	menuOverridden.setTitle("Toggle")->setVar(&toggleTest);
 };
 
 
@@ -100,6 +105,7 @@ void setup() {
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
+	menuInit();
 	menu.setOutput(outputs,1);
 }
 
