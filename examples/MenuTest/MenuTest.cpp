@@ -66,7 +66,7 @@ void printValues(MenuItem* caller) {
 }
 
 // Define all items;
-Menu menu;
+Menu menu("top");
 MenuItem menuTitle("MenuLibrary Test");
 MenuItem menuPrint("Print values");
 Menu submenu("Submenu");
@@ -88,6 +88,7 @@ MenuString menuStr("Str:", &shortStr);
 
 // Add additional functionality
 void menuInit() {
+	menu.setFocusedItem(&menuTitle);
 	menuPrint.setResponder(printValues, MenuAction::engage);
 	submenu.setFocusedItem(&submenuBack);
 	submenuBackText.setResponder(changeBackText, MenuAction::engage);
