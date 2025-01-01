@@ -17,6 +17,7 @@ bool Menu::doDraw() {
 		uint8_t numLines = outputs[output]->getHeight();
 		MenuCore* nextHead = focusedItem->getNext();
 		MenuCore* prevHead = focusedItem->getPrevious();
+		MenuCore* startHead = focusedItem;
 		uint8_t numItems = 1;
 		uint8_t focusPosition = numLines / 2;
 		bool forward = true;
@@ -30,6 +31,7 @@ bool Menu::doDraw() {
 				}
 			} else {
 				if (prevHead) {
+					startHead = prevHead;
 					prevHead = prevHead->getPrevious();
 					focusPosition++;
 					numItems++;
@@ -44,10 +46,10 @@ bool Menu::doDraw() {
 			forceNextDraw = true;
 		}
 		for (uint8_t line = 0; line<numLines; line++) {
-			if (prevHead) {
-				if (prevHead->needsRedraw() || forceNextDraw) {
-					outputs[output]->drawLine(line, prevHead->getTitle());
-					prevHead = prevHead->getNext();
+			if (startHead) {
+				if (startHead->needsRedraw() || forceNextDraw) {
+					outputs[output]->drawLine(line, startHead->getTitle());
+					startHead = startHead->getNext();
 				}
 			} else {
 				outputs[output]->drawLine(line, "");
