@@ -20,6 +20,7 @@ bool Menu::doDraw() {
 		uint8_t numItems = 1;
 		uint8_t focusPosition = numLines / 2;
 		bool forward = true;
+		bool noScrolling = false;
 		while (numItems<numLines) {
 			if (forward) {
 				if (nextHead) {
@@ -35,8 +36,12 @@ bool Menu::doDraw() {
 				}
 			}
 			if (!(prevHead || nextHead)) {
+				noScrolling = true;
 				break;
 			}
+		}
+		if (!noScrolling && didScroll) {
+			forceNextDraw = true;
 		}
 		for (uint8_t line = 0; line<numLines; line++) {
 			if (prevHead) {
@@ -64,7 +69,7 @@ bool Menu::doDraw() {
 		// 		outputs[output]->drawLine(line, "");
 		// 	}
 		// }
-		// outputs[output]->setFocusedLine(focusedLine - startLine);
+		outputs[output]->setFocusedLine(focusPosition);
 	}
 	forceNextDraw = false;
 	return true;
@@ -133,6 +138,7 @@ MenuReaction Menu::increase() {
 		focusedItem->doAction(MenuAction::loseFocus);
 		focusedItem = focusedItem->getNext();
 		focusedItem->doAction(MenuAction::gainFocus);
+		didScroll = true;
 	}
 	return MenuReaction::noReaction;
 }
@@ -142,6 +148,7 @@ MenuReaction Menu::decrease() {
 		focusedItem->doAction(MenuAction::loseFocus);
 		focusedItem = focusedItem->getPrevious();
 		focusedItem->doAction(MenuAction::gainFocus);
+		didScroll = true;
 	}
 	return MenuReaction::noReaction;
 }
@@ -153,4 +160,5 @@ void Menu::setFocusedItem(MenuCore* item) {
 	focusedItem->doAction(MenuAction::loseFocus);
 	focusedItem = item;
 	focusedItem->doAction(MenuAction::gainFocus);
+	forceNextDraw = true;
 }

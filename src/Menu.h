@@ -15,6 +15,7 @@ private:
 	void setFocusedItem(MenuCore* item);
 	bool forceNextDraw = true;
 	bool submenuIsOpen = false;
+	bool didScroll = false;
 	MenuCore* focusedItem = nullptr;
 	MenuOutput** outputs = nullptr;
 	uint8_t numOutputs = 0;
