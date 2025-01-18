@@ -32,3 +32,7 @@
 #define MENUIP32(id, title, previousItem, variable, initValue) uint32_t variable = initValue; MENUITEMDEFBEGIN(MenuIP, id, title, previousItem), &variable};
 #define MENUIPARRAY(id, title, previousItem, array) uint8_t array[4]; MENUITEMDEFBEGIN(MenuIP, id, title, previousItem), array};
 #define MENUIPARRAY(id, title, previousItem, array, initValue) uint8_t array[4] = initValue; MENUITEMDEFBEGIN(MenuIP, id, title, previousItem), array};
+
+
+#define MENUVALUE(id, previousItem, type, variable, initValue, max, min, increment) type variable = initValue; MenuValue<type> variable##MenuValue(&variable, previousItem, max, min, increment);
+#define MENUVALUES(id, title, previousItem, selectedItem, ...) __VA_ARGS__ MENUITEMDEFBEGIN(MenuValues, id, title, previousItem), &selectedItem};

@@ -42,7 +42,7 @@ public:
 		max{_max},
 		min{_min},
 		inc{_increment}
-	{}
+	{if(after){insertAfter(after);}}
 	String getValueAsString();
 	void increment();
 	void decrement();
