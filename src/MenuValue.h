@@ -3,27 +3,37 @@
 #include "MenuBase.h"
 
 
-class MenuValuesOp {
+class MenuValueOp {
 public:
 	virtual String getValueAsString() =0;
 	virtual void increment() =0;
 	virtual void decrement() =0;
 	virtual bool valueHasChanged() =0;
-	virtual ~MenuValuesOp() {};
+	void setNext(MenuValueOp* element) {next=element;}
+	void setPrev(MenuValueOp* element) {prev=element;}
+	MenuValueOp* getNext() {return next;}
+	MenuValueOp* getPrev() {return prev;}
+	virtual ~MenuValueOp() {};
+private:
+	MenuValueOp* next = nullptr;
+	MenuValueOp* prev = nullptr;
 };
 
 template <typename numberType>
-class MenuValues : public MenuValuesOp {
+class MenuValue : public MenuValueOp {
 private:
 	numberType* variable = nullptr;
 	numberType lastValue;
 	numberType max = 1;
 	numberType min = 0;
 	numberType inc = 1;
+	MenuValueOp* next = nullptr;
+	MenuValueOp* prev = nullptr;
 public:
-	MenuValues() {}
-	MenuValues(
+	MenuValue() {}
+	MenuValue(
 		numberType* _variable,
+		MenuValueOp* after,
 		numberType _max = 1,
 		numberType _min = 0,
 		numberType _increment = 1
@@ -36,50 +46,43 @@ public:
 	String getValueAsString();
 	void increment();
 	void decrement();
+	MenuValue& insertAfter(MenuValueOp*);
+	MenuValue& insertBefore(MenuValueOp*);
 	bool valueHasChanged();
-	MenuValues& setVariable(numberType* _variable) {variable = _variable; return *this;}
-	MenuValues& setMax(numberType _max);
-	MenuValues& setMin(numberType _min);
-	MenuValues& setIncrement(numberType _inc) {inc = _inc; return *this;}
+	MenuValue& setVariable(numberType* _variable) {variable = _variable; return *this;}
+	MenuValue& setMax(numberType _max);
+	MenuValue& setMin(numberType _min);
+	MenuValue& setIncrement(numberType _inc) {inc = _inc; return *this;}
 };
 
-class MenuValue : public MenuBase<MenuValue> {
+class MenuValues : public MenuBase<MenuValues> {
 public:
-	template <typename... args>
-	MenuValue(const char* _title, MenuCore* after = nullptr, args...variables);
-	MenuValue(const MenuValue &);
-	~MenuValue();
+	MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement);
 	String getTitle();
 	bool needsRedraw();
-	MenuValue* setSeparator(char _separator);
+	MenuValues* setSeparator(char _separator);
 
 private:
 	char separator = ' ';
-	uint8_t selected = 0;
-	uint8_t size = 0;
 	MenuReaction engage();
 	MenuReaction disengage();
 	MenuReaction increase();
 	MenuReaction decrease();
-	MenuValuesOp** values;
+	MenuValueOp* selected;
 };
 
-template <typename... args>
-MenuValue::MenuValue(const char* _title, MenuCore* after, args...variables) : MenuBase(_title, after) {
-	size = sizeof...(variables);
-	MenuValuesOp* variableArray[size] = {variables...};
-	size_t memsize = size * sizeof(MenuValuesOp*);
-	values = (MenuValuesOp**)malloc(memsize);
-	memcpy(values, variableArray, memsize);
-}
+MenuValues::MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement) :
+	MenuBase(_title, after),
+	selected(firstElement)
+{}
 
 template <typename numberType>
-String MenuValues<numberType>::getValueAsString() {
+String MenuValue<numberType>::getValueAsString() {
 	return String(*variable);
 }
 
 template <typename numberType>
-MenuValues<numberType>& MenuValues<numberType>::setMin(numberType _min) {
+MenuValue<numberType>& MenuValue<numberType>::setMin(numberType _min) {
 	min = _min;
 	if (*variable < _min) {
 		*variable = _min;
@@ -88,7 +91,7 @@ MenuValues<numberType>& MenuValues<numberType>::setMin(numberType _min) {
 }
 
 template <typename numberType>
-MenuValues<numberType>& MenuValues<numberType>::setMax(numberType _max) {
+MenuValue<numberType>& MenuValue<numberType>::setMax(numberType _max) {
 	max = _max;
 	if (*variable > _max) {
 		*variable = _max;
@@ -97,7 +100,7 @@ MenuValues<numberType>& MenuValues<numberType>::setMax(numberType _max) {
 }
 
 template <typename numberType>
-void MenuValues<numberType>::increment() {
+void MenuValue<numberType>::increment() {
 	if (*variable + inc >= max) {
 		*variable = max;
 	} else {
@@ -106,7 +109,7 @@ void MenuValues<numberType>::increment() {
 }
 
 template <typename numberType>
-void MenuValues<numberType>::decrement() {
+void MenuValue<numberType>::decrement() {
 	if (*variable - inc <= min) {
 		*variable = min;
 	} else {
@@ -115,8 +118,26 @@ void MenuValues<numberType>::decrement() {
 }
 
 template <typename numberType>
-bool MenuValues<numberType>::valueHasChanged() {
+bool MenuValue<numberType>::valueHasChanged() {
 	bool changed = (*variable != lastValue);
 	lastValue = *variable;
 	return changed;
+}
+
+template <typename numberType>
+MenuValue<numberType>& MenuValue<numberType>::insertAfter(MenuValueOp* element) {
+	setPrev(element);
+	setNext(element->getNext());
+	element->getNext()->setPrev((MenuValueOp*)this);
+	element->setNext((MenuValueOp*)this);
+	return *this;
+}
+
+template <typename numberType>
+MenuValue<numberType>& MenuValue<numberType>::insertBefore(MenuValueOp* element) {
+	setNext(element);
+	setPrev(element->getPrev());
+	element->getPrev()->setNext((MenuValueOp*)this);
+	element->setPrev((MenuValueOp*)this);
+	return *this;
 }

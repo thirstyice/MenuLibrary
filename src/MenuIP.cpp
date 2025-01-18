@@ -9,14 +9,17 @@ const bool MenuIP::isBigEndian() {
 }
 
 MenuIP::MenuIP(const char* _title, MenuCore* after, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t* thirdOctet, uint8_t* fourthOctet) :
-	MenuValue(
+	MenuValues(
 		_title,
 		after,
-		new MenuValues<uint8_t>(firstOctet, 255, 0, 1),
-		new MenuValues<uint8_t>(secondOctet, 255, 0, 1),
-		new MenuValues<uint8_t>(thirdOctet, 255, 0, 1),
-		new MenuValues<uint8_t>(fourthOctet, 255, 0, 1)
-	)
+		&addressValues[0]
+	),
+	addressValues({
+		MenuValue<uint8_t>(firstOctet, nullptr, 255, 0, 1),
+		MenuValue<uint8_t>(secondOctet, &addressValues[0], 255, 0, 1),
+		MenuValue<uint8_t>(thirdOctet, &addressValues[1], 255, 0, 1),
+		MenuValue<uint8_t>(fourthOctet, &addressValues[2], 255, 0, 1),
+	})
 {
 	setSeparator('.');
 }
