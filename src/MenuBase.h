@@ -25,8 +25,8 @@ enum struct MenuReaction : MenuEvent {
 
 class MenuCore {
 public:
-	MenuCore() {};
-	MenuCore(String _title) : title(_title) {}
+	MenuCore() : title("-") {};
+	MenuCore(const char* _title) : title(_title) {}
 	virtual String getTitle() {hasChanges = false; return title;};
 	virtual bool doDraw() {return false;}
 	virtual MenuReaction doAction(MenuAction action) =0;
@@ -46,7 +46,7 @@ protected:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
-	String title = "-";
+	const char* title;
 	bool isOpen = false;
 	bool hasChanges = true;
 	MenuCore* previous = nullptr;
@@ -57,10 +57,9 @@ template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
 	using MenuCore::MenuCore;
-	MenuBase(String title, MenuCore* after) : MenuCore(title) {if (after) {insertAfter(after);}}
+	MenuBase(const char* title, MenuCore* after) : MenuCore(title) {if (after) {insertAfter(after);}}
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
-	MenuDerived* setTitle(String _title);
 	MenuDerived* insertAfter(MenuCore* element);
 	MenuDerived* insertBefore(MenuCore* element);
 	MenuDerived* removeFromMenu();
@@ -94,12 +93,6 @@ MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*)
 template <class MenuDerived>
 MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuReaction event) {
 	responders[(MenuEvent)event].responder = responder;
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setTitle(String _title) {
-	title = _title;
-	hasChanges = true;
 	return (MenuDerived*)this;
 }
 template <class MenuDerived>

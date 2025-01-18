@@ -4,7 +4,7 @@
 
 class MenuString: public MenuBase<MenuString> {
 public:
-	MenuString(String _title, String* str, MenuCore* after = nullptr) : MenuBase(_title, after), string(str) {}
+	MenuString(const char* _title, MenuCore* after, String* str) : MenuBase(_title, after), string(str) {}
 	MenuString* setString(String* str);
 	MenuString* setMaxLength(uint8_t len);
 	String getTitle() override;

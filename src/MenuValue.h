@@ -46,7 +46,7 @@ public:
 class MenuValue : public MenuBase<MenuValue> {
 public:
 	template <typename... args>
-	MenuValue(String _title, MenuCore* after = nullptr, args...variables);
+	MenuValue(const char* _title, MenuCore* after = nullptr, args...variables);
 	MenuValue(const MenuValue &);
 	~MenuValue();
 	String getTitle();
@@ -65,7 +65,7 @@ private:
 };
 
 template <typename... args>
-MenuValue::MenuValue(String _title, MenuCore* after, args...variables) : MenuBase(_title, after) {
+MenuValue::MenuValue(const char* _title, MenuCore* after, args...variables) : MenuBase(_title, after) {
 	size = sizeof...(variables);
 	MenuValuesOp* variableArray[size] = {variables...};
 	size_t memsize = size * sizeof(MenuValuesOp*);

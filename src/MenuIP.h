@@ -6,10 +6,10 @@
 
 class MenuIP : public MenuValue {
 public:
-	MenuIP(String _title, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t* thirdOctet, uint8_t* fourthOctet, MenuCore* after = nullptr);
-	MenuIP(String _title, IPAddress* ip, MenuCore* after = nullptr);
-	MenuIP(String _title, uint32_t* ip, MenuCore* after = nullptr);
-	MenuIP(String _title, uint8_t* array, MenuCore* after = nullptr);
+	MenuIP(const char* _title, MenuCore* after, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t* thirdOctet, uint8_t* fourthOctet);
+	MenuIP(const char* _title, MenuCore* after, IPAddress* ip);
+	MenuIP(const char* _title, MenuCore* after, uint32_t* ip);
+	MenuIP(const char* _title, MenuCore* after, uint8_t* array);
 private:
 	const bool isBigEndian();
 };
