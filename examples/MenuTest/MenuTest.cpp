@@ -12,6 +12,29 @@ int freeRam () {
 
 Olimex16x2 lcd;
 
+TOPMENU(mainMenu, "-", &title,
+	MENUITEM(title, "MenuLibrary Test", nullptr)
+	MENUITEM(menuPrint, "Print Values", &title)
+	MENU(submenu, "Submenu", &menuPrint, &submenuBack,
+		MENUBACK(submenuBack, nullptr)
+		MENUITEM(submenuHello, "Hello", &submenuBack)
+		MENUITEM(submenuWorld, "World", &submenuHello)
+		MENUITEM(submenuPrint, "Print from Submenu", &submenuWorld)
+	)
+	MENU(menuSmall, "Small submenu, big title", &submenu, &menuSmallBack,
+		MENUBACK(menuSmallBack, nullptr)
+	)
+	MENUTOGGLE(menuToggle, "Toggle", &menuSmall, toggleTest, false, "Yes", "No")
+	MENUVALUES(menuValues, "Values", &menuToggle, &valueTestMenuValue,
+		MENUVALUE(nullptr, uint8_t, valueTest, 0, 255, 0, 1)
+		MENUVALUE(&valueTestMenuValue, float, valueTestFloat, 0, 1, 0, 0.01)
+	)
+	MENUIPARRAY(menuIp8x4, "IP(8x4)", &menuValues, ipTest1, 192,168,0,1)
+	MENUIP32(menuIp32, "IP(32)", &menuIp8x4, ipTest2, 0x12345678)
+	MENUSTRING(menuString, "String", &menuIp32, stringTest, "Hello World!")
+	MENUSTRING(menuStr, "Str", &menuString, shortStr, "Short!")
+)
+
 bool buttonState[4];
 MenuAction buttonMapping[4] = {
 	MenuAction::disengage,
@@ -19,14 +42,6 @@ MenuAction buttonMapping[4] = {
 	MenuAction::increase,
 	MenuAction::engage
 };
-
-bool toggleTest = false;
-uint8_t valueTest = 0;
-float valueTestFloat = 1;
-uint8_t ipTest1[] = {192,168,0,1};
-uint32_t ipTest2 = 0x12345678;
-String stringTest = "Hello World!";
-String shortStr = "Short!";
 
 void printValues(MenuItem* caller) {
 	Serial.print("Called by: ");
@@ -40,16 +55,16 @@ void printValues(MenuItem* caller) {
 	Serial.println(valueTestFloat);
 
 	Serial.print("IP 1 is now: ");
-	Serial.print(ipTest1[0]);
+	//Serial.print(ipTest1[0]);
 	Serial.print('.');
-	Serial.print(ipTest1[1]);
+	//Serial.print(ipTest1[1]);
 	Serial.print('.');
-	Serial.print(ipTest1[2]);
+	//Serial.print(ipTest1[2]);
 	Serial.print('.');
-	Serial.println(ipTest1[3]);
+	//Serial.println(ipTest1[3]);
 
 	Serial.print("IP 2 is now: ");
-	Serial.println(ipTest2);
+	//Serial.println(ipTest2);
 
 	Serial.print("String is now: ");
 	Serial.println(stringTest);
@@ -61,38 +76,9 @@ void printValues(MenuItem* caller) {
 	Serial.println(freeRam());
 }
 
-// Define all items;
-Menu menu("top");
-MenuItem menuTitle("MenuLibrary Test");
-MenuItem menuPrint("Print values", &menuTitle);
-Menu submenu("Submenu", &menuPrint);
-	MenuBack submenuBack;
-	MenuItem submenuBackText("Change Back Text", &submenuBack);
-	MenuItem submenuHello("Hello", &submenuBackText);
-	MenuItem submenuWorld("World", &submenuWorld);
-	MenuItem submenuPrint("Print from submenu", &submenuWorld);
-Menu menuSmall("Small submenu, big title", &submenu);
-	MenuBack menuSmallBack;
-MenuToggle menuOverridden("overridden", &toggleTest, &menuSmall);
-MenuValue<uint8_t> menuValueTest(&valueTest, 255);
-MenuValue<float> menuValueTestFloat(&valueTestFloat, 1,0,0.1);
-MenuValues menuValue("Value", &menuOverridden, &menuValueTest, &menuValueTestFloat);
-MenuIP menuIp8x4("IP(8x4)", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3], &menuValue);
-MenuIP menuIp32("IP(32)", &ipTest2, &menuIp8x4);
-MenuString menuString("String:", &stringTest, &menuIp32);
-MenuString menuStr("Str:", &shortStr, &menuString);
-
-// Add additional functionality
-void changeBackText(MenuItem*) {
-	submenuBack.setTitle("Back (changed)");
-}
 void menuInit() {
-	menu.setFocusedItem(&menuTitle);
 	menuPrint.setResponder(printValues, MenuAction::engage);
-	submenu.setFocusedItem(&submenuBack);
-	submenuBackText.setResponder(changeBackText, MenuAction::engage);
 	submenuPrint.setResponder(printValues, MenuAction::engage);
-	menuOverridden.setTitle("Toggle");
 };
 
 
@@ -107,7 +93,7 @@ void setup() {
 	lcd.setBacklight(255);
 	lcd.clear();
 	menuInit();
-	menu.setOutput(outputs,1);
+	mainMenu.setOutput(outputs,1);
 }
 
 void doButtons() {
@@ -120,7 +106,7 @@ void doButtons() {
 		} else {
 			if (buttonState[i] == false) {
 				buttonState[i] = true;
-				menu.doAction(buttonMapping[i]);
+				mainMenu.doAction(buttonMapping[i]);
 			}
 		}
 	}
@@ -128,5 +114,5 @@ void doButtons() {
 
 void loop() {
 	doButtons();
-	menu.doDraw();
+	mainMenu.doDraw();
 }

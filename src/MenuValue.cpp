@@ -1,5 +1,9 @@
 #include "MenuValue.h"
 
+MenuValues::MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement) :
+	MenuBase(_title, after),
+	selected(firstElement)
+{}
 
 MenuReaction MenuValues::disengage() {
 	hasChanges = true;

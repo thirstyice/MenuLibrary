@@ -71,11 +71,6 @@ private:
 	MenuValueOp* selected;
 };
 
-MenuValues::MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement) :
-	MenuBase(_title, after),
-	selected(firstElement)
-{}
-
 template <typename numberType>
 String MenuValue<numberType>::getValueAsString() {
 	return String(*variable);
