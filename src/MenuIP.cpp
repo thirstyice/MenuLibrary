@@ -21,6 +21,10 @@ MenuIP::MenuIP(String _title, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t
 	setSeparator('.');
 }
 
+MenuIP::MenuIP(String _title, uint8_t* array, MenuCore* after) :
+	MenuIP(_title, &array[0], &array[1], &array[2], &array[3], after)
+{}
+
 MenuIP::MenuIP(String _title, IPAddress* ip, MenuCore* after) :
 	MenuIP(_title, &ip->operator[](0), &ip->operator[](1), &ip->operator[](2), &ip->operator[](3), after)
 {}
