@@ -44,35 +44,35 @@ MenuAction buttonMapping[4] = {
 };
 
 void printValues(MenuItem* caller) {
-	Serial.print("Called by: ");
+	Serial.print(F("Called by: "));
 	Serial.println(caller->getTitle());
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
 
-	Serial.print("Values are now: ");
+	Serial.print(F("Values are now: "));
 	Serial.print(valueTest);
-	Serial.print(", ");
+	Serial.print(F(", "));
 	Serial.println(valueTestFloat);
 
-	Serial.print("IP 1 is now: ");
-	//Serial.print(ipTest1[0]);
+	Serial.print(F("IP 1 is now: "));
+	Serial.print(ipTest1[0]);
 	Serial.print('.');
-	//Serial.print(ipTest1[1]);
+	Serial.print(ipTest1[1]);
 	Serial.print('.');
-	//Serial.print(ipTest1[2]);
+	Serial.print(ipTest1[2]);
 	Serial.print('.');
-	//Serial.println(ipTest1[3]);
+	Serial.println(ipTest1[3]);
 
-	Serial.print("IP 2 is now: ");
-	//Serial.println(ipTest2);
+	Serial.print(F("IP 2 is now: "));
+	Serial.println(ipTest2);
 
-	Serial.print("String is now: ");
+	Serial.print(F("String is now: "));
 	Serial.println(stringTest);
 
-	Serial.print("Str is now: ");
+	Serial.print(F("Str is now: "));
 	Serial.println(shortStr);
 
-	Serial.print("Free Ram:");
+	Serial.print(F("Free Ram:"));
 	Serial.println(freeRam());
 }
 
@@ -88,7 +88,7 @@ MenuOutput* outputs[] = {
 
 void setup() {
 	Serial.begin(115200);
-	Serial.println("Begin");
+	Serial.println(F("Begin"));
 	lcd.begin();
 	lcd.setBacklight(255);
 	lcd.clear();
