@@ -43,12 +43,12 @@ public:
 		min{_min},
 		inc{_increment}
 	{if(after){insertAfter(after);}}
-	String getValueAsString();
-	void increment();
-	void decrement();
+	String getValueAsString() override;
+	void increment() override;
+	void decrement() override;
 	MenuValue& insertAfter(MenuValueOp*);
 	MenuValue& insertBefore(MenuValueOp*);
-	bool valueHasChanged();
+	bool valueHasChanged() override;
 	MenuValue& setVariable(numberType* _variable) {variable = _variable; return *this;}
 	MenuValue& setMax(numberType _max);
 	MenuValue& setMin(numberType _min);
@@ -58,16 +58,16 @@ public:
 class MenuValues : public MenuBase<MenuValues> {
 public:
 	MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement);
-	String getTitle();
-	bool needsRedraw();
+	String getTitle() override;
+	bool needsRedraw() override;
 	MenuValues* setSeparator(char _separator);
 
 private:
 	char separator = ' ';
-	MenuReaction engage();
-	MenuReaction disengage();
-	MenuReaction increase();
-	MenuReaction decrease();
+	MenuReaction engage() override;
+	MenuReaction disengage() override;
+	MenuReaction increase() override;
+	MenuReaction decrease() override;
 	MenuValueOp* selected;
 };
 

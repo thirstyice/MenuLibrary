@@ -5,7 +5,7 @@
 class MenuOutputGenericTextBased : public MenuOutput {
 public:
 	MenuOutputGenericTextBased() {};
-	void drawLine(uint8_t line, String contents);
+	void drawLine(uint8_t line, String contents) override;
 	virtual void outputLine(uint8_t line, String* contents) =0;
 
 protected:

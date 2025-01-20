@@ -5,11 +5,11 @@
 
 class MenuOutputOlimex16x2 : public MenuOutputGenericTextBased {
 public:
-	MenuOutputOlimex16x2(Olimex16x2* _lcd) :
+	explicit MenuOutputOlimex16x2(Olimex16x2* _lcd) :
 		lcd(_lcd) {width = 16; height = 2;}
 	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor;};
-	void outputLine(uint8_t line, String* contents);
-	void setFocusedLine(uint8_t line);
+	void outputLine(uint8_t lineIndex, String* line) override;
+	void setFocusedLine(uint8_t line) override;
 private:
 	char controlChars[MenuChars::Count] = {
 		1,
@@ -22,7 +22,7 @@ private:
 		3,
 		4
 	};
-	char getControlChar(uint8_t character) {if (character<=MenuChars::Count){return controlChars[character];}return -1;}
+	char getControlChar(uint8_t character) override {if (character<=MenuChars::Count){return controlChars[character];}return -1;}
 	Olimex16x2* lcd;
 };
 

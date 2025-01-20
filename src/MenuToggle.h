@@ -5,7 +5,7 @@
 class MenuToggle : public MenuBase<MenuToggle> {
 public:
 	MenuToggle(const char* _title, MenuCore* after, bool* var, const char* trueStr="True", const char* falseStr="False") :
-		MenuBase(_title, after), variable(var), trueLabel(trueStr), falseLabel(falseStr)
+		MenuBase(_title, after), variable(var), lastValue(!*var), trueLabel(trueStr), falseLabel(falseStr)
 	{}
 	bool needsRedraw() override;
 	MenuToggle* setVar(bool* _variable);
