@@ -85,7 +85,7 @@ void MenuOutputGenericTextBased::trimForOutput(String* out) {
 	removeBreakChars(out);
 	selection = out->indexOf(getControlChar(MenuChars::StartOfSelection));
 	if (selection>=width-1) {
-		if (selection+width>=out->length()) {
+		if ((uint16_t)selection+width>=out->length()) {
 			*out = out->substring((out->length()-width)+1);
 			return;
 		}
