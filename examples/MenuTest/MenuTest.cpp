@@ -43,9 +43,10 @@ MenuAction buttonMapping[4] = {
 	MenuAction::engage
 };
 
-void printValues(MenuItem* caller) {
-	Serial.print(F("Called by: "));
-	Serial.println(caller->getTitle());
+void printValues(MenuEvent e) {
+	if (e!=(MenuEvent)MenuAction::engage) {
+		return;
+	}
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
 
@@ -77,8 +78,8 @@ void printValues(MenuItem* caller) {
 }
 
 void menuInit() {
-	menuPrint.setResponder(printValues, MenuAction::engage);
-	submenuPrint.setResponder(printValues, MenuAction::engage);
+	menuPrint.setResponder(printValues);
+	submenuPrint.setResponder(printValues);
 };
 
 

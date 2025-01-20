@@ -2,7 +2,7 @@
 
 #include "MenuBase.h"
 
-class MenuString: public MenuBase<MenuString> {
+class MenuString: public MenuBase {
 public:
 	MenuString(const char* _title, MenuCore* after, String* str) : MenuBase(_title, after), string(str) {}
 	MenuString* setString(String* str);

@@ -2,11 +2,11 @@
 
 #include "MenuBase.h"
 
-class Menu final : public MenuBase<Menu> {
+class Menu final : public MenuBase {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	using MenuBase<Menu>::MenuBase;
+	using MenuBase::MenuBase;
 	Menu(const char* _title, MenuCore* _focusedItem) : MenuBase(_title), focusedItem(_focusedItem) {}
 	Menu(const char* _title, MenuCore* after, MenuCore* _focusedItem) : MenuBase(_title, after), focusedItem(_focusedItem) {}
 	MenuReaction doAction(MenuAction) override;

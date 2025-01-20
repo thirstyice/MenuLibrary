@@ -53,16 +53,14 @@ protected:
 	MenuCore* next = nullptr;
 };
 
-template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
 	using MenuCore::MenuCore;
 	MenuBase(const char* title, MenuCore* after) : MenuCore(title) {if (after) {insertAfter(after);}}
-	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
-	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
-	MenuDerived* insertAfter(MenuCore* element);
-	MenuDerived* insertBefore(MenuCore* element);
-	MenuDerived* removeFromMenu();
+	void setResponder(void (*responder)(MenuEvent));
+	void insertAfter(MenuCore* element);
+	void insertBefore(MenuCore* element);
+	void removeFromMenu();
 	virtual MenuReaction doAction(MenuAction action) override;
 
 protected:
@@ -75,74 +73,8 @@ private:
 	** Reactions are called second, by the object that is reacting
 	**/
 	struct MenuResponder {
-		static void doNothing(MenuDerived*) {return;}
-		void (*responder)(MenuDerived*) = doNothing;
+		static void doNothing(MenuEvent) {return;}
+		void (*respond)(MenuEvent) = doNothing;
 	};
-	MenuResponder responders[numEvents];
+	MenuResponder responder;
 };
-
-template <class MenuDerived>
-MenuReaction MenuBase<MenuDerived>::doAction(MenuAction action) {
-	return distributeAction(action);
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuAction event) {
-	responders[(MenuEvent)event].responder = responder;
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuReaction event) {
-	responders[(MenuEvent)event].responder = responder;
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::insertAfter(MenuCore* element) {
-	setPrevious(element);
-	setNext(element->getNext());
-	element->getNext()->setPrevious((MenuCore*)this);
-	element->setNext((MenuCore*)this);
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::insertBefore(MenuCore* element) {
-	element->getPrevious()->setNext((MenuCore*)this);
-	element->setPrevious((MenuCore*)this);
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::removeFromMenu() {
-	next->setPrevious(previous);
-	previous->setNext(next);
-	return (MenuDerived*)this;
-}
-
-template <class MenuDerived>
-MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction action) {
-	MenuReaction reaction = MenuReaction::noReaction;
-	switch (action) {
-	case MenuAction::engage:
-		reaction = engage();
-		break;
-	case MenuAction::disengage:
-		reaction = disengage();
-		break;
-	case MenuAction::increase:
-		reaction = increase();
-		break;
-	case MenuAction::decrease:
-		reaction = decrease();
-		break;
-	case MenuAction::gainFocus:
-		reaction = getFocus();
-		break;
-	case MenuAction::loseFocus:
-		reaction = loseFocus();
-		break;
-	default:
-		return MenuReaction::noReaction;
-		break;
-	}
-	responders[(MenuEvent)action].responder((MenuDerived*)this);
-	responders[(MenuEvent)reaction].responder((MenuDerived*)this);
-	return reaction;
-}

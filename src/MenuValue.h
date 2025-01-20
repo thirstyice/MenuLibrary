@@ -55,7 +55,7 @@ public:
 	MenuValue& setIncrement(numberType _inc) {inc = _inc; return *this;}
 };
 
-class MenuValues : public MenuBase<MenuValues> {
+class MenuValues : public MenuBase {
 public:
 	MenuValues(const char* _title, MenuCore* after, MenuValueOp* firstElement);
 	String getTitle() override;

@@ -2,7 +2,7 @@
 
 #include "MenuBase.h"
 
-class MenuToggle : public MenuBase<MenuToggle> {
+class MenuToggle : public MenuBase {
 public:
 	MenuToggle(const char* _title, MenuCore* after, bool* var, const char* trueStr="True", const char* falseStr="False") :
 		MenuBase(_title, after), variable(var), lastValue(!*var), trueLabel(trueStr), falseLabel(falseStr)
