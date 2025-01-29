@@ -27,7 +27,7 @@ class MenuCore {
 public:
 	MenuCore() : title("-") {};
 	MenuCore(const char* _title) : title(_title) {}
-	virtual String getTitle() {hasChanges = false; return title;};
+	virtual String getTitle();
 	virtual bool doDraw() {return false;}
 	virtual MenuReaction doAction(MenuAction action) =0;
 	virtual ~MenuCore() {}
@@ -46,6 +46,7 @@ protected:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
+	String _getTitle();
 	const char* title;
 	bool isOpen = false;
 	bool hasChanges = true;

@@ -94,7 +94,7 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 
 String Menu::getTitle() {
 	hasChanges = false;
-	return MenuChar[MenuChars::SubmenuArrow] + title;
+	return String(MenuChar[MenuChars::SubmenuArrow]) + _getTitle();
 }
 MenuReaction Menu::doAction(MenuAction action) {
 	if (submenuIsOpen) {

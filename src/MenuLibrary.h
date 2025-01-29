@@ -8,7 +8,7 @@
 #include "MenuIP.h"
 #include "MenuString.h"
 
-#define TITLEDEF(id, title) const char PROGMEM id##Title[] = title;
+#define TITLEDEF(id, title) const char id##Title[] PROGMEM = title;
 #define MENUITEMDEFBEGIN(type, id, title, previousItem) TITLEDEF(id, title) type id{id##Title, previousItem
 
 #define MENU(id, title, previousItem, selectedItem, ...) __VA_ARGS__ MENUITEMDEFBEGIN(Menu, id, title, previousItem), selectedItem};

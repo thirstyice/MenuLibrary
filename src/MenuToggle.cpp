@@ -15,7 +15,7 @@ MenuReaction MenuToggle::engage() {
 String MenuToggle::getTitle() {
 	hasChanges = false;
 	lastValue = *variable;
-	return (String(title) + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
+	return (_getTitle() + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
 }
 
 MenuToggle* MenuToggle::setVar(bool* var) {

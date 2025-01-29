@@ -12,6 +12,18 @@
 
 #include "MenuBase.h"
 
+String MenuCore::_getTitle() {
+	size_t length = strlen_P(title);
+	char buffer[length];
+	strcpy_P(buffer, title);
+	return String(buffer);
+}
+
+String MenuCore::getTitle() {
+	hasChanges = false;
+	return _getTitle();
+}
+
 MenuReaction MenuBase::doAction(MenuAction action) {
 	return distributeAction(action);
 }

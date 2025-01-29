@@ -58,7 +58,7 @@ String MenuValues::getTitle() {
 		ptr = ptr->getNext();
 	}
 	valuesString.remove(valuesString.length()-3); // The trailing separator
-	return (title + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
+	return (_getTitle() + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
 }
 
 MenuValues* MenuValues::setSeparator(char _separator) {
