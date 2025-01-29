@@ -12,6 +12,11 @@ int freeRam () {
 
 Olimex16x2 lcd;
 
+MenuOutput* outputs[] = {
+	new MenuOutputOlimex16x2(&lcd)
+};
+
+
 TOPMENU(mainMenu, "-", &title,
 	MENUITEM(title, "MenuLibrary Test", nullptr)
 	MENUITEM(menuPrint, "Print Values", &title)
@@ -80,11 +85,6 @@ void printValues(MenuEvent e) {
 void menuInit() {
 	menuPrint.setResponder(printValues);
 	submenuPrint.setResponder(printValues);
-};
-
-
-MenuOutput* outputs[] = {
-	new MenuOutputOlimex16x2(&lcd)
 };
 
 void setup() {
