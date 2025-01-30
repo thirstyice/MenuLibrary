@@ -16,7 +16,8 @@ String MenuCore::_getTitle() {
 	size_t length = strlen_P(title);
 	char buffer[length];
 	strcpy_P(buffer, title);
-	return String(buffer);
+	String helper(buffer);
+	return String(helper);
 }
 
 String MenuCore::getTitle() {
