@@ -43,6 +43,7 @@ bool Menu::doDraw() {
 			}
 		}
 		if (!noScrolling && didScroll) {
+			didScroll = false;
 			forceNextDraw = true;
 		}
 		for (uint8_t line = 0; line<numLines; line++) {
