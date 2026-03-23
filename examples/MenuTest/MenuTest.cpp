@@ -82,6 +82,7 @@ Menu menu{
 	),
 	new MenuIP("IP(8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
 	new MenuIP("IP(32):", ipTest2),
+	new MenuReadOnly("RO:", new MenuIP("IP(32):", ipTest2)),
 	new MenuString("String:", stringTest),
 	new MenuString("Str:", shortStr)
 };
