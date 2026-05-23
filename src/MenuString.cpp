@@ -1,16 +1,16 @@
 #include "MenuString.h"
 
-MenuString* MenuString::setString(String& _string) {
+MenuString& MenuString::setString(String& _string) {
 	string = _string;
-	return this;
+	return *this;
 }
 
-MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
+MenuString& MenuString::setMaxLength(uint8_t _maxLength) {
 	maxLength = _maxLength;
 	if (string.length()>maxLength) {
 		string.remove(maxLength);
 	}
-	return this;
+	return *this;
 }
 
 MenuCore::TitleFlags MenuString::getTitle(char * buf, const uint8_t& len) {

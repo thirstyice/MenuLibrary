@@ -49,9 +49,9 @@ bool Menu::doDraw() {
 	return true;
 }
 
-Menu* Menu::setOutput(MenuOutput** arr, uint8_t n) {
+Menu& Menu::setOutput(MenuOutput** arr, uint8_t n) {
 	setOutput(arr, n, true);
-	return this;
+	return *this;
 }
 
 void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) {

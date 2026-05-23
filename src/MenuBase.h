@@ -64,13 +64,12 @@ template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
 	MenuBase(const char * _title) : MenuCore(_title) {};
-	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
-	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
-	MenuDerived* setTitle(const char * _title);
+	MenuDerived& setResponder(void (*responder)(MenuDerived*), MenuEvent action);
+	MenuDerived& setTitle(const char * _title);
 	virtual MenuReaction doAction(MenuAction action) override;
 
 protected:
-	MenuReaction distributeAction(MenuAction action);
+	MenuReaction distributeAction(MenuAction& action);
 private:
 	/**
 	** @brief Defines handlers for MenuEvents
@@ -90,24 +89,19 @@ MenuReaction MenuBase<MenuDerived>::doAction(MenuAction action) {
 	return distributeAction(action);
 }
 template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuAction event) {
+MenuDerived& MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuEvent event) {
 	responders[(MenuEvent)event].responder = responder;
-	return (MenuDerived*)this;
+	return *(MenuDerived*)this;
 }
 template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setResponder(void (*responder)(MenuDerived*), MenuReaction event) {
-	responders[(MenuEvent)event].responder = responder;
-	return (MenuDerived*)this;
-}
-template <class MenuDerived>
-MenuDerived* MenuBase<MenuDerived>::setTitle(String _title) {
+MenuDerived& MenuBase<MenuDerived>::setTitle(const char* _title) {
 	title = _title;
 	hasChanges = true;
-	return (MenuDerived*)this;
+	return *(MenuDerived*)this;
 }
 
 template <class MenuDerived>
-MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction action) {
+MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction& action) {
 	MenuReaction reaction = MenuReaction::noReaction;
 	switch (action) {
 	case MenuAction::engage:

@@ -4,18 +4,18 @@
 
 class MenuToggle : public MenuBase<MenuToggle> {
 public:
-	MenuToggle(String _title, bool* var = nullptr, String trueStr="True", String falseStr="False") :
+	MenuToggle(const char * _title, bool& var, const char * trueStr="True", const char * falseStr="False") :
 		MenuBase(_title), variable(var), trueLabel(trueStr), falseLabel(falseStr)
 	{}
 	bool needsRedraw() override;
-	MenuToggle* setVar(bool* _variable);
-	MenuToggle* setTrue(String label);
-	MenuToggle* setFalse(String label);
-	String getTitle() override;
+	MenuToggle& setVar(bool& _variable);
+	MenuToggle& setTrue(const char * label);
+	MenuToggle& setFalse(const char * label);
+	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 private:
 	MenuReaction engage() override;
-	bool* variable = nullptr;
+	bool& variable;
 	bool lastValue;
-	String trueLabel = "true";
-	String falseLabel = "false";
+	const char * trueLabel;
+	const char * falseLabel;
 };

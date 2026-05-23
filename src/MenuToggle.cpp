@@ -1,15 +1,12 @@
 #include "MenuToggle.h"
 
 bool MenuToggle::needsRedraw() {
-	return (*variable != lastValue) || hasChanges;
+	return (variable != lastValue) || hasChanges;
 }
 
 MenuReaction MenuToggle::engage() {
-	if (variable != nullptr) {
-		*variable = !*variable;
-		return MenuReaction::changeValue;
-	}
-	return MenuReaction::noReaction;
+	variable = !variable;
+	return MenuReaction::changeValue;
 }
 
 MenuCore::TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
@@ -22,23 +19,23 @@ MenuCore::TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
 	return flags;
 }
 
-MenuToggle* MenuToggle::setVar(bool* var) {
+MenuToggle& MenuToggle::setVar(bool& var) {
 	variable = var;
-	return this;
+	return *this;
 }
 
-MenuToggle* MenuToggle::setTrue(String label) {
+MenuToggle& MenuToggle::setTrue(const char * label) {
 	trueLabel = label;
-	if (*variable == true) {
+	if (variable == true) {
 		hasChanges = true;
 	}
-	return this;
+	return *this;
 }
 
-MenuToggle* MenuToggle::setFalse(String label) {
+MenuToggle& MenuToggle::setFalse(const char* label) {
 	falseLabel = label;
-	if (*variable == false) {
+	if (variable == false) {
 		hasChanges = true;
 	}
-	return this;
+	return *this;
 }
