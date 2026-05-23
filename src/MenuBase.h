@@ -4,7 +4,7 @@
 
 typedef uint8_t MenuEvent;
 
-enum struct MenuAction : MenuEvent {
+enum MenuAction : MenuEvent {
 	noAction = 0,
 	engage,
 	disengage,
@@ -14,7 +14,7 @@ enum struct MenuAction : MenuEvent {
 	loseFocus,
 	lastAction
 };
-enum struct MenuReaction : MenuEvent {
+enum MenuReaction : MenuEvent {
 	noReaction = (MenuEvent)MenuAction::lastAction + 1,
 	openUp,
 	closeDown,
@@ -126,7 +126,7 @@ MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction& action) {
 		return MenuReaction::noReaction;
 		break;
 	}
-	responders[(MenuEvent)action].responder((MenuDerived*)this);
-	responders[(MenuEvent)reaction].responder((MenuDerived*)this);
+	responders[action].responder((MenuDerived*)this);
+	responders[reaction].responder((MenuDerived*)this);
 	return reaction;
 }
