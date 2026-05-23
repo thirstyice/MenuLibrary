@@ -4,10 +4,10 @@
 
 class MenuBack : public MenuItem {
 public:
-	MenuBack(String _title) : MenuItem(_title) {}
+	MenuBack(const char * _title) : MenuItem(_title) {}
 	MenuBack() : MenuBack("Back") {}
 protected:
-	String getTitle() override;
+	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 private:
 	MenuReaction engage() override {return MenuReaction::closeDown;}
 };

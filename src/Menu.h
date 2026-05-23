@@ -6,9 +6,9 @@ class Menu final : public MenuBase<Menu> {
 public:
 	bool doDraw() override;
 	Menu* setOutput(MenuOutput** outputArray, uint8_t outputCount);
-	Menu(String _title, MenuCore** itemArray, uint8_t itemCount) : MenuBase(_title), numItems(itemCount), submenu(itemArray) {}
+	Menu(const char * _title, MenuCore** itemArray, uint8_t itemCount) : MenuBase(_title), numItems(itemCount), submenu(itemArray) {}
 	template <class... args>
-	Menu(String _title, MenuCore* arg1, args...items) : MenuBase(_title), needsFree(true) {
+	Menu(const char * _title, MenuCore* arg1, args...items) : MenuBase(_title), needsFree(true) {
 		numItems = sizeof...(items) + 1;
 		MenuCore* itemArray[numItems] = {arg1, items...};
 		size_t memsize = numItems * sizeof(MenuCore*);
@@ -20,7 +20,7 @@ public:
 	Menu(MenuCore** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
 	Menu() : Menu((MenuCore**)nullptr, 0) {}
 	MenuReaction doAction(MenuAction) override;
-	String getTitle() override;
+	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 	~Menu();
 
 protected:

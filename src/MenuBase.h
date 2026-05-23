@@ -26,8 +26,20 @@ enum struct MenuReaction : MenuEvent {
 class MenuCore {
 public:
 	MenuCore() {};
-	MenuCore(String _title) : title(_title) {}
-	virtual String getTitle() {hasChanges = false; return title;};
+	MenuCore(const char * _title) : title(_title) {}
+
+	struct TitleFlags { // Indexes in title for formatting
+		uint8_t selectionStart = 0; // First character in selection
+		uint8_t selectionLength = 0; // Length of selection
+		uint8_t alignRightFrom = 255; // First character to be aligned right
+		uint8_t replaceableWithCursor[3] = {255, 255, 255};
+	};
+
+
+	virtual TitleFlags getTitle(char* buf, const uint8_t& len) {
+		hasChanges = false;
+		strlcpy(buf, title, len);
+	};
 	virtual bool doDraw() {return false;}
 	virtual MenuReaction doAction(MenuAction action) =0;
 	virtual ~MenuCore() {}
@@ -43,7 +55,7 @@ protected:
 	virtual MenuReaction decrease() {return MenuReaction::noReaction;}
 	virtual MenuReaction getFocus() {return MenuReaction::noReaction;}
 	virtual MenuReaction loseFocus() {return MenuReaction::noReaction;}
-	String title = "-";
+	const char * title;
 	bool isOpen = false;
 	bool hasChanges = true;
 };
@@ -51,10 +63,10 @@ protected:
 template <class MenuDerived>
 class MenuBase : public MenuCore {
 public:
-	MenuBase(String _title) : MenuCore(_title) {};
+	MenuBase(const char * _title) : MenuCore(_title) {};
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuAction action);
 	MenuDerived* setResponder(void (*responder)(MenuDerived*), MenuReaction reaction);
-	MenuDerived* setTitle(String _title);
+	MenuDerived* setTitle(const char * _title);
 	virtual MenuReaction doAction(MenuAction action) override;
 
 protected:

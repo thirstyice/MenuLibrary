@@ -2,22 +2,10 @@
 
 #include <Arduino.h>
 
-struct MenuChars{
-public:
-	enum : uint8_t {
-		NoPrint,
-		StartOfSelection,
-		EndOfSelection,
-		ReplaceableWithCursor,
-		AlignRightFollowing,
-		EmphasizeFollowing,
-		BackArrow,
-		SubmenuArrow,
-		Break,
-		Count
-	};
-};
-extern const char MenuChar[MenuChars::Count];
+struct MenuChars{	enum : char {
+	BackArrow = '\10',
+	SubmenuArrow = '\14',
+};};
 
 class MenuOutput {
 protected:
@@ -30,4 +18,5 @@ public:
 	uint8_t startLine;
 	uint8_t getFirstLineIndex(uint8_t totalLines, uint8_t focus);
 	const uint8_t getHeight() {return height;}
+	const uint8_t getWidth() {return width;}
 };

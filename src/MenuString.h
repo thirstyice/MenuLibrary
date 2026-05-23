@@ -4,10 +4,10 @@
 
 class MenuString: public MenuBase<MenuString> {
 public:
-	MenuString(String _title, String& str) : MenuBase(_title), string(str) {}
+	MenuString(const char* _title, String& str) : MenuBase(_title), string(str) {}
 	MenuString* setString(String& str);
 	MenuString* setMaxLength(uint8_t len);
-	String getTitle() override;
+	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 	bool needsRedraw() override;
 private:
 	String& string;

@@ -13,19 +13,45 @@ MenuString* MenuString::setMaxLength(uint8_t _maxLength) {
 	return this;
 }
 
-String MenuString::getTitle() {
+MenuCore::TitleFlags MenuString::getTitle(char * buf, const uint8_t& len) {
 	hasChanges = false;
-	String outputString = title + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing];
-	if (isOpen) {
-		outputString += string.substring(0, index);
-		outputString += MenuChar[MenuChars::StartOfSelection];
-		outputString += string.charAt(index);
-		outputString += MenuChar[MenuChars::EndOfSelection];
-		outputString += string.substring(index+1);
+	TitleFlags flags;
+	const char * temp;
+
+	// Title
+
+	uint8_t testLen = strlen(title);
+	if (len<(testLen + string.length()) && isOpen) {
+		temp = &title[testLen-1];
 	} else {
-		outputString += string;
+		temp = title;
 	}
-	return outputString;
+	strcpy(buf, temp);
+	flags.alignRightFrom = strlen(buf);
+
+	// Value
+
+	testLen = (len-flags.alignRightFrom)/2;
+	temp = string.c_str();
+	if (string.length()>=(testLen*2) && isOpen && index>testLen) {
+		uint8_t offset;
+		if (index + (testLen) > string.length()) {
+			uint8_t offset = string.length() - (testLen*2);
+		} else {
+			offset = (index-(testLen));
+		}
+		temp += offset;
+		strlcat(buf, temp, len);
+		flags.selectionStart = flags.alignRightFrom + (index-offset);
+	} else {
+		strlcat(buf, string.c_str(), len);
+		flags.selectionStart = flags.alignRightFrom + index;
+	}
+	if (isOpen) {
+		flags.selectionLength = 1;
+	}
+
+	return flags;
 }
 
 bool MenuString::needsRedraw() {

@@ -8,7 +8,7 @@ const bool MenuIP::isBigEndian() {
 	return (u.c[0]==1);
 }
 
-MenuIP::MenuIP(String _title, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t* thirdOctet, uint8_t* fourthOctet) :
+MenuIP::MenuIP(const char * _title, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t* thirdOctet, uint8_t* fourthOctet) :
 	MenuValue(
 		_title,
 		new MenuValues<uint8_t>(firstOctet, 255, 0, 1),
@@ -20,12 +20,12 @@ MenuIP::MenuIP(String _title, uint8_t* firstOctet, uint8_t* secondOctet, uint8_t
 	setSeparator('.');
 }
 
-MenuIP::MenuIP(String _title, IPAddress& ip) :
+MenuIP::MenuIP(const char * _title, IPAddress& ip) :
 	MenuIP(_title, &ip[0], &ip[1], &ip[2], &ip[3])
 {}
 
 
-MenuIP::MenuIP(String _title, uint32_t& ip) :
+MenuIP::MenuIP(const char * _title, uint32_t& ip) :
 	MenuIP(_title,
 		isBigEndian()?((uint8_t*)&ip)+3:((uint8_t*)&ip)+0,
 		isBigEndian()?((uint8_t*)&ip)+2:((uint8_t*)&ip)+1,

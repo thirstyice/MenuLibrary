@@ -31,7 +31,10 @@ bool Menu::doDraw() {
 				break;
 			}
 			if (submenu[item]->needsRedraw() || didScroll || forceNextDraw) {
-				outputs[output]->drawLine(line, submenu[item]->getTitle());
+				uint8_t length = outputs[output]->getWidth() + 1;
+				char subTitle[length];
+				submenu[item]->getTitle(subTitle, length);
+				outputs[output]->drawLine(line, subTitle);
 			}
 			if (item==focusedLine) {
 				outputs[output]->setFocusedLine(line);
@@ -61,9 +64,17 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 	}
 }
 
-String Menu::getTitle() {
+MenuCore::TitleFlags Menu::getTitle(char * buf, const uint8_t& len) {
+	TitleFlags flags;
 	hasChanges = false;
-	return MenuChar[MenuChars::SubmenuArrow] + title;
+	if (len <= 1) {
+		buf[0] = '\0';
+		return flags;
+	};
+	buf[0] = MenuChars::SubmenuArrow;
+	buf[1] = '\0';
+	strlcat(buf, title, len);
+	return flags;
 }
 MenuReaction Menu::doAction(MenuAction action) {
 	if (submenuIsOpen) {

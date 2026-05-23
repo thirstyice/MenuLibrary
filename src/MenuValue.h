@@ -49,7 +49,7 @@ public:
 	MenuValue(String _title, args...variables);
 	MenuValue(const MenuValue &);
 	~MenuValue();
-	String getTitle();
+	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 	bool needsRedraw();
 	MenuValue* setSeparator(char _separator);
 

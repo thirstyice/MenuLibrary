@@ -37,8 +37,62 @@ MenuReaction MenuValue::decrease() {
 	return MenuReaction::changeValue;
 }
 
-String MenuValue::getTitle() {
+MenuCore::TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
+	TitleFlags flags;
+	const char* titleChar = &title[strlen(title)-1];
+
 	hasChanges = false;
+
+	uint8_t valueStrSize[size];
+	uint16_t valueStrTotal = 0;
+	for (uint8_t i=0; i<size; i++) {
+		valueStrSize[i] = strlen(values[i]->getValueAsString().c_str());
+		valueStrTotal += valueStrSize[i];
+	}
+	uint8_t beginAtValue = 0;
+	if (valueStrTotal >= (len-1)-strlen(title) && isOpen) {
+		strcpy(buf, &title[strlen(title)-1]);
+		if (valueStrTotal >= len-1) {
+			uint8_t testChars = valueStrSize[selected];
+			beginAtValue = selected;
+			// TODO incorporate c strings
+		}
+	} else {
+		strlcpy(buf, title, len);
+	}
+
+	flags.alignRightFrom = strlen(buf);
+	while (strlcat(buf, values[beginAtValue]->getValueAsString().c_str(), len) < len) {
+		beginAtValue++;
+		if (beginAtValue>=size) {
+			break;
+		}
+		char sep[] = {separator, '\0'};
+		strlcat(buf, sep, len);
+		if (beginAtValue==selected) {
+			flags.selectionStart = strlen(buf);
+		}
+	}
+	if (isOpen) {
+		flags.selectionLength = strlen(values[selected]->getValueAsString().c_str());
+	}
+
+
+
+	} else {
+		strlcpy(buf, title, len);
+		flags.alignRightFrom = strlen(buf);
+		uint8_t i=0;
+		while (strlcat(buf, values[i]->getValueAsString().c_str(), len) < len) {
+			i++;
+			if (i>=size) {
+				break;
+			}
+			char sep[] = {separator, '\0'};
+			strlcat(buf, sep, len);
+		}
+	}
+
 	String valuesString = "";
 	for (uint8_t i=0; i<size; i++) {
 		String variableString = values[i]->getValueAsString();

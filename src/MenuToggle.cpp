@@ -12,10 +12,14 @@ MenuReaction MenuToggle::engage() {
 	return MenuReaction::noReaction;
 }
 
-String MenuToggle::getTitle() {
+MenuCore::TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
+	TitleFlags flags;
 	hasChanges = false;
-	lastValue = *variable;
-	return (title + MenuChar[MenuChars::AlignRightFollowing] + (*variable?trueLabel:falseLabel));
+	lastValue = variable;
+	strlcpy(buf, title, len);
+	flags.alignRightFrom = strlen(buf);
+	strlcat(buf, (variable?trueLabel:falseLabel), len);
+	return flags;
 }
 
 MenuToggle* MenuToggle::setVar(bool* var) {
