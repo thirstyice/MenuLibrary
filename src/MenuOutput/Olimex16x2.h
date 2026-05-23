@@ -7,31 +7,27 @@ class MenuOutputOlimex16x2 : public MenuOutputGenericTextBased {
 public:
 	MenuOutputOlimex16x2(Olimex16x2* _lcd) :
 		lcd(_lcd) {width = 16; height = 2;}
-	void setCursor(char newCursor) {controlChars[MenuChars::StartOfSelection]=newCursor;};
-	void outputLine(uint8_t line, String* contents);
+	void setCursor(char newCursor) {cursor=newCursor;};
+	void outputLine(uint8_t line, const char* contents);
 	void setFocusedLine(uint8_t line);
 private:
-	char controlChars[MenuChars::Count] = {
-		1,
-		126,
-		1,
-		1,
-		2,
-		1,
-		127,
-		3,
-		4
-	};
-	char getControlChar(uint8_t character) {if (character<=MenuChars::Count){return controlChars[character];}return -1;}
+	char cursor = 126;
+	char backArrow = 127;
+	char submenuArrow = 126;
 	Olimex16x2* lcd;
 };
 
-void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, String* line) {
-	bool isSubmenu = line->startsWith(String(controlChars[MenuChars::SubmenuArrow]));
+void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, const char* line, TitleFlags flags) {
+	bool isSubmenu = line[0] == MenuChars::SubmenuArrow;
 	if (isSubmenu) {
-		line->remove(0,1);
+		line = &line[1];
 	}
-	*line = ((lineIndex==focusedLine)?String(controlChars[MenuChars::StartOfSelection]):" ") + *line;
+	char lineOut[width+1];
+	lineOut[0] = (lineIndex==focusedLine?cursor:' ');
+	if (flags.alignRightFrom < width) {
+		strncat(lineOut, line, flags.alignRightFrom);
+	}
+	strlcat(lineOut, line, min(width+1, flags.alignRightFrom));
 	int alignRightFrom = line->indexOf(controlChars[MenuChars::AlignRightFollowing]);
 	line->remove(alignRightFrom, 1);
 	if (width > (line->length()+isSubmenu) && alignRightFrom != -1) {
