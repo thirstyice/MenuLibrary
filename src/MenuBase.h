@@ -28,14 +28,6 @@ public:
 	MenuCore() {};
 	MenuCore(const char * _title) : title(_title) {}
 
-	struct TitleFlags { // Indexes in title for formatting
-		uint8_t selectionStart = 0; // First character in selection
-		uint8_t selectionLength = 0; // Length of selection
-		uint8_t alignRightFrom = 255; // First character to be aligned right
-		uint8_t replaceableWithCursor[3] = {255, 255, 255};
-	};
-
-
 	virtual TitleFlags getTitle(char* buf, const uint8_t& len) {
 		hasChanges = false;
 		strlcpy(buf, title, len);

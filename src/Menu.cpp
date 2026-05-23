@@ -64,7 +64,7 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 	}
 }
 
-MenuCore::TitleFlags Menu::getTitle(char * buf, const uint8_t& len) {
+TitleFlags Menu::getTitle(char * buf, const uint8_t& len) {
 	TitleFlags flags;
 	hasChanges = false;
 	if (len <= 1) {

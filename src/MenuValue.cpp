@@ -81,6 +81,7 @@ MenuCore::TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 		strlcat(buf, sep, len);
 		if (beginAtValue==selected) {
 			flags.selectionStart = strlen(buf);
+			flags.replaceableWithCursor[0] = strlen(buf);
 		}
 	}
 	if (isOpen) {
