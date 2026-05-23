@@ -51,64 +51,48 @@ MenuCore::TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 	}
 	uint8_t beginAtValue = 0;
 	if (valueStrTotal >= (len-1)-strlen(title) && isOpen) {
-		strcpy(buf, &title[strlen(title)-1]);
+		strcpy(buf, titleChar);
 		if (valueStrTotal >= len-1) {
 			uint8_t testChars = valueStrSize[selected];
 			beginAtValue = selected;
-			// TODO incorporate c strings
+			uint8_t loop = 1;
+			while (testChars < len-1) {
+				if (selected + loop < size) {
+					testChars += valueStrSize[selected + loop] + 1;
+				}
+				if (selected - loop >= 0) {
+					testChars += valueStrSize[selected - loop] + 1;
+					beginAtValue = selected - loop;
+				}
+			}
 		}
 	} else {
 		strlcpy(buf, title, len);
 	}
 
 	flags.alignRightFrom = strlen(buf);
+	flags.selectionStart = strlen(buf);
+	char sep[] = {separator, '\0'};
 	while (strlcat(buf, values[beginAtValue]->getValueAsString().c_str(), len) < len) {
 		beginAtValue++;
 		if (beginAtValue>=size) {
 			break;
 		}
-		char sep[] = {separator, '\0'};
 		strlcat(buf, sep, len);
 		if (beginAtValue==selected) {
 			flags.selectionStart = strlen(buf);
 		}
 	}
 	if (isOpen) {
-		flags.selectionLength = strlen(values[selected]->getValueAsString().c_str());
+		flags.selectionLength = valueStrSize[selected];
 	}
-
-
-
-	} else {
-		strlcpy(buf, title, len);
-		flags.alignRightFrom = strlen(buf);
-		uint8_t i=0;
-		while (strlcat(buf, values[i]->getValueAsString().c_str(), len) < len) {
-			i++;
-			if (i>=size) {
-				break;
-			}
-			char sep[] = {separator, '\0'};
-			strlcat(buf, sep, len);
-		}
-	}
-
-	String valuesString = "";
-	for (uint8_t i=0; i<size; i++) {
-		String variableString = values[i]->getValueAsString();
-		if (isOpen == true && selected == i) {
-			variableString = String(MenuChar[MenuChars::StartOfSelection]) + variableString + String(MenuChar[MenuChars::EndOfSelection]);
-		}
-		valuesString += variableString + MenuChar[MenuChars::Break] + separator + String(MenuChar[MenuChars::ReplaceableWithCursor]);
-	}
-	valuesString.remove(valuesString.length()-3); // The trailing separator
-	return (title + MenuChar[MenuChars::Break] + MenuChar[MenuChars::AlignRightFollowing] + valuesString);
+	return flags;
 }
 
-MenuValue* MenuValue::setSeparator(char _separator) {
+MenuValue& MenuValue::setSeparator(char _separator) {
 	separator = _separator;
 	hasChanges = true;
-	return this;
+	return *this;
 }
 
 bool MenuValue::needsRedraw() {
