@@ -52,7 +52,7 @@ TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 	uint8_t beginAtValue = 0;
 	if (valueStrTotal >= (len-1)-strlen(title) && isOpen) {
 		strcpy(buf, titleChar);
-		if (valueStrTotal >= len-1) {
+		if (valueStrTotal >= (uint16_t)(len-1)) {
 			uint8_t testChars = valueStrSize[selected];
 			beginAtValue = selected;
 			uint8_t loop = 1;
