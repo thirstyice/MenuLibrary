@@ -19,8 +19,9 @@ protected:
 	uint8_t width = 0;
 	uint8_t height = 0;
 	uint8_t focusedLine;
+	MenuOutput(uint8_t _width, uint8_t _height) : width(_width), height(_height) {}
 public:
-	virtual void drawLine(uint8_t lineNumber, String contents) =0;
+	virtual void drawLine(uint8_t lineNumber, const char* contents, TitleFlags flags) =0;
 	virtual void setFocusedLine(uint8_t lineNumber) =0;
 	uint8_t startLine;
 	uint8_t getFirstLineIndex(uint8_t totalLines, uint8_t focus);

@@ -4,13 +4,44 @@
 
 class MenuOutputGenericTextBased : public MenuOutput {
 public:
-	MenuOutputGenericTextBased() {};
-	void drawLine(uint8_t line, String contents);
-	virtual void outputLine(uint8_t line, String* contents) =0;
-
+	void drawLine(uint8_t line, const char * contents, TitleFlags flags);
+	virtual void outputLine(uint8_t line, const char * contents, TitleFlags flags) =0;
 protected:
-	void trimForOutput(String*);
-	uint8_t countBreakChars(String*);
-	void removeBreakChars(String*);
-	virtual char getControlChar(uint8_t character) =0;
+	char cursor;
+	char submenuArrow;
+	char backArrow;
+	MenuOutputGenericTextBased(uint8_t _width, uint8_t _height, char _cursor, char _submenu, char _back) :
+		MenuOutput(_width, _height), cursor(_cursor), submenuArrow(_submenu), backArrow(_back)
+	{}
+
 };
+
+void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, TitleFlags flags) {
+	char lineOut[width+2];
+	bool isSubmenu = line[0] == MenuChars::SubmenuArrow;
+	if (isSubmenu) {
+		line = &line[1];
+	}
+	lineOut[0] = (lineIndex==focusedLine?cursor:' ');
+	if (flags.alignRightFrom < width) {
+		strncat(lineOut, line, flags.alignRightFrom);
+		int spaceEnd = flags.alignRightFrom + (width - strlen(line));
+		for (int i = flags.alignRightFrom; i<spaceEnd; ++i) {
+			lineOut[i] = ' ';
+		}
+		strlcat(lineOut, &line[flags.alignRightFrom], width+1);
+	} else {
+		strlcat(lineOut, line, width + 1);
+	}
+
+	for (uint8_t i=1; i<width+2; i++) {
+		if (lineOut[i] == MenuChars::BackArrow) {
+			lineOut[i] = backArrow;
+		}
+	}
+
+	if (isSubmenu) {
+		lineOut[width+1] = submenuArrow;
+	}
+	outputLine(lineIndex, lineOut, flags);
+}
