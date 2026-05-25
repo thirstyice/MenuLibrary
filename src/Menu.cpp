@@ -15,18 +15,9 @@ bool Menu::doDraw() {
 		uint8_t numLines = outputs[output]->getHeight();
 		bool didScroll = startLine != outputs[output]->startLine;
 		outputs[output]->startLine = startLine;
-		uint8_t line = 0;
-		for (uint8_t item=startLine; line<numLines; line++) {
-		// while (item<numItems) {
-			// uint8_t hiddenType = submenu.getHidden();
-			// if (hiddenType == NotHidden) {
-				// break;
-			// }
-			// if (hiddenType == NewlyHidden) {
-				// didScroll = true;
-			// }
-		// 	item++;
-		// }
+		uint8_t line;
+		for (line=0; line<numLines; line++) {
+			uint8_t item = line + startLine;
 			if (item >= numItems) {
 				break;
 			}
