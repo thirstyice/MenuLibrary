@@ -16,8 +16,18 @@ public:
 		memcpy(submenu, itemArray, memsize);
 	};
 	template <MenuCore&... items>
-	Menu(MenuCore& arg1, ...) : Menu("-", arg1, items...) {}
-	Menu(MenuCore** itemArray, uint8_t count) : Menu("-", itemArray, count) {}
+	Menu(MenuCore& arg1, ...) : Menu("", arg1, items...) {}
+	template <MenuCore*... items>
+	Menu(const char * _title, MenuCore* arg1, ...) : MenuBase(_title), needsFree(true) {
+		numItems = sizeof...(items) + 1;
+		MenuCore* itemArray[numItems] = {arg1, items...};
+		size_t memsize = numItems * sizeof(MenuCore*);
+		submenu = (MenuCore**)malloc(memsize);
+		memcpy(submenu, itemArray, memsize);
+	};
+	template <MenuCore*... items>
+	Menu(MenuCore* arg1, ...) : Menu("", arg1, items...) {}
+	Menu(MenuCore** itemArray, uint8_t count) : Menu("", itemArray, count) {}
 	Menu() : Menu((MenuCore**)nullptr, 0) {}
 	MenuReaction doAction(MenuAction) override;
 	TitleFlags getTitle(char* buf, const uint8_t& len) override;

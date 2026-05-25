@@ -29,8 +29,10 @@ String stringTest = "Hello World!";
 String shortStr = "Short!";
 
 void printValues(MenuItem* caller) {
+	char buf[40];
 	Serial.print("Called by: ");
-	Serial.println(caller->getTitle());
+	caller->getTitle(buf, 40);
+	Serial.println(buf);
 	Serial.print(F("Toggle is now: "));
 	Serial.println(toggleTest);
 
@@ -62,27 +64,26 @@ void printValues(MenuItem* caller) {
 }
 
 
-Menu menu{
+Menu menu{ "",
 	new MenuItem("MenuLibrary Test"),
-	(new MenuItem("Print values"))->setResponder(printValues, MenuAction::engage),
+	&(new MenuItem("Print values"))->setResponder(printValues, MenuAction::engage),
 	new Menu("Submenu",
 		&MenuBackDefault,
-		(new MenuItem("Change Back Text"))->setResponder([](MenuItem*){MenuBackDefault.setTitle("Back (changed)");}, MenuAction::engage),
+		&(new MenuItem("Change Back Text"))->setResponder([](MenuItem*){MenuBackDefault.setTitle("Back (changed)");}, MenuAction::engage),
 		new MenuItem("Hello"),
 		new MenuItem("World"),
-		(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
+		&(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
 	),
 	new Menu("Small submenu, big title",
 		&MenuBackDefault
 	),
-	(new MenuToggle("overridden"))->setTitle("Toggle:")->setVar(&toggleTest),
+	&((new MenuToggle("overridden", toggleTest))->setTitle("Toggle:")),
 	new MenuValue("Value",
-		new MenuValues<uint8_t>(&valueTest, 255),
-		new MenuValues<float>(&valueTestFloat, 1, 0, 0.1)
+		new MenuValues<uint8_t>(valueTest, 255),
+		new MenuValues<float>(valueTestFloat, 1, 0, 0.1)
 	),
-	new MenuIP("IP(8x4):", &ipTest1[0], &ipTest1[1], &ipTest1[2], &ipTest1[3]),
+	new MenuIP("IP(8x4):", ipTest1[0], ipTest1[1], ipTest1[2], ipTest1[3]),
 	new MenuIP("IP(32):", ipTest2),
-	new MenuReadOnly("RO:", new MenuIP("IP(32):", ipTest2)),
 	new MenuString("String:", stringTest),
 	new MenuString("Str:", shortStr)
 };
