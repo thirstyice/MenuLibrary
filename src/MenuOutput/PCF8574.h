@@ -20,7 +20,6 @@ private:
 
 
 void MenuOutputPCF8574::outputLine(uint8_t lineIndex, char* line, TitleFlags flags) {
-
 	if (flags.selectionLength > 0) {
 		if (flags.alignRightFrom < flags.selectionStart) {
 			flags.selectionStart += (width - strlen(line));
@@ -29,6 +28,9 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, char* line, TitleFlags fla
 	}
 	lcd->setCursor(0, lineIndex);
 	lcd->print(line);
+	for (uint8_t i=strlen(line); i<=width; i++) {
+		lcd->print(" ");
+	}
 }
 
 void MenuOutputPCF8574::setFocusedLine(uint8_t line) {
