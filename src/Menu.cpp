@@ -33,15 +33,16 @@ bool Menu::doDraw() {
 			if (submenu[item]->needsRedraw() || didScroll || forceNextDraw) {
 				uint8_t length = outputs[output]->getWidth() + 1;
 				char subTitle[length];
-				submenu[item]->getTitle(subTitle, length);
-				outputs[output]->drawLine(line, subTitle);
+				TitleFlags flags = submenu[item]->getTitle(subTitle, length);
+				outputs[output]->drawLine(line, subTitle, flags);
 			}
 			if (item==focusedLine) {
 				outputs[output]->setFocusedLine(line);
 			}
 		}
+		TitleFlags noFlags;
 		while (line<numLines) {
-			outputs[output]->drawLine(line, "");
+			outputs[output]->drawLine(line, "", noFlags);
 			line++;
 		}
 	}
@@ -58,8 +59,9 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 	outputs = outputArray;
 	numOutputs = number;
 	if (isTopLevel) {
+		TitleFlags noFlags;
 		for (uint8_t i=0; i<numOutputs; i++) {
-			outputs[i]->drawLine(0, "Loading...");
+			outputs[i]->drawLine(0, "Loading...", noFlags);
 		}
 	}
 }

@@ -37,7 +37,7 @@ MenuReaction MenuValue::decrease() {
 	return MenuReaction::changeValue;
 }
 
-MenuCore::TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
+TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 	TitleFlags flags;
 	const char* titleChar = &title[strlen(title)-1];
 

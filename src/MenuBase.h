@@ -31,6 +31,8 @@ public:
 	virtual TitleFlags getTitle(char* buf, const uint8_t& len) {
 		hasChanges = false;
 		strlcpy(buf, title, len);
+		TitleFlags noFlags;
+		return noFlags;
 	};
 	virtual bool doDraw() {return false;}
 	virtual MenuReaction doAction(MenuAction action) =0;

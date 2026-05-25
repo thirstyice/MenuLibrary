@@ -5,7 +5,7 @@
 class MenuOutputGenericTextBased : public MenuOutput {
 public:
 	void drawLine(uint8_t line, const char * contents, TitleFlags flags);
-	virtual void outputLine(uint8_t line, const char * contents, TitleFlags flags) =0;
+	virtual void outputLine(uint8_t line, char * contents, TitleFlags flags) =0;
 protected:
 	char cursor;
 	char submenuArrow;

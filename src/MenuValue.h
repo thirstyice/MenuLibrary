@@ -75,7 +75,7 @@ MenuValue::MenuValue(const char * _title, ...) : MenuBase(_title) {
 
 template <typename numberType>
 String MenuValues<numberType>::getValueAsString() {
-	return String(*variable);
+	return String(variable);
 }
 
 template <typename numberType>

@@ -13,7 +13,7 @@ MenuString& MenuString::setMaxLength(uint8_t _maxLength) {
 	return *this;
 }
 
-MenuCore::TitleFlags MenuString::getTitle(char * buf, const uint8_t& len) {
+TitleFlags MenuString::getTitle(char * buf, const uint8_t& len) {
 	hasChanges = false;
 	TitleFlags flags;
 	const char * temp;
@@ -36,7 +36,7 @@ MenuCore::TitleFlags MenuString::getTitle(char * buf, const uint8_t& len) {
 	if (string.length()>=(testLen*2) && isOpen && index>testLen) {
 		uint8_t offset;
 		if (index + (testLen) > string.length()) {
-			uint8_t offset = string.length() - (testLen*2);
+			offset = string.length() - (testLen*2);
 		} else {
 			offset = (index-(testLen));
 		}

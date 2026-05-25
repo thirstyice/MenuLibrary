@@ -9,7 +9,7 @@ MenuReaction MenuToggle::engage() {
 	return MenuReaction::changeValue;
 }
 
-MenuCore::TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
+TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
 	TitleFlags flags;
 	hasChanges = false;
 	lastValue = variable;
