@@ -7,26 +7,26 @@ public:
 	bool doDraw() override;
 	Menu& setOutput(MenuOutput** outputArray, uint8_t outputCount);
 	Menu(const char * _title, MenuCore** itemArray, uint8_t itemCount) : MenuBase(_title), numItems(itemCount), submenu(itemArray) {}
-	template <MenuCore&... items>
-	Menu(const char * _title, MenuCore& arg1, ...) : MenuBase(_title), needsFree(true) {
-		numItems = sizeof...(items) + 1;
-		MenuCore* itemArray[numItems] = {&arg1, &items...};
+	template <typename... Ts>
+	Menu(const char * _title, MenuCore& arg1, Ts...args) : MenuBase(_title), needsFree(true) {
+		numItems = sizeof...(args) + 1;
+		MenuCore* itemArray[numItems] = {&arg1, &args...};
 		size_t memsize = numItems * sizeof(MenuCore*);
 		submenu = (MenuCore**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 	};
-	template <MenuCore&... items>
-	Menu(MenuCore& arg1, ...) : Menu("", arg1, items...) {}
-	template <MenuCore*... items>
-	Menu(const char * _title, MenuCore* arg1, ...) : MenuBase(_title), needsFree(true) {
-		numItems = sizeof...(items) + 1;
-		MenuCore* itemArray[numItems] = {arg1, items...};
+	template <typename... Ts>
+	Menu(MenuCore& arg1, Ts...args) : Menu("", arg1, args...) {}
+	template <typename... Ts>
+	Menu(const char * _title, MenuCore* arg1, Ts...args) : MenuBase(_title), needsFree(true) {
+		numItems = sizeof...(args) + 1;
+		MenuCore* itemArray[numItems] = {arg1, args...};
 		size_t memsize = numItems * sizeof(MenuCore*);
 		submenu = (MenuCore**)malloc(memsize);
 		memcpy(submenu, itemArray, memsize);
 	};
-	template <MenuCore*... items>
-	Menu(MenuCore* arg1, ...) : Menu("", arg1, items...) {}
+	template <typename... Ts>
+	Menu(MenuCore* arg1, Ts...args) : Menu("", arg1, args...) {}
 	Menu(MenuCore** itemArray, uint8_t count) : Menu("", itemArray, count) {}
 	Menu() : Menu((MenuCore**)nullptr, 0) {}
 	MenuReaction doAction(MenuAction) override;
