@@ -25,6 +25,9 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, char* line, TitleFlags 
 		line[flags.selectionStart] = cursor;
 	}
 	lcd->drawLine(lineIndex, line);
+	if (flags.isSubmenu) {
+		lcd->drawChar(submenuArrow, lineIndex, width);
+	}
 }
 
 void MenuOutputOlimex16x2::setFocusedLine(uint8_t line) {

@@ -28,9 +28,10 @@ void MenuOutputPCF8574::outputLine(uint8_t lineIndex, char* line, TitleFlags fla
 	}
 	lcd->setCursor(0, lineIndex);
 	lcd->print(line);
-	for (uint8_t i=strlen(line); i<=width; i++) {
+	for (uint8_t i=strlen(line); i<width; i++) {
 		lcd->print(" ");
 	}
+	lcd->print(flags.isSubmenu?submenuArrow:' ');
 }
 
 void MenuOutputPCF8574::setFocusedLine(uint8_t line) {

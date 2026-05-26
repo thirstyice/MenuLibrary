@@ -18,10 +18,6 @@ protected:
 
 void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, TitleFlags flags) {
 	char lineOut[width+2] = {0};
-	bool isSubmenu = line[0] == MenuChars::SubmenuArrow;
-	if (isSubmenu) {
-		line = &line[1];
-	}
 	lineOut[0] = ((lineIndex==focusedLine)?cursor:' ');
 	if (flags.alignRightFrom < width) {
 		strncat(lineOut, line, flags.alignRightFrom);
@@ -38,10 +34,6 @@ void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, T
 		if (lineOut[i] == MenuChars::BackArrow) {
 			lineOut[i] = backArrow;
 		}
-	}
-
-	if (isSubmenu) {
-		lineOut[width+1] = submenuArrow;
 	}
 	outputLine(lineIndex, lineOut, flags);
 }

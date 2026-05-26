@@ -60,13 +60,8 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 TitleFlags Menu::getTitle(char * buf, const uint8_t& len) {
 	TitleFlags flags;
 	hasChanges = false;
-	if (len <= 1) {
-		buf[0] = '\0';
-		return flags;
-	};
-	buf[0] = MenuChars::SubmenuArrow;
-	buf[1] = '\0';
-	strlcat(buf, title, len);
+	flags.isSubmenu = true;
+	strlcpy(buf, title, len);
 	return flags;
 }
 MenuReaction Menu::doAction(MenuAction action) {
