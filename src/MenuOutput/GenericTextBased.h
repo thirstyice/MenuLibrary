@@ -19,6 +19,9 @@ protected:
 void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, TitleFlags flags) {
 	char lineOut[width+2] = {0};
 	lineOut[0] = ((lineIndex==focusedLine)?cursor:' ');
+	if (flags.specialType==TitleFlags::SpecialTypes::Back) {
+		lineOut[1] = backArrow;
+	}
 	if (flags.alignRightFrom < width) {
 		strncat(lineOut, line, flags.alignRightFrom);
 		int spaceEnd = flags.alignRightFrom + (width - strlen(line));
@@ -28,12 +31,6 @@ void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, T
 		strlcat(lineOut, &line[flags.alignRightFrom], width+2);
 	} else {
 		strlcat(lineOut, line, width + 2);
-	}
-
-	for (uint8_t i=1; i<width+2; i++) {
-		if (lineOut[i] == MenuChars::BackArrow) {
-			lineOut[i] = backArrow;
-		}
 	}
 	outputLine(lineIndex, lineOut, flags);
 }

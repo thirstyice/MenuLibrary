@@ -60,7 +60,7 @@ void Menu::setOutput(MenuOutput** outputArray, uint8_t number, bool isTopLevel) 
 TitleFlags Menu::getTitle(char * buf, const uint8_t& len) {
 	TitleFlags flags;
 	hasChanges = false;
-	flags.isSubmenu = true;
+	flags.specialType = TitleFlags::SpecialTypes::Submenu;
 	strlcpy(buf, title, len);
 	return flags;
 }

@@ -17,7 +17,6 @@ private:
 };
 
 void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, char* line, TitleFlags flags) {
-
 	if (flags.selectionLength > 0) {
 		if (flags.alignRightFrom < flags.selectionStart) {
 			flags.selectionStart += (width - strlen(line));
@@ -25,7 +24,7 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, char* line, TitleFlags 
 		line[flags.selectionStart] = cursor;
 	}
 	lcd->drawLine(lineIndex, line);
-	if (flags.isSubmenu) {
+	if (flags.specialType == TitleFlags::SpecialTypes::Submenu) {
 		lcd->drawChar(submenuArrow, lineIndex, width);
 	}
 }
