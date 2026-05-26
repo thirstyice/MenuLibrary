@@ -16,8 +16,8 @@ struct TitleFlags { // Indexes in title for formatting
 
 class MenuOutput {
 protected:
-	uint8_t width = 0;
-	uint8_t height = 0;
+	const uint8_t width;
+	const uint8_t height;
 	uint8_t focusedLine;
 	MenuOutput(uint8_t _width, uint8_t _height) : width(_width), height(_height) {}
 public:
@@ -25,6 +25,6 @@ public:
 	virtual void setFocusedLine(uint8_t lineNumber) =0;
 	uint8_t startLine;
 	uint8_t getFirstLineIndex(uint8_t totalLines, uint8_t focus);
-	const uint8_t getHeight() {return height;}
-	const uint8_t getWidth() {return width;}
+	constexpr uint8_t getHeight() {return height;}
+	constexpr uint8_t getWidth() {return width;}
 };
