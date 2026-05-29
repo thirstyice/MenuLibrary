@@ -11,7 +11,6 @@ struct TitleFlags { // Indexes in title for formatting
 	uint8_t selectionStart = 0; // First character in selection
 	uint8_t selectionLength = 0; // Length of selection
 	uint8_t alignRightFrom = 255; // First character to be aligned right
-	uint8_t replaceableWithCursor[5] = {255, 255, 255, 255, 255};
 };
 
 class MenuOutput {
