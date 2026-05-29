@@ -78,7 +78,7 @@ Menu menu{ "",
 		&MenuBackDefault
 	),
 	&((new MenuToggle("overridden", toggleTest))->setTitle("Toggle:")),
-	new MenuValue("Value",
+	new MenuValue("Value:",
 		new MenuValues<uint8_t>(valueTest, 255),
 		new MenuValues<float>(valueTestFloat, 1, 0, 0.1)
 	),
