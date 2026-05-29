@@ -25,7 +25,7 @@ void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, T
 	if (flags.alignRightFrom < width) {
 		strncat(lineOut, line, flags.alignRightFrom);
 		int spaceEnd = flags.alignRightFrom + (width - strlen(line));
-		for (int i = flags.alignRightFrom; i<spaceEnd; ++i) {
+		for (int i = flags.alignRightFrom+1; i<=spaceEnd; i++) {
 			lineOut[i] = ' ';
 		}
 		strlcat(lineOut, &line[flags.alignRightFrom], width+2);
