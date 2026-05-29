@@ -45,8 +45,10 @@ public:
 
 class MenuValue : public MenuBase<MenuValue> {
 public:
-	template <MenuValuesOp&...>
-	MenuValue(const char * _title, ...);
+	template <typename... Ts>
+	MenuValue(const char * _title, MenuValuesOp& arg1, Ts... args);
+	template <typename... Ts>
+	MenuValue(const char * _title, MenuValuesOp* arg1, Ts... args);
 	MenuValue(const MenuValue &);
 	~MenuValue();
 	TitleFlags getTitle(char* buf, const uint8_t& len) override;
@@ -64,14 +66,18 @@ private:
 	MenuValuesOp** values;
 };
 
-template <MenuValuesOp&... args>
-MenuValue::MenuValue(const char * _title, ...) : MenuBase(_title) {
-	size = sizeof...(args);
-	MenuValuesOp* variableArray[size] = {&args...};
+template <typename... Ts>
+MenuValue::MenuValue(const char * _title, MenuValuesOp* arg1, Ts...args) : MenuBase(_title) {
+	size = sizeof...(args)+1;
+	MenuValuesOp* variableArray[size] = {arg1, args...};
 	size_t memsize = size * sizeof(MenuValuesOp*);
 	values = (MenuValuesOp**)malloc(memsize);
 	memcpy(values, variableArray, memsize);
 }
+template <typename... Ts>
+MenuValue::MenuValue(const char * _title, MenuValuesOp& arg1, Ts...args) :
+	MenuValue(_title, &arg1, &args...)
+{}
 
 template <typename numberType>
 String MenuValues<numberType>::getValueAsString() {
