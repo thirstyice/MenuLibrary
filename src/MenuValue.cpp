@@ -49,6 +49,7 @@ TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 		valueStrSize[i] = strlen(values[i]->getValueAsString().c_str());
 		valueStrTotal += valueStrSize[i];
 	}
+	valueStrTotal += size - 1; // To account for separators
 	uint8_t beginAtValue = 0;
 	if (valueStrTotal >= (len-1)-strlen(title) && isOpen) {
 		strcpy(buf, titleChar);
