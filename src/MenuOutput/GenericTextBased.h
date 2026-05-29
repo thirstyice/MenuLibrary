@@ -24,9 +24,12 @@ void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, T
 	}
 	if (flags.alignRightFrom < width) {
 		strncat(lineOut, line, flags.alignRightFrom);
-		int spaceEnd = flags.alignRightFrom + (width - strlen(line));
-		for (int i = flags.alignRightFrom+1; i<=spaceEnd; i++) {
-			lineOut[i] = ' ';
+		uint8_t numSpaces = width-strlen(line);
+		for (uint8_t i=flags.alignRightFrom; i<(flags.alignRightFrom + numSpaces); i++) {
+			lineOut[i+1] = ' '; // +1 to account for cursor column
+		}
+		if (flags.selectionStart >= flags.alignRightFrom) {
+			flags.selectionStart += numSpaces;
 		}
 		strlcat(lineOut, &line[flags.alignRightFrom], width+2);
 	} else {
