@@ -2,7 +2,11 @@
 
 #include "MenuBase.h"
 
-
+/**
+** @brief Defines the common interface for the different types of values that
+** can be included in a MenuValue
+**
+**/
 class MenuValuesOp {
 public:
 	virtual String getValueAsString() =0;
@@ -12,6 +16,12 @@ public:
 	virtual ~MenuValuesOp() {};
 };
 
+/**
+** @brief Defines a single value for inclusion in a MenuValue object
+**
+** @tparam numberType
+** The type of the value
+**/
 template <typename numberType>
 class MenuValues : public MenuValuesOp {
 private:
@@ -33,26 +43,95 @@ public:
 		min{_min},
 		inc{_increment}
 	{}
+	/**
+	** @brief Get a String representation of the value
+	**
+	** @return ** String
+	**/
 	String getValueAsString() override;
+	/**
+	** @brief Increment the value
+	**
+	** @return ** void
+	**/
 	void increment() override;
+	/**
+	** @brief Decrement the value
+	**
+	** @return ** void
+	**/
 	void decrement() override;
+	/**
+	** @brief Check if the value has changed
+	**
+	** @return true
+	** @return false
+	**/
 	bool valueHasChanged() override;
+	/**
+	** @brief Set the Variable object that the value will track
+	**
+	** @param _variable The variable to track
+	** @return ** MenuValues& Allows chaining methods
+	**/
 	MenuValues& setVariable(numberType* _variable) {variable = _variable; return *this;}
+	/**
+	** @brief Set the value beyond which the variable will not increment
+	**
+	** @param _max
+	** @return ** MenuValues& Allows chaining methods
+	**/
 	MenuValues& setMax(numberType _max);
+	/**
+	** @brief Set the value below which the variable will not decrement
+	**
+	** @param _min
+	** @return ** MenuValues& Allows chaining methods
+	**/
 	MenuValues& setMin(numberType _min);
+	/**
+	** @brief Set the amount by which the variable will be incremented / decremented
+	**
+	** @param _inc
+	** @return ** MenuValues& Allows method chaining
+	**/
 	MenuValues& setIncrement(numberType _inc) {inc = _inc; return *this;}
 };
-
+/**
+** @brief Defines a menu item that can alter the value of one or more variables,
+** each of which is contained in a MenuValues object
+**
+**/
 class MenuValue : public MenuBase<MenuValue> {
 public:
+	/**
+	** @brief Create a MenuValue object using references
+	**
+	** @param _title The title to show before the editable values
+	** @param arg1 The first editable value
+	** @param args Subsequent editable values (up to 254)
+	**/
 	template <typename... Ts>
 	MenuValue(const char * _title, MenuValuesOp& arg1, Ts... args);
+	/**
+	** @brief Create a MenuValue object using pointers
+	**
+	** @param _title The title to show before the editable values
+	** @param arg1 A pointer to the first editable value
+	** @param args Pointers to subsequent editable values (up to 254)
+	**/
 	template <typename... Ts>
 	MenuValue(const char * _title, MenuValuesOp* arg1, Ts... args);
 	MenuValue(const MenuValue &);
 	~MenuValue();
 	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 	bool needsRedraw() override;
+	/**
+	** @brief Set the character to insert between editable values
+	**
+	** @param _separator
+	** @return ** MenuValue& Allows method chaining
+	**/
 	MenuValue& setSeparator(char _separator);
 
 private:
