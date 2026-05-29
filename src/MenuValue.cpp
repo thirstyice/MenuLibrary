@@ -53,15 +53,15 @@ TitleFlags MenuValue::getTitle(char* buf, const uint8_t& len) {
 	if (valueStrTotal >= (len-1)-strlen(title) && isOpen) {
 		strcpy(buf, titleChar);
 		if (valueStrTotal >= (uint16_t)(len-1)) {
-			uint8_t testChars = valueStrSize[selected];
+			uint8_t outputSize = valueStrSize[selected];
 			beginAtValue = selected;
 			uint8_t loop = 1;
-			while (testChars < len-1) {
+			while (outputSize < len) {
 				if (selected + loop < size) {
-					testChars += valueStrSize[selected + loop] + 1;
+					outputSize += valueStrSize[selected + loop] + 1;
 				}
 				if (selected - loop >= 0) {
-					testChars += valueStrSize[selected - loop] + 1;
+					outputSize += valueStrSize[selected - loop] + 1;
 					beginAtValue = selected - loop;
 				}
 			}
