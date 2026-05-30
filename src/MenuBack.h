@@ -2,6 +2,10 @@
 
 #include "MenuItem.h"
 
+/**
+** @brief Defines a Menu item for exiting a submenu
+**
+**/
 class MenuBack : public MenuItem {
 public:
 	MenuBack(const char * _title) : MenuItem(_title) {}
