@@ -25,6 +25,7 @@ uint8_t valueTest = 0;
 float valueTestFloat = 1;
 uint8_t ipTest1[] = {192,168,0,1};
 uint32_t ipTest2 = 0x12345678;
+IPAddress ipTest3(1,2,3,4);
 String stringTest = "Hello World!";
 String shortStr = "Short!";
 
@@ -75,7 +76,9 @@ Menu menu{ "",
 		&(new MenuItem("Print from submenu"))->setResponder(printValues, MenuAction::engage)
 	),
 	new Menu("Small submenu, big title",
-		&MenuBackDefault
+		&MenuBackDefault,
+		new MenuIP("IP edit:", ipTest3),
+		new MenuDisp<IPAddress>("IP Val:", ipTest3)
 	),
 	&((new MenuToggle("overridden", toggleTest))->setTitle("Toggle:")),
 	new MenuValue("Value:",
