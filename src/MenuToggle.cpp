@@ -1,32 +1,32 @@
 #include "MenuToggle.h"
 
 bool MenuToggle::needsRedraw() {
-	return (variable != lastValue) || hasChanges;
+	return (*variable != lastValue) || hasChanges;
 }
 
 MenuReaction MenuToggle::engage() {
-	variable = !variable;
+	*variable = !*variable;
 	return MenuReaction::changeValue;
 }
 
 TitleFlags MenuToggle::getTitle(char* buf, const uint8_t& len) {
 	TitleFlags flags;
 	hasChanges = false;
-	lastValue = variable;
+	lastValue = *variable;
 	strlcpy(buf, title, len);
 	flags.alignRightFrom = strlen(buf);
-	strlcat(buf, (variable?trueLabel:falseLabel), len);
+	strlcat(buf, ((*variable)?trueLabel:falseLabel), len);
 	return flags;
 }
 
 MenuToggle& MenuToggle::setVar(bool& var) {
-	variable = var;
+	variable = &var;
 	return *this;
 }
 
 MenuToggle& MenuToggle::setTrue(const char * label) {
 	trueLabel = label;
-	if (variable == true) {
+	if (*variable == true) {
 		hasChanges = true;
 	}
 	return *this;
@@ -34,7 +34,7 @@ MenuToggle& MenuToggle::setTrue(const char * label) {
 
 MenuToggle& MenuToggle::setFalse(const char* label) {
 	falseLabel = label;
-	if (variable == false) {
+	if (*variable == false) {
 		hasChanges = true;
 	}
 	return *this;
