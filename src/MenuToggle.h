@@ -16,7 +16,7 @@ public:
 	** @param falseStr The text to display when the variable is false
 	**/
 	MenuToggle(const char * _title, bool& var, const char * trueStr="True", const char * falseStr="False") :
-		MenuBase(_title), variable(var), trueLabel(trueStr), falseLabel(falseStr)
+		MenuBase(_title), variable(&var), trueLabel(trueStr), falseLabel(falseStr)
 	{}
 	bool needsRedraw() override;
 	/**
@@ -43,7 +43,7 @@ public:
 	TitleFlags getTitle(char* buf, const uint8_t& len) override;
 private:
 	MenuReaction engage() override;
-	bool& variable;
+	bool* variable;
 	bool lastValue;
 	const char * trueLabel;
 	const char * falseLabel;
