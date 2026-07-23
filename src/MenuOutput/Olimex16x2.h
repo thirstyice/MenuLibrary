@@ -11,7 +11,6 @@ public:
 	{}
 	void setCursor(char newCursor) {cursor=newCursor;};
 	void outputLine(uint8_t line, char* contents, TitleFlags flags);
-	void setFocusedLine(uint8_t line);
 private:
 	Olimex16x2* lcd;
 };
@@ -21,13 +20,4 @@ void MenuOutputOlimex16x2::outputLine(uint8_t lineIndex, char* line, TitleFlags 
 		line[flags.selectionStart] = cursor;
 	}
 	lcd->drawLine(lineIndex, line);
-}
-
-void MenuOutputOlimex16x2::setFocusedLine(uint8_t line) {
-	if (line==focusedLine) {
-		return;
-	}
-	lcd->drawChar(' ', focusedLine, 0);
-	lcd->drawChar(cursor, line, 0);
-	focusedLine = line;
 }

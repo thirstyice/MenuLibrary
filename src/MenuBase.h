@@ -111,9 +111,11 @@ MenuReaction MenuBase<MenuDerived>::distributeAction(MenuAction& action) {
 		reaction = decrease();
 		break;
 	case MenuAction::gainFocus:
+		hasChanges = true;
 		reaction = getFocus();
 		break;
 	case MenuAction::loseFocus:
+		hasChanges = true;
 		reaction = loseFocus();
 		break;
 	default:

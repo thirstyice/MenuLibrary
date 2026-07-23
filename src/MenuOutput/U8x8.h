@@ -33,7 +33,7 @@ void MenuOutputU8x8::drawLine(uint8_t lineNumber, const char* contents, TitleFla
 
 	u8x8->setFont(font);
 
-	if (lineNumber == focusedLine) {
+	if (flags.focusedLine) {
 		u8x8->setInverseFont(1);
 		uint8_t position = 0;
 		for (; position<flags.selectionStart; position++) {
@@ -67,5 +67,4 @@ void MenuOutputU8x8::drawLine(uint8_t lineNumber, const char* contents, TitleFla
 	} else if (flags.specialType == TitleFlags::SpecialTypes::Back) {
 		u8x8->drawGlyph(width-1, lineNumber, 78);
 	}
-
 }

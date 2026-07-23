@@ -11,13 +11,13 @@ struct TitleFlags { // Indexes in title for formatting
 	uint8_t selectionStart = 0; // First character in selection
 	uint8_t selectionLength = 0; // Length of selection
 	uint8_t alignRightFrom = 255; // First character to be aligned right
+	bool focusedLine = false;
 };
 
 class MenuOutput {
 protected:
 	const uint8_t width;
 	const uint8_t height;
-	uint8_t focusedLine;
 	MenuOutput(uint8_t _width, uint8_t _height) : width(_width), height(_height) {}
 	void doRightAlign(const char* input, char* output, TitleFlags& flags) {
 		uint8_t fillWidth = flags.specialType==TitleFlags::SpecialTypes::None?width:width-1;
@@ -37,7 +37,6 @@ protected:
 	}
 public:
 	virtual void drawLine(uint8_t lineNumber, const char* contents, TitleFlags flags) =0;
-	virtual void setFocusedLine(uint8_t lineNumber) =0;
 	uint8_t startLine;
 	uint8_t getFirstLineIndex(uint8_t totalLines, uint8_t focus);
 	constexpr uint8_t getHeight() {return height;}

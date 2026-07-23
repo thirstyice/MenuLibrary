@@ -25,10 +25,10 @@ bool Menu::doDraw() {
 				uint8_t length = outputs[output]->getWidth() + 1;
 				char subTitle[length];
 				TitleFlags flags = submenu[item]->getTitle(subTitle, length);
+				if (item==focusedLine) {
+					flags.focusedLine = true;
+				}
 				outputs[output]->drawLine(line, subTitle, flags);
-			}
-			if (item==focusedLine) {
-				outputs[output]->setFocusedLine(line);
 			}
 		}
 		TitleFlags noFlags;
