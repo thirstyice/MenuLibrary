@@ -19,7 +19,10 @@ protected:
 void MenuOutputGenericTextBased::drawLine(uint8_t lineIndex, const char* line, TitleFlags flags) {
 	char lineOut[width+2] = {0};
 	lineOut[0] = (flags.focusedLine?cursor:' ');
-	doRightAlign(line+1, lineOut+1, flags); // +1 beacuse cursor
+	doRightAlign(line, lineOut+1, flags); // +1 beacuse cursor
+	for (uint8_t i=strlen(lineOut); i<width; i++) {
+		lineOut[i] = ' ';
+	}
 	if (flags.specialType==TitleFlags::SpecialTypes::Submenu) {
 		lineOut[width] = submenuArrow;
 	} else if (flags.specialType == TitleFlags::SpecialTypes::Back) {

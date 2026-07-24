@@ -32,7 +32,7 @@ public:
 	 * @param ...args The rest of the menu items
 	 */
 	template <typename... Ts>
-	Menu(const char * _title, MenuCore& arg1, Ts...args) : MenuBase(_title), needsFree(true) {
+	Menu(const char * _title, MenuCore& arg1, Ts&...args) : MenuBase(_title), needsFree(true) {
 		numItems = sizeof...(args) + 1;
 		MenuCore* itemArray[numItems] = {&arg1, &args...};
 		size_t memsize = numItems * sizeof(MenuCore*);
@@ -41,7 +41,7 @@ public:
 	};
 
 	template <typename... Ts>
-	Menu(MenuCore& arg1, Ts...args) : Menu("", arg1, args...) {}
+	Menu(MenuCore& arg1, Ts&...args) : Menu("", arg1, args...) {}
 	/**
 	* @brief Create a Menu directly from pointers to Menu items
 	* @param _title The title to show when the Menu is a submenu
@@ -49,7 +49,7 @@ public:
 	* @param ...args Pointers to the rest of the menu items
 	*/
 	template <typename... Ts>
-	Menu(const char * _title, MenuCore* arg1, Ts...args) : MenuBase(_title), needsFree(true) {
+	Menu(const char * _title, MenuCore* arg1, Ts*...args) : MenuBase(_title), needsFree(true) {
 		numItems = sizeof...(args) + 1;
 		MenuCore* itemArray[numItems] = {arg1, args...};
 		size_t memsize = numItems * sizeof(MenuCore*);
@@ -57,7 +57,7 @@ public:
 		memcpy(submenu, itemArray, memsize);
 	};
 	template <typename... Ts>
-	Menu(MenuCore* arg1, Ts...args) : Menu("", arg1, args...) {}
+	Menu(MenuCore* arg1, Ts*...args) : Menu("", arg1, args...) {}
 
 	Menu() : Menu((MenuCore**)nullptr, 0) {}
 	MenuReaction doAction(MenuAction) override;
