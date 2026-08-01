@@ -63,8 +63,8 @@ void MenuOutputU8x8::drawLine(uint8_t lineNumber, const char* contents, TitleFla
 
 	u8x8->setFont(u8x8_font_open_iconic_arrow_1x1);
 	if (flags.specialType == TitleFlags::SpecialTypes::Submenu) {
-		u8x8->drawGlyph(width-1, lineNumber, 77);
-	} else if (flags.specialType == TitleFlags::SpecialTypes::Back) {
 		u8x8->drawGlyph(width-1, lineNumber, 78);
+	} else if (flags.specialType == TitleFlags::SpecialTypes::Back) {
+		u8x8->drawGlyph(width-1, lineNumber, 77);
 	}
 }
